@@ -16,7 +16,7 @@ body{
     background-color: darkblue;
     color: white;
     font-size: larger;
-    font-family: cursive;
+    font-family: sans-serif;
 }
 .container{
     width: 900px;
@@ -182,5 +182,9 @@ body.activeTabCart .cartTab{
         height: 40%;
          width: 90%;
          filter: drop-shadow(0 50px 20px #0009);
+    }
+    .title{
+        display: grid;
+        grid-template-columns: auto;
     }
 }
