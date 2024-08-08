@@ -63,7 +63,7 @@ header .icon-cart span{
 .listProduct .item img{
    height: 70%;
     width: 90%;
-    filter: drop-shadow(0 10px 20px #0009);
+    /* filter: drop-shadow(0 10px 20px #0009); */
 
 }
 .listProduct{
@@ -179,7 +179,7 @@ body.activeTabCart .cartTab{
         grid-template-columns: repeat(2,1fr);
     }
     .listProduct .item img{
-        height: 40%;
+        height: 60%;
          width: 90%;
          filter: drop-shadow(0 50px 20px #0009);
     }
