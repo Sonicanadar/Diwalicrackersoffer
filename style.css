@@ -1,8 +1,58 @@
 body{
     font-family: sans-serif;
     margin:0;
+  
 }
 .container_title{
+    width: 900px;
+    max-width: 90vw;
+    margin: auto;
+    text-align: center;
+    padding-top: 10px;
+    transition: 0.5s;
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    transition: transform 0.5s;
+}
+
+body.activeTabCart .container_title {
+    transform: translateX(-250px);
+}
+body.activeTabCart .container_title_free{
+    transform: translateX(-250px);
+}
+
+.blink {
+    animation: blinker 2s linear infinite;
+    color: red;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.container_title .title1{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.container_title img{
+    width: 100px;
+    background-color: white;
+    
+    
+}
+.container_title p .location_img{
+    width: 20px;
+    
+    
+}
+.container_title_free{
     width: 900px;
     max-width: 90vw;
     margin: auto;
@@ -13,23 +63,58 @@ body{
     align-items: center;
     padding: 10px 20px;
     justify-content: center;
-    background-color: darkblue;
+    background-color:white;
     color: white;
-    font-size:xx-large;
-    font-family: cursive;
+    height: 20px;
+    transition: transform 0.5s;
 }
+.container_title span{
+   font-size: medium;
+}
+.search {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    border-radius: 28px;
+    background-color: #f6f6f6;
+    width: 600px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.25s;
+}
+.search:focus-within{
+    box-shadow: 0 0 2px rgba(0,0,0,0.75);
+}
+.search-input {
+    font-size: 16px;
+    font-family: 'Lexend', sans-serif;
+    columns: #333;
+    margin-left: 14px;
+    outline: none;
+    border:none;
+    background:transparent;
+    width: 300px;
+}
+.search-input::placeholder, .search-icon{
+    color: rgba(0,0,0,0.5);
+}
+
 .container{
     width: 900px;
     max-width: 90vw;
     margin: auto;
     text-align: center;
     padding-top: 10px;
-    transition: 0.5s;
+    transition: transform 0.5s;
+    
 }
 .title{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 20px;
+    padding-bottom: 20px;
 }
 
 svg{
@@ -61,7 +146,7 @@ header .icon-cart span{
     right:-20px;
 }
 .listProduct .item img{
-   height: 70%;
+   height: 60%;
     width: 90%;
     /* filter: drop-shadow(0 10px 20px #0009); */
 
@@ -103,19 +188,31 @@ header .icon-cart span{
 
 .cartTab{
     width: 400px;
-    background-color: black;
+    max-width: 100%;
+    background-color: grey;
     color: white;
     position: fixed;
-    inset: 0 -400px 0 auto;
+   top:0;
+   right:0;
+   bottom: 0;
     display: grid;
-    grid-template-rows: 70 1fr 70px;
-    max-width: 100%;
+    grid-template-rows: 70px 1fr 70px;
+   
 }
+.cartTab{
+   right: -400px;
+   transition: 0.5s;
+   
+}
+.cartTab h1{
+    background-color: goldenrod;
+    
+ }
 
-body .showCart .cartTab{
-    inset:0 0 0 auto;
+body.activeTabCart .cartTab{
+    right:0;
 }
-body .showCart .container{
+body.activeTabCart .container{
     transform: translateX(-250px);
 }
 .cartTab h1{
@@ -123,9 +220,18 @@ body .showCart .container{
     margin: 0;
     font-weight: 300;
 }
+.cartTab .foot{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color:#555;
+        
+}
 .cartTab .btn{
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
+    height: 60px;
 }
 .cartTab .btn button{
     background-color: #E8BC0E;
@@ -137,8 +243,12 @@ body .showCart .container{
     background-color: white;
 }
 .cartTab .listCart .item img{
+    width: 100%;
+}
+
+.cartTab .listCart .item {
     display: grid;
-    grid-template-columns: 70px 150px 50px 1ft;
+    grid-template-columns: 70px 150px 50px 1fr;
     gap:10px;
     text-align: center;
     align-items: center;
@@ -154,15 +264,15 @@ body .showCart .container{
 }
 .listCart .quantity span:nth-child(2){
     background-color: transparent;
-    columns: #eee;
+    color: #eee;
 }
 .listCart .item:nth-child(even){
     background-color: #eee1;
 }
-.listCart{
+.cartTab .listCart{
     overflow: auto;
 }
-.listCart::-webkit-scrollbar{
+.cartTab .listCart::-webkit-scrollbar{
     width: 0;
 }
 body.activeTabCart .cartTab{

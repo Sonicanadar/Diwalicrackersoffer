@@ -5,12 +5,43 @@ let body=document.querySelector('body');
 let listCartHTML = document.querySelector('.listCart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 
+let plus = document.querySelector('.plus');
+
+
 iconCart.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
 closeBtn.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
+
+
+plus.addEventListener('click', ()=> {
+    let idProduct = positionClick.dataset.id; 
+    console.log(idProduct);
+})
+
+
+const buildTable = () => {
+    `<table>
+<tr>
+<th>Company</th>
+<th>Contact</th>
+<th>Country</th>
+</tr>
+<tr>
+<td>Alfreds Futterkiste</td>
+<td>Maria Anders</td>
+<td>Germany</td>
+</tr>
+<tr>
+<td>Centro comercial Moctezuma</td>
+<td>Francisco Chang</td>
+<td>Mexico</td>
+</tr>
+</table> `
+}
+
 let listProducts = [];
 let carts = [];
 let totalQuantity = 0 ;
@@ -25,7 +56,7 @@ const addDataToHTML = () => {
             newProduct.innerHTML =  `
                 <img src="${product.image}" alt="">
                 <h2>${product.title}</h2>
-                <div class="price"><span>MRP. ${product.price} </span>SP.${Math.floor((product.price*0.3))}</div>
+                <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price*0.3))}</div>
                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
                 `;
                 listProductHTML.appendChild(newProduct);
@@ -38,7 +69,7 @@ document.addEventListener('click', (event) => {
     let positionClick = event.target;
     console.log(positionClick);
     let idProduct = positionClick.dataset.id;
-    console.log(positionClick.parentElement);
+    //console.log(positionClick.parentElement.dataset);
     console.log(idProduct);
     let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
     //console.log(positionThisProductInCart);
@@ -46,17 +77,21 @@ document.addEventListener('click', (event) => {
     let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
     
     if(positionClick.classList.contains('addCart') ){
+        let idProduct = positionClick.parentElement.dataset.id;
         // let idProduct = positionClick.parentElement.dataset.id;
-        console.log(positionClick.parentElement.dataset);
+      //  console.log(positionClick.parentElement.dataset);
         quantity++;
-       
+        //console.log(positionThisProductInCart);
         addToCart(idProduct,quantity,positionThisProductInCart);
     } else if(positionClick.classList.contains('plus')){
-        // let idProduct = positionClick.dataset.id; 
-        console.log(positionClick.parentElement.parentElement.dataset);
+         let idProduct = positionClick.dataset.id; 
+        // positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
+        //console.log(idProduct);
+        //console.log(positionClick.parentElement.dataset);
         quantity++;
-       
+        //console.log(quantity);
         addToCart(idProduct,quantity,positionThisProductInCart);
+        
     }else if(positionClick.classList.contains('minus')){
         quantity--;
         addToCart(idProduct,quantity,positionThisProductInCart);
@@ -84,11 +119,20 @@ const addToCart = (idProduct,quantity,positionThisProductInCart) => {
 const addCartToHTML = () => {
     let listHTML = document.querySelector('.listCart');
     let totalHTML = document.querySelector('.icon-cart span');
+    let totalPriceHTML = document.querySelector('.cartTab .foot span');
     let totalQuantity = 0;
     listHTML.innerHTML = null;
+  
+    
+    let totalPrice = 0;
+    totalPriceHTML.innerText = totalPrice;
    
  
 //  console.log(idProduct,positionThisProductInCart,quantity);
+if(carts.length == 0){
+    document.getElementById("total_price").innerHTML = "$ "+0+".00";
+}
+else{
         carts.forEach(item => {
         totalQuantity=totalQuantity + item.quantity;
         
@@ -97,6 +141,7 @@ const addCartToHTML = () => {
             let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
             //console.log(positionProduct)
             let info = listProducts[positionProduct];
+            totalPrice = totalPrice+(info.price*0.3*item.quantity);
            // console.log(info);
             newCart.innerHTML = `<div class="image">
                     <img src="${info.image}" alt="">
@@ -105,7 +150,7 @@ const addCartToHTML = () => {
                     ${info.title}
                 </div>
                 <div class="totalPrice">
-                    ${info.price*item.quantity}
+                    ${info.price*0.3*item.quantity}
                 </div>
                 <div class="quantity">
                     <button class="minus" data-id="${info.id}"><</button>
@@ -114,8 +159,54 @@ const addCartToHTML = () => {
                 </div>`;
                 listCartHTML.appendChild(newCart);
         })
-    
+    }
     totalHTML.innerText = totalQuantity;
+    totalPriceHTML.innerText ="Rs."+ totalPrice+".00";
+    console.log(totalPrice);
+}
+
+function emailSend(){
+    
+    var messageBody = '';
+     let totalPrice = 0;
+   
+    carts.forEach(item => {
+      
+        let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
+        let info = listProducts[positionProduct];
+        totalPrice = totalPrice+(info.price*0.3*item.quantity);
+        messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3*item.quantity;
+    })
+
+    // carts.forEach(item => {
+      
+    //     let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
+    //     let info = listProducts[positionProduct];
+    //     totalPrice = totalPrice+(info.price*0.3*item.quantity);
+    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3;
+    // })
+    messageBody = messageBody + "<br>Total Price :"+totalPrice;
+    
+    console.log(messageBody);
+
+   
+    Email.send({
+    SecureToken : "5bd59612-66e9-4b83-a8a7-1defb6c6490e",
+    To : 'sonicawebdev@gmail.com',
+    From : "sonicawebdev@gmail.com",
+    Subject : "This is the subject",
+    Body : messageBody
+ }).then(
+  message => {
+      if(message=='OK'){
+          alert("Successful", "You clicked the button!", "success");
+      }
+      else{
+          alert("Error", "You clicked the button!", "error");
+      }
+  }
+ );
+
 }
 
 

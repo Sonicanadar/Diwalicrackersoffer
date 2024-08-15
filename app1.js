@@ -5,12 +5,21 @@ let body=document.querySelector('body');
 let listCartHTML = document.querySelector('.listCart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 
+let plus = document.querySelector('.plus');
+
 iconCart.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
 closeBtn.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
+
+
+plus.addEventListener('click', ()=> {
+    let idProduct = positionClick.dataset.id; 
+    console.log(idProduct);
+})
+
 let listProducts = [];
 let carts = [];
 let totalQuantity = 0 ;
@@ -38,7 +47,7 @@ document.addEventListener('click', (event) => {
     let positionClick = event.target;
     console.log(positionClick);
     let idProduct = positionClick.dataset.id;
-    console.log(positionClick.parentElement);
+    //console.log(positionClick.parentElement.dataset);
     console.log(idProduct);
     let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
     //console.log(positionThisProductInCart);
@@ -46,17 +55,21 @@ document.addEventListener('click', (event) => {
     let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
     
     if(positionClick.classList.contains('addCart') ){
+        let idProduct = positionClick.parentElement.dataset.id;
         // let idProduct = positionClick.parentElement.dataset.id;
-        console.log(positionClick.parentElement.dataset);
+      //  console.log(positionClick.parentElement.dataset);
         quantity++;
-       
+        //console.log(positionThisProductInCart);
         addToCart(idProduct,quantity,positionThisProductInCart);
     } else if(positionClick.classList.contains('plus')){
-        // let idProduct = positionClick.dataset.id; 
-        console.log(positionClick.parentElement.parentElement.dataset);
+         let idProduct = positionClick.dataset.id; 
+        // positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
+        //console.log(idProduct);
+        //console.log(positionClick.parentElement.dataset);
         quantity++;
-       
+        //console.log(quantity);
         addToCart(idProduct,quantity,positionThisProductInCart);
+        
     }else if(positionClick.classList.contains('minus')){
         quantity--;
         addToCart(idProduct,quantity,positionThisProductInCart);
