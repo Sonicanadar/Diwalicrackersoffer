@@ -141,7 +141,7 @@ else{
             let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
             //console.log(positionProduct)
             let info = listProducts[positionProduct];
-            totalPrice = totalPrice+(info.price*0.3*item.quantity);
+            totalPrice = totalPrice+Math.floor(info.price*0.3*item.quantity);
            // console.log(info);
             newCart.innerHTML = `<div class="image">
                     <img src="${info.image}" alt="">
@@ -150,7 +150,7 @@ else{
                     ${info.title}
                 </div>
                 <div class="totalPrice">
-                    ${info.price*0.3*item.quantity}
+                    ${Math.floor(info.price*0.3*item.quantity)}
                 </div>
                 <div class="quantity">
                     <button class="minus" data-id="${info.id}"><</button>
@@ -169,32 +169,40 @@ function emailSend(){
     
     var messageBody = '';
      let totalPrice = 0;
-   
-    carts.forEach(item => {
-      
-        let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
-        let info = listProducts[positionProduct];
-        totalPrice = totalPrice+(info.price*0.3*item.quantity);
-        messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3*item.quantity;
-    })
-
+    let totalQuantity = 0;
     // carts.forEach(item => {
       
     //     let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
     //     let info = listProducts[positionProduct];
     //     totalPrice = totalPrice+(info.price*0.3*item.quantity);
-    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3;
+    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3*item.quantity;
     // })
-    messageBody = messageBody + "<br>Total Price :"+totalPrice;
+
+    // <table><tr><th>Company</th><th>Contact</th><th>Country</th></tr></table>
+    messageBody="<table style=\"border:1px solid black;\"><tr style=\"border:1px solid black;\"><th style=\"border:1px solid black;\">Name</th><th style=\"border:1px solid black;\">Quantity</th><th style=\"border:1px solid black;\">Price</th></tr>";
+
+    carts.forEach(item => {
+      
+        let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
+        let info = listProducts[positionProduct];
+        totalPrice = totalPrice+Math.floor(info.price*0.3*item.quantity);
+        totalQuantity = totalQuantity+(item.quantity);
+        messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">"+info.title+"</td><td style=\"border:1px solid black;\">"+item.quantity+"</td><td style=\"border:1px solid black;\">"+Math.floor(info.price*0.3)+"</td></tr>";
+    })
+    messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">Total</td><td style=\"border:1px solid black;\">"+totalQuantity+"</td><td style=\"border:1px solid black;\">"+totalPrice+"</td></tr>";
+    messageBody = messageBody + "</table>";
     
-    console.log(messageBody);
+     //messageBody = messageBody + "<br>Total Price :"+totalPrice;
+    // messageBody = messageBody + "<table style=\"border:1px solid black;\"><tr style=\"border:1px solid black;\"><th style=\"border:1px solid black;\">Total</th><th style=\"border:1px solid black;\">"+totalQuantity+"</th><th style=\"border:1px solid black;\">"+totalPrice+"</th></tr>";
+     messageBody = messageBody + "<br><br>Regards<br>Team";
+     console.log(messageBody);
 
    
     Email.send({
     SecureToken : "5bd59612-66e9-4b83-a8a7-1defb6c6490e",
     To : 'sonicawebdev@gmail.com',
     From : "sonicawebdev@gmail.com",
-    Subject : "This is the subject",
+    Subject : "Crackers Order",
     Body : messageBody
  }).then(
   message => {

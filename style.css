@@ -13,15 +13,15 @@ body{
     padding: 10px 20px;
     background-color: blue;
     color: white;
-    transition: transform 0.5s;
+    /* transition: transform 0.5s; */
 }
-
+/* 
 body.activeTabCart .container_title {
     transform: translateX(-250px);
 }
 body.activeTabCart .container_title_free{
     transform: translateX(-250px);
-}
+} */
 
 .blink {
     animation: blinker 2s linear infinite;
@@ -66,7 +66,7 @@ body.activeTabCart .container_title_free{
     background-color:white;
     color: white;
     height: 20px;
-    transition: transform 0.5s;
+    /* transition: transform 0.5s; */
 }
 .container_title span{
    font-size: medium;
@@ -106,7 +106,7 @@ body.activeTabCart .container_title_free{
     margin: auto;
     text-align: center;
     padding-top: 10px;
-    transition: transform 0.5s;
+    /* transition: transform 0.5s; */
     
 }
 .title{
@@ -212,9 +212,9 @@ header .icon-cart span{
 body.activeTabCart .cartTab{
     right:0;
 }
-body.activeTabCart .container{
+/* body.activeTabCart .container{
     transform: translateX(-250px);
-}
+} */
 .cartTab h1{
     padding: 20px;
     margin: 0;
@@ -278,6 +278,10 @@ body.activeTabCart .container{
 body.activeTabCart .cartTab{
     right: 0;
 }
+
+table, th, td {
+    border:1px solid black;
+  }
 
 @media screen and (max-width: 992px){
     .listProduct{
