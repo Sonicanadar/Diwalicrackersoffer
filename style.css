@@ -279,7 +279,17 @@ body.activeTabCart .cartTab{
     right: 0;
 }
 
+.container_popup{
+    width: 900px;
+    max-width: 90vw;
+    margin: auto;
+    text-align: center;
+    padding-top: 10px;
+
+    
+}
 .container_popup .btn{
+    
     padding: 10px 60px;
     background: #fff;
     border: 0;
@@ -288,14 +298,11 @@ body.activeTabCart .cartTab{
     font-size: 22px;
     font-weight: 500;
     border-radius: 30px;
-      
+          
 }
 .popup{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70%;
-    background: #fff;
+    width: 400px;
+    background:rgb(147, 216, 227);
     border-radius: 6px;
     position:absolute;
     top: 0;
@@ -324,10 +331,10 @@ body.activeTabCart .cartTab{
     margin: 30px 0 10px;
 }
 .popup button{
-    width: 100%;
+    width: 70%;
     margin-top: 50px;
     padding: 10px 0;
-    background: #6fd649;
+    background: blue;
     color: black;
     border: 0;
     outline: none;
@@ -338,6 +345,8 @@ body.activeTabCart .cartTab{
 }
 
 /* contact  */
+
+
 .contact h2{
     font-size: 40px;
     color: black;
@@ -345,18 +354,19 @@ body.activeTabCart .cartTab{
     margin-bottom: 10px;
 }
 .contact form {
-    width: 600px;
+    width: 100%;
     text-align: center;
+    padding-top: 50px;
 }
 form .input-box{
     display: flex;
     justify-content: space-between;
 }
-/* .input-box .input-field{
-    width: 48.5%;
-} */
+.input-box .input-field{
+    width: 45%;
+}
 .field .item{
-    width: 100%;
+    width: 80%;
     padding: 18px;
     background: transparent;
     border: 2px solid black;
@@ -376,8 +386,12 @@ form .input-box{
     display: none;
 }
 
+form .textarea-field {
+    width: 100%;
+}
 form .textarea-field .item {
     resize:none;
+   
 }
 
 form .textarea-field .error-txt{
@@ -470,6 +484,10 @@ form button:hover {
     .listProduct{
         grid-template-columns: repeat(3,1fr);
     }
+    form .input-box{
+        display: grid;
+        grid-template-columns: auto;
+    }
 }
 @media screen and (max-width: 767px){
     .listProduct{
@@ -481,6 +499,10 @@ form button:hover {
          filter: drop-shadow(0 50px 20px #0009);
     }
     .title{
+        display: grid;
+        grid-template-columns: auto;
+    }
+    form .input-box{
         display: grid;
         grid-template-columns: auto;
     }
