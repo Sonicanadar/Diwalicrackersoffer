@@ -502,9 +502,9 @@ form button:hover {
         display: grid;
         grid-template-columns: auto;
     }
-    form .input-box{
+    .field .item{
         display: grid;
-        width: 100%;
         grid-template-columns: auto;
+        width: 100%;
     }
 }
