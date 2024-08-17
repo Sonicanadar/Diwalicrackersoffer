@@ -22,7 +22,7 @@
         </div>
     </div>
 
-     <div class="container">
+         <div class="container">
         <header>
             <div class="title">
                 <p>To ORDER Email: pyroparkvav@gmail.com</p>
@@ -35,14 +35,14 @@
             </div>
         </header>
        
-        <form id="search">
+        <!-- <form id="search">
             <div class="search">
                 <span class="search-icon material-symbols-outlined" >Search</span>
-                <input class="search-input" type="search" placeholder="Search">
+                <input class="search-input" type="search" id="search" placeholder="Search" onkeyup="search()">
             </div>
-        </form>
+        </form> -->
         <div class="listProduct">
-            <div class="item">
+            <div class="item" id="item">
                 <img src="Diwali_images3/crackers1.png" alt="">
                 <h2>NAME PRODUCT</h2>
                 <div class="price">Price</div>
@@ -51,6 +51,7 @@
         </div>
     </div>
     
+
     
     <div class="cartTab">
         <h1>Shopping Cart</h1>
@@ -78,10 +79,54 @@
         </div>
         <div class="btn">
             <button class="close">CLOSE</button>
-            <button class="submit" onclick="emailSend();">SUBMIT</button>
+            <button class="openPopup" onclick="openPopup()">SUBMIT</button>
+        </div>
+    </div>
+    <div class="container_popup">
+        <!-- <button type="submit" class="btn" onclick="openPopup()">Submit</button> -->
+        <div class="popup" id="popup">
+            <section class="contact">
+                <h2>Contact Me!</h2>
+        
+                <form action="#">
+                    <div class="input-box">
+                        <div class="input-field field">
+                            <input type="text" placeholder="Full Name" id="name" class="item" autocomplete="off">
+                            <div class="error-txt"> Full Name can't be blank</div>
+                        </div>
+                        <div class="input-field field">
+                            <input type="text" placeholder="Email Address" id="email" class="item" autocomplete="off">
+                            <div class="error-txt"> Email can't be blank</div>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <div class="input-field field">
+                            <input type="text" placeholder="Phone Number" id="phone" class="item" autocomplete="off">
+                            <div class="error-txt"> Phone Number can't be blank</div>
+                        </div>
+                        <div class="input-field field">
+                            <input type="text" placeholder="Pincode" id="pincode" class="item" autocomplete="off">
+                            <div class="error-txt"> Pincode can't be blank</div>
+                        </div>
+                    </div>
+                    <div class="textarea-field field">
+                        <textarea name="" id="address" cols="30" rows="10" placeholder="Shipping Address" Class="item" autocomplete="off"></textarea>
+                        <div class="error-txt"> Address can't be blank</div>
+                    </div>
+                    <button type="submit" class="send" onclick="closePopup(),openPopup2()">Send Message</button>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="container_popup2">
+        <div class="popup2" id="popup2">
+            <img src="Diwali_images3/tick_image.png" alt="ticket image">
+            <h2>Thank You!</h2>
+            <p>Your details has been successfully submitted</p>
+            <button type="button" onclick="closePopup2()">OK</button>
         </div>
     </div>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
-      <script src="app2.js"></script>
+      <script src="app.js"></script>
 </body>
 </html>
