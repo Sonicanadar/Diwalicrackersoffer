@@ -363,7 +363,7 @@ form .input-box{
     justify-content: space-between;
 }
 .input-box .input-field{
-    width: 45%;
+    width: 100%;
 }
 .field .item{
     width: 80%;
