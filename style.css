@@ -504,6 +504,7 @@ form button:hover {
     }
     form .input-box{
         display: grid;
+        width: 100%;
         grid-template-columns: auto;
     }
 }
