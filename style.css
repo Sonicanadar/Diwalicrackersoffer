@@ -322,7 +322,7 @@ body.activeTabCart .cartTab{
 }
 .popup{
     width: 400px;
-    background:rgb(147, 216, 227);
+    background:white;
     border-radius: 6px;
     position:absolute;
     top: 0;
