@@ -4,10 +4,33 @@ let closeBtn = document.querySelector('.close');
 let body=document.querySelector('body');
 let listCartHTML = document.querySelector('.listCart');
 let iconCartSpan = document.querySelector('.icon-cart span');
-
+let productFilter=[];
 let plus = document.querySelector('.plus');
 let popup = document.getElementById("popup");
 let popup2 = document.getElementById("popup2");
+let form1 = document.forms['my-form'];
+let menu = form1.category;
+let options =form1.category.options;
+let filter = document.querySelector(".filter");
+
+
+form1.onchange = function(event){
+    event.preventDefault();
+
+    let valueFilter = this.category.value;
+    console.log(valueFilter);
+    productFilter = listProducts.filter(item =>{
+        
+       if(valueFilter !=''){
+        console.log(item.category);
+                   if(item.category !=  valueFilter)
+                    
+                    return false;
+       }
+        return true;
+    })
+    addDataToHTML(productFilter);
+}
 
         function openPopup(){
             popup.classList.add("open-popup");
@@ -55,22 +78,43 @@ let listProducts = [];
 let carts = [];
 let totalQuantity = 0 ;
 
-const addDataToHTML = () => {
+
+
+
+// function showProduct(productFilter){
+//     count.innerText = productFilter.length;
+//     listCartHTML.innerHTML='';
+//     productFilter.forEach(item => {
+//         let newProduct = document.createElement('div');
+//             newProduct.classList.add('item');
+//             newProduct.dataset.id=product.id;
+//             newProduct.innerHTML =  `
+//                 <img src="${product.image}" alt="">
+//                 <h2>${product.title}</h2>
+//                 <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.3))}</div>
+//                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
+//                 `;
+//                 listProductHTML.appendChild(newProduct); 
+//     })
+// }
+
+
+function addDataToHTML(productFilter){
     listProductHTML.innerHTML ='';
-    if(listProducts.length > 0){
-        listProducts.forEach(product => {
+    
+        productFilter.forEach(product => {
             let newProduct = document.createElement('div');
             newProduct.classList.add('item');
             newProduct.dataset.id=product.id;
             newProduct.innerHTML =  `
                 <img src="${product.image}" alt="">
                 <h2>${product.title}</h2>
-                <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price*0.3))}</div>
+                <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.3))}</div>
                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
                 `;
                 listProductHTML.appendChild(newProduct);
         })
-    }
+    
 }
 
 
@@ -209,7 +253,7 @@ function emailSend(){
      //messageBody = messageBody + "<br>Total Price :"+totalPrice;
     // messageBody = messageBody + "<table style=\"border:1px solid black;\"><tr style=\"border:1px solid black;\"><th style=\"border:1px solid black;\">Total</th><th style=\"border:1px solid black;\">"+totalQuantity+"</th><th style=\"border:1px solid black;\">"+totalPrice+"</th></tr>";
      messageBody = messageBody + "<br><br>Regards<br>Team";
-     console.log(messageBody);
+     
 
    
     Email.send({
@@ -234,14 +278,15 @@ function emailSend(){
 }
 
 
-
 const initApp = () => {
     //get data from json
     fetch('products.json')
     .then(response => response.json())
     .then(data=> {
         listProducts = data;
-        addDataToHTML();
+        productFilter = listProducts;
+        addDataToHTML(productFilter);
+        
     })
 }
 initApp();

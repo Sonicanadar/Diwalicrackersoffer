@@ -186,6 +186,26 @@ header .icon-cart span{
     cursor: pointer;
 }
 
+.filter {
+    padding: 8px 12px;
+    color: #333;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    display: flex;
+    width: 30%;
+  
+    
+}
+
+.select:focus,
+.select:hover{
+    outline: none;
+    border:1px solid #999;
+}
+
 .cartTab{
     width: 400px;
     max-width: 100%;
