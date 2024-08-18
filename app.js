@@ -109,7 +109,7 @@ function addDataToHTML(productFilter){
             newProduct.innerHTML =  `
                 <img src="${product.image}" alt="">
                 <h2>${product.title}</h2>
-                <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.3))}</div>
+                <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price*0.3))}</div>
                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
                 `;
                 listProductHTML.appendChild(newProduct);
