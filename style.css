@@ -6,6 +6,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 body {
     background-color: #0d1117; /* Slate Black background */
@@ -249,8 +250,7 @@ body{
   
 }
 .container_title{
-    width: 900px;
-    max-width: 90vw;
+    width: 100%;
     margin: auto;
     text-align: center;
     padding-top: 10px;
@@ -367,20 +367,32 @@ body.activeTabCart .container_title_free{
     
 }
 .container_title_free{
-    width: 900px;
-    max-width: 90vw;
-    margin: auto;
-    text-align: center;
-    padding-top: 10px;
-    transition: 0.5s;
-    display: flex;
-    align-items: center;
+    width: 100%;
+    background: linear-gradient(90deg, #1b1510 0%, #2a1b0a 50%, #1b1510 100%); /* Deep charcoal bronze tint gradient background */
+    border-bottom: 1px solid #bd4b00; /* Thin subtle fire-line boundary border layout marker track */
     padding: 10px 20px;
+    text-align: center;
+    display: flex;
     justify-content: center;
-    background-color:white;
-    color: white;
-    height: 30px;
-    /* transition: transform 0.5s; */
+    align-items: center;
+}
+/* Inner block formatting content layers container alignment track settings */
+.title1 p {
+    margin: 0;                     /* Erases standard default browser block text margins padding spikes */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f0f6fc;               /* High-contrast crisp white baseline text read structure layout */
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+/* Bold tracking target price chip layout accent focus settings */
+.title1 p b {
+    color: #ff9f43;               /* Strikes bright theme orange text pop on values threshold */
+    background-color: rgba(255, 159, 67, 0.1); /* Subtle glowing backdrop block border behind numeric string text data */
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
 }
 .container_title span{
    font-size: medium;
@@ -415,8 +427,7 @@ body.activeTabCart .container_title_free{
 }
 
 .container{
-    width: 900px;
-    max-width: 90vw;
+    width: 100%;
     margin: auto;
     text-align: center;
     padding-top: 10px;
@@ -436,16 +447,55 @@ svg{
 }
 header{
     display: flex;
+    justify-content: space-between; /* Pushes the phone text to the left and cart to the right */
+    align-items: center;            /* Perfectly centers elements vertically */
+    padding: 15px 5%;              /* Generates balanced breathing margins on the sides */
+    background-color: blue;     /* Dark sleek background color */
+    border-bottom: 1px solid #30363d; /* Precise separator boundary line */
+    position: sticky;              /* Locks header to top while scrolling page */
+    top: 0;
+    z-index: 1000;                 /* Keeps header layered above all content background elements */
+}
+/* 📞 THE TITLE / PHONE BANNER CONTAINER */
+header .title p {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff9f43;                /* Vibrant fire orange theme primary accent */
+    letter-spacing: 0.5px;
+    margin: 0;                     /* Erases native paragraph block margin padding spikes */
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: blue;
-    color: white;
-    font-family: sans-serif;
+    gap: 5px;
 }
+/* Highlighted WhatsApp dynamic target keyword styling */
+header .title p strong, 
+header .title p span.highlight {
+    color: #25D366;                /* Native WhatsApp branding color pop */
+}
+
+/* ==========================================
+   INTERACTIVE OVERLAY SHOPPING CART ICON
+   ========================================== */
 header .icon-cart {
-    position: relative;
+    position: relative;            /* ⚡ CRITICAL: Allows badge anchor stacking alignments */
+    cursor: pointer;
+    background-color: #21262d;     /* Dark rounded tile backdrop button frame wrapper */
+    padding: 10px;
+    border-radius: 50%;            /* Complete round pill button framework geometry style */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
 }
+
+header .icon-cart svg {
+    color: #f0f6fc;                /* Soft silver white path lines default track */
+    width: 22px;
+    height: 22px;
+    transition: color 0.2s ease;
+}
+
 header .icon-cart span{
     display: flex;
     width: 30px;
@@ -499,26 +549,64 @@ header .icon-cart span{
     border: none;
     cursor: pointer;
 }
-
+/* ==========================================
+   CATEGORY DROPDOWN FILTER STYLING
+   ========================================== */
+/* The parent wrapper container structure */
 .filter {
-    padding: 8px 12px;
-    color: #333;
-    background-color: #eee;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px;
     display: flex;
-    width: 50%;
-  
-    
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 0 15px;
+    max-width: 400px; /* Restricts select drop box stretch on ultra-wide screens */
 }
 
-.select:focus,
-.select:hover{
+/* Custom design for the select dropdown container */
+.filter select {
+    width: 100%;
+    padding: 12px 40px 12px 16px; /* Extra right padding leaves space for custom arrow */
+    background-color: #161b22;    /* Matches header panel color */
+    color: #f0f6fc;               /* Clean white option text color */
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    border: 2px solid #30363d;    /* Subtle borders default track */
+    border-radius: 6px;           /* Modern slightly rounded corner boxes */
+    cursor: pointer;
     outline: none;
-    border:1px solid #999;
+    transition: all 0.25s ease-in-out;
+    
+    /* ⚡ CRITICAL: Erases the default browser arrow styling layout across all browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Injecting a custom orange drop-down arrow indicator right inside the select background layer */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='%23ff9f43' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px;
 }
+
+/* Dynamic focused state layout interaction */
+.filter select:focus {
+    border-color: #ff9f43;       /* Glows fire orange when clicked active */
+    box-shadow: 0 0 10px rgba(255, 159, 67, 0.25); /* Subtle smooth surrounding outer glow */
+}
+
+/* Styling the separate inner drop down options rows */
+.filter select option {
+    background-color: #161b22;    /* Prevents default bright white panel display flashes */
+    color: #f0f6fc;
+    padding: 12px;
+}
+
+/* Styles the placeholder item option differently so it acts like a clean label description */
+.filter select option:disabled {
+    color: #8b949e;               /* Soft silver grey for unselected titles */
+}
+
 
 .cartTab{
     width: 400px;
