@@ -264,6 +264,7 @@ else{
     
     window.open(whatsappUrl, '_blank');
     carts = [];
+    localStorage.removeItem('shopping_cart'); 
     addCartToHTML();
 }
 
