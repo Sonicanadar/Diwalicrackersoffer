@@ -233,7 +233,7 @@ else{
         return;
     }
 
-    let message = `🛒 *New Order Summary* \n\n`;
+    let message = ` *New Order Summary* \n\n`;
     let grandTotal = 0;
 
     // 3. Loop through your cart items to build the list
@@ -249,7 +249,7 @@ else{
             grandTotal += itemTotal;
 
             // Add the item line item to your text message
-            message += `📦 *${productDetails.title}*\n`;
+            message += ` *${productDetails.title}*\n`;
             message += `   Qty: ${cartItem.quantity} x Rs.${discountedPrice} = Rs.${itemTotal}\n\n`;
         }
     });
