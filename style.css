@@ -1,3 +1,248 @@
+/* ==========================================
+   GLOBAL STRUCTURE SETUP & RESET
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background-color: #0d1117; /* Slate Black background */
+    color: #f0f6fc;            /* Clear white font text color layers */
+    overflow-x: hidden;
+}
+
+/* ==========================================
+   HEADER NAVIGATION BAR
+   ========================================== */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.logo { 
+    font-size: 22px; 
+    font-weight: bold; 
+    color: #ff9f43; 
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Forces structural spacing shift */
+    margin-right: 20px;
+}
+.nav-links a { 
+    color: #c9d1d9; 
+    text-decoration: none; 
+    margin-left: 20px; 
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s; 
+}
+.nav-links a:hover { 
+    color: #ff9f43; 
+}
+
+/* 🎯 CUSTOM ABOUT BUTTON: Shrunk size & pushed to right edge of links array */
+.main-nav-about-btn {
+    display: inline-block;
+    background-color: #ff9f43;
+    color: #0d1117 !important; /* Forces layout tracking visibility override */
+    padding: 4px 5px !important; /* Shrunk length profile padding */
+    letter-spacing: -0.2px; 
+    font-size: 12px !important;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: all 0.2s ease !important;
+}
+.main-nav-about-btn:hover {
+    background-color: #ffb366 !important;
+    transform: scale(1.05);
+}
+
+/* Shopping Basket Badge elements setup */
+.cart-icon-container {
+    cursor: pointer;
+    position: relative;
+    background: #21262d;
+    padding: 8px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+.cart-emoji { font-size: 16px; }
+.cart-badge {
+    background: #ff9f43;
+    color: #0d1117;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+
+/* ==========================================
+   CELEBRATION HERO HEADER AREA
+   ========================================== */
+.celebration-hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 90px 20px;
+    background: linear-gradient(rgba(13,17,23,0.85), rgba(13,17,23,0.95)), 
+                url('https://unsplash.com') no-repeat center center/cover;
+    border-bottom: 1px solid #30363d;
+}
+.hero-text-container { max-width: 750px; }
+.hero-text-container h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #ff9f43;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+.hero-text-container p {
+    font-size: 1.2rem;
+    color: #8b949e;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.hero-cta-btn {
+    display: inline-block;
+    background-color: #ff9f43;
+    color: #0d1117;
+    padding: 12px 28px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.2s ease;
+}
+.hero-cta-btn:hover { background-color: #ffb366; }
+
+.btn-secondary-about {
+    display: inline-block;
+    border: 2px solid #ff9f43;
+    color: #ff9f43;
+    background: transparent;
+    padding: 11px 26px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+.btn-secondary-about:hover {
+    background: rgba(255, 159, 67, 0.1);
+    color: #ffb366;
+    border-color: #ffb366;
+}
+
+/* ==========================================
+   PRODUCT SHOPS SECTIONS GRID
+   ========================================== */
+.products-section { padding: 70px 5%; text-align: center; }
+.products-section h2 { font-size: 30px; margin-bottom: 6px; color: #f0f6fc; }
+.subtitle { color: #8b949e; margin-bottom: 45px; font-size: 15px; }
+.product-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px; 
+}
+.product-card { 
+    background: #161b22; 
+    border: 1px solid #30363d; 
+    padding: 25px; 
+    border-radius: 8px; 
+    text-align: left; 
+    position: relative; 
+}
+.product-img-placeholder { 
+    height: 140px; 
+    background: #21262d; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 45px; 
+    border-radius: 6px; 
+    margin-bottom: 15px; 
+}
+.product-card h3 { margin-bottom: 10px; color: #f0f6fc; font-size: 18px; }
+.product-card p { font-size: 13.5px; color: #8b949e; margin-bottom: 20px; line-height: 1.5; }
+
+/* Visual Badges */
+.tag { position: absolute; top: 15px; right: 15px; background: #30363d; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+.green-tag { background: #238636; color: white; }
+.premium-tag { background: #8957e5; color: white; }
+
+/* Add Cart Action Trigger Button elements */
+.btn-add { 
+    width: 100%; 
+    padding: 10px; 
+    background: none; 
+    border: 1px solid #ff9f43; 
+    color: #ff9f43; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.2s; 
+}
+.btn-add:hover { background: #ff9f43; color: #0d1117; }
+
+/* ==========================================
+   SLIDE OUT CART DRAWER STYLING MODULE
+   ========================================== */
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -360px; /* Concealed state default setting position configuration */
+    width: 350px;
+    height: 100%;
+    background: #161b22;
+    border-left: 1px solid #30363d;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.6);
+    z-index: 1000;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    display: flex;
+    flex-direction: column;
+}
+.cart-drawer.active {
+    right: 0; /* Fully visual drawer window activation tracking handle style */
+}
+.cart-header { padding: 20px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+.btn-close { background: none; border: none; color: #8b949e; font-size: 20px; cursor: pointer; }
+.cart-items { padding: 20px; flex-grow: 1; overflow-y: auto; }
+.cart-item { padding: 12px; background: #21262d; border: 1px solid #30363d; border-radius: 4px; margin-bottom: 10px; color: #c9d1d9; font-size: 14px; }
+.empty-msg { color: #8b949e; text-align: center; margin-top: 40px; font-size: 14px; }
+.cart-footer { padding: 20px; border-top: 1px solid #30363d; }
+
+/* WhatsApp Checkout Button styling */
+.whatsapp-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.whatsapp-btn:hover { background-color: #20ba5a; }
+
 body{
     font-family: sans-serif;
     margin:0;
@@ -28,6 +273,51 @@ body.activeTabCart .container_title_free{
     color: red;
     font-family: sans-serif;
     font-weight: bold;
+}
+
+/* Safety Hero Typography */
+.safety-hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(180deg, #1b1510 0%, #0d1117 100%); /* Subtle warmth tone */
+    border-bottom: 1px solid #30363d;
+}
+.safety-hero h1 { font-size: 36px; color: #ff9f43; margin-bottom: 10px; }
+.safety-hero p { color: #8b949e; font-size: 16px; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+
+/* Main Wrapper Grid */
+.safety-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+.safety-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+
+/* Safety Cards Styling */
+.safety-card { padding: 30px; border-radius: 8px; border: 1px solid #30363d; }
+.safety-card h2 { font-size: 22px; margin-bottom: 20px; }
+.safety-card ul { padding-left: 20px; }
+.safety-card li { margin-bottom: 15px; color: #c9d1d9; line-height: 1.6; font-size: 15px; }
+
+/* Dynamic Background Accents for Do's and Don'ts */
+.do-card { background-color: rgba(35, 134, 54, 0.05); border-color: rgba(35, 134, 54, 0.3); }
+.do-card h2 { color: #56d364; }
+.dont-card { background-color: rgba(248, 81, 73, 0.05); border-color: rgba(248, 81, 73, 0.3); }
+.dont-card h2 { color: #ff7b72; }
+
+/* Disposal Section layout */
+.disposal-section { background: #161b22; border: 1px solid #30363d; padding: 30px; border-radius: 8px; margin-bottom: 40px; }
+.disposal-section h2 { color: #f0f6fc; margin-bottom: 15px; font-size: 24px; }
+.disposal-section p { color: #8b949e; margin-bottom: 20px; font-size: 15px; }
+.disposal-section ol { padding-left: 20px; }
+.disposal-section li { color: #c9d1d9; margin-bottom: 12px; line-height: 1.6; font-size: 15px; }
+
+/* Heavy Legal Border Notice */
+.legal-notice-box { background: #1c1917; border: 1px solid #d29922; border-left: 5px solid #d29922; padding: 30px; border-radius: 6px; }
+.legal-notice-box h3 { color: #d29922; margin-bottom: 15px; font-size: 20px; }
+.legal-notice-box p { color: #c9d1d9; font-size: 15px; margin-bottom: 15px; line-height: 1.6; }
+.legal-notice-box ul { padding-left: 20px; }
+.legal-notice-box li { color: #8b949e; margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
+
+/* Adaptive Responsive Query for Mobile Screens */
+@media (max-width: 768px) {
+    .safety-grid { grid-template-columns: 1fr; gap: 20px; }
 }
 
 /* Unique styling for your specific About Us button button */
@@ -181,7 +471,7 @@ header .icon-cart span{
     gap:20px;
 }
 .listProduct .item{
-    background-color: #eeeee6;
+    background-color:orange;
     padding: 20px;
     border-radius: 20px;
 }
@@ -559,6 +849,7 @@ form button:hover {
     text-align: center;
     padding: 80px 20px;
     background-color: #0d1117; /* Matches dark theme */
+    background-image: url('Diwali_images3/fireworks.gif'); 
 }
 
 /* Restricts the width so the text does not stretch too wide */
@@ -611,4 +902,19 @@ form button:hover {
 }
 
 
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN ADAPTATION MEDIA BREAKS
+   ========================================== */
+@media (max-width: 768px) {
+    .main-header { padding: 15px 3%; }
+    .nav-links { display: none; } /* Conceals plain desktop links on small viewports */
+    .hero-text-container h1 { font-size: 2rem; }
+    .hero-text-container p { font-size: 1rem; }
+    .hero-buttons { flex-direction: column; width: 100%; }
+    .hero-cta-btn, .btn-secondary-about { width: 100%; margin-left: 0; text-align: center; }
+    .cart-drawer { width: 100%; right: -100%; } /* Desktop side panels take full width on smartphone */
+
+    
 }
