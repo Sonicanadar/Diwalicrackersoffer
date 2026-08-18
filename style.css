@@ -9,7 +9,7 @@
 }
 body {
     background-color: #0d1117; /* Slate Black background */
-    color: #f0f6fc;            /* Clear white font text color layers */
+    color: white;            /* Clear white font text color layers */
     overflow-x: hidden;
 }
 
@@ -379,7 +379,7 @@ body.activeTabCart .container_title_free{
     justify-content: center;
     background-color:white;
     color: white;
-    height: 20px;
+    height: 30px;
     /* transition: transform 0.5s; */
 }
 .container_title span{
@@ -847,9 +847,16 @@ form button:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 80px 20px;
+    padding: 120px 20px;
     background-color: #0d1117; /* Matches dark theme */
     background-image: url('Diwali_images3/fireworks.gif'); 
+    min-height: 60vh; 
+    width: 100%;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+
+
 }
 
 /* Restricts the width so the text does not stretch too wide */
