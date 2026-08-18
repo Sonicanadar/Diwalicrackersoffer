@@ -29,6 +29,30 @@ body.activeTabCart .container_title_free{
     font-family: sans-serif;
     font-weight: bold;
 }
+
+/* Unique styling for your specific About Us button button */
+.main-nav-about-btn {
+  float: right;                  /* Forces the button to move to the far right */
+    display: inline-block;
+    background-color: #ff9f43;     /* Vibrant theme accent color */
+    color: #0d1117;                /* Dark text color for readability */
+    padding: 4px 5px;
+    letter-spacing: -0.2px;             /* Ultra-compact padding space */
+    font-size: 12px;               /* Small micro text font size */
+    font-weight: bold;             /* Prominent text styling */
+    border-radius: 4px;            /* Clean, sharp corner layout */
+    text-decoration: none;         /* Removes default underline */
+    margin: 5px;                   /* Tiny safety outer boundary margin */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover dynamic interaction state */
+.main-nav-about-btn:hover {
+    background-color: #ffb366;     /* Lighter orange flare hue */
+    box-shadow: 0px 6px 12px rgba(255, 159, 67, 0.3); /* Soft, subtle outer glow */
+    transform: translateY(-1px);   /* Tiny microscopic upward lift */
+}
+
 @keyframes blinker {
     50% {
         opacity: 0;
@@ -527,4 +551,64 @@ form button:hover {
         grid-template-columns: auto;
         width: 100%;
     }
+    /* Styling for the new text container section */
+.celebration-hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 20px;
+    background-color: #0d1117; /* Matches dark theme */
+}
+
+/* Restricts the width so the text does not stretch too wide */
+.hero-text-container {
+    max-width: 800px;
+}
+
+/* Styling the Main Heading */
+.hero-text-container h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #ff9f43; /* Striking fire/spark color */
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+/* Styling the Subtitle Description */
+.hero-text-container p {
+    font-size: 1.2rem;
+    color: #8b949e; /* Soft, readable grey */
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Styling the optional Call to Action Button */
+.hero-cta-btn {
+    display: inline-block;
+    background-color: #ff9f43;
+    color: #0d1117;
+    padding: 12px 28px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.hero-cta-btn:hover {
+    background-color: #ffb366;
+}
+
+/* Responsive design adjustments for mobile screens */
+@media (max-width: 600px) {
+    .hero-text-container h1 {
+        font-size: 2rem;
+    }
+    .hero-text-container p {
+        font-size: 1rem;
+    }
+}
+
+
 }
