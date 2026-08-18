@@ -14,23 +14,41 @@ let options =form1.category.options;
 let filter = document.querySelector(".filter");
 
 
-form1.onchange = function(event){
-    event.preventDefault();
+if (form1) {
+    form1.onchange = function(event) {
+        event.preventDefault();
 
-    let valueFilter = this.category.value;
-    console.log(valueFilter);
-    productFilter = listProducts.filter(item =>{
-        
-       if(valueFilter !=''){
-        console.log(item.category);
-                   if(item.category !=  valueFilter)
-                    
+        let valueFilter = this.category.value;
+        console.log("Selected Category Filter:", valueFilter);
+
+        // RESET TRAP: If default placeholder or "all" is picked, return everything
+        if (valueFilter === '' || valueFilter === 'All') {
+            productFilter = [...listProducts]; 
+        } else {
+            productFilter = listProducts.filter(item => {
+                // 🛡️ SAFETY CHECK 1: Skip if the product doesn't have a category field at all
+                if (item.category === undefined || item.category === null) {
                     return false;
-       }
-        return true;
-    })
-    addDataToHTML(productFilter);
+                }
+
+                // 🛡️ SAFETY CHECK 2: Convert the category to a String first.
+                // This stops numbers or empty fields from crashing the code!
+                let itemCategoryString = String(item.category);
+
+                // Trim whitespace and compare case-insensitively
+                return itemCategoryString.trim().toLowerCase() === valueFilter.trim().toLowerCase();
+            });
+        }
+
+        console.log(`Products matching this category: ${productFilter.length}`);
+        
+        // Re-render the updated product grid instantly
+        addDataToHTML(productFilter);
+    };
 }
+
+
+
 
         function openPopup(){
             popup.classList.add("open-popup");
