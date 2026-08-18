@@ -25,7 +25,7 @@
          <div class="container">
         <header>
             <div class="title">
-                <p>To ORDER Email: pyroparkvav@gmail.com</p>
+                <p>To ORDER WhatsApp: +91 9867731440 </p>
             </div>
             <div class="icon-cart">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -148,47 +148,6 @@
     <script src="https://smtpjs.com/v3/smtp.js"></script>
       <script src="app.js"></script>
 
-      function checkoutViaWhatsApp() {
-    // 1. Set your business phone number (include country code, no spaces or +)
-    const businessPhone = "918976029973"; 
-
-    // 2. Safety Check: Verify if the cart exists and has items
-    // (Replace 'cart' with the actual name of your cart array variable)
-    if (!carts || carts.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-
-    let message = `🛒 *New Order Summary* \n\n`;
-    let grandTotal = 0;
-
-    // 3. Loop through your cart items to build the list
-    carts.forEach(cartItem => {
-        // Find the full product details from your master product array using the ID
-        // (Replace 'products' with your actual master data array name)
-        const productDetails = products.find(p => p.id == cartItem.product_id);
-        
-        if (productDetails) {
-            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.3)
-            const discountedPrice = Math.floor(productDetails.price * 0.3);
-            const itemTotal = discountedPrice * cartItem.quantity;
-            grandTotal += itemTotal;
-
-            // Add the item line item to your text message
-            message += `📦 *${productDetails.title}*\n`;
-            message += `   Qty: ${cartItem.quantity} x Rs.${discountedPrice} = Rs.${itemTotal}\n\n`;
-        }
-    });
-
-    // 4. Append the final bill total to the text message
-    message += `💰 *Grand Total:* Rs.${grandTotal}\n\n`;
-    message += `Please confirm my order and send payment details!`;
-
-    // 5. URL encode the message and trigger WhatsApp
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodedMessage}`;
     
-    window.open(whatsappUrl, '_blank');
-}
 </body>
 </html>

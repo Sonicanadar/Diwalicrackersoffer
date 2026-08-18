@@ -224,7 +224,7 @@ else{
 
   function checkoutViaWhatsApp() {
     // 1. Set your business phone number (include country code, no spaces or +)
-    const businessPhone = "918976029973"; 
+    const businessPhone = "919867731440"; 
 
     // 2. Safety Check: Verify if the cart exists and has items
     // (Replace 'cart' with the actual name of your cart array variable)
