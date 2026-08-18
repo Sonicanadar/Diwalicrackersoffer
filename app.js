@@ -60,6 +60,7 @@ plus.addEventListener('click', ()=> {
 })
 
 
+ 
 const form = document.querySelector("form");
 const fullName = document.getElementById("name");
 const email = document.getElementById("email");
@@ -75,7 +76,7 @@ form.addEventListener("submit",(e)=>{
 })
 
 let listProducts = [];
-let carts = [];
+let carts = localStorage.getItem('shopping_cart') ? JSON.parse(localStorage.getItem('shopping_cart')) : [];
 let totalQuantity = 0 ;
 
 
@@ -218,6 +219,52 @@ else{
     totalHTML.innerText = totalQuantity;
     totalPriceHTML.innerText ="Rs."+ totalPrice+".00";
     console.log(totalPrice);
+    localStorage.setItem('shopping_cart', JSON.stringify(carts));
+}
+
+  function checkoutViaWhatsApp() {
+    // 1. Set your business phone number (include country code, no spaces or +)
+    const businessPhone = "918976029973"; 
+
+    // 2. Safety Check: Verify if the cart exists and has items
+    // (Replace 'cart' with the actual name of your cart array variable)
+    if (!carts || carts.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    let message = `🛒 *New Order Summary* \n\n`;
+    let grandTotal = 0;
+
+    // 3. Loop through your cart items to build the list
+    carts.forEach(cartItem => {
+        // Find the full product details from your master product array using the ID
+        // (Replace 'products' with your actual master data array name)
+        const productDetails = listProducts.find(p => p.id == cartItem.product_id);
+        
+        if (productDetails) {
+            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.3)
+            const discountedPrice = Math.floor(productDetails.price * 0.3);
+            const itemTotal = discountedPrice * cartItem.quantity;
+            grandTotal += itemTotal;
+
+            // Add the item line item to your text message
+            message += `📦 *${productDetails.title}*\n`;
+            message += `   Qty: ${cartItem.quantity} x Rs.${discountedPrice} = Rs.${itemTotal}\n\n`;
+        }
+    });
+
+    // 4. Append the final bill total to the text message
+    message += `💰 *Grand Total:* Rs.${grandTotal}\n\n`;
+    message += `Please confirm my order and send payment details!`;
+
+    // 5. URL encode the message and trigger WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+    carts = [];
+    addCartToHTML();
 }
 
 function emailSend(){
@@ -286,7 +333,10 @@ const initApp = () => {
         listProducts = data;
         productFilter = listProducts;
         addDataToHTML(productFilter);
-        
+         if (localStorage.getItem('shopping_cart')) {
+                carts = JSON.parse(localStorage.getItem('shopping_cart'));
+                addCartToHTML();
+         }
     })
 }
 initApp();

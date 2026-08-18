@@ -18,7 +18,7 @@
     </div>
     <div class="container_title_free">    
         <div class="title1">
-            <p class="blink">Free Shipping on order above <b>Rs.10,000</b> till 31.08.2024</p>   
+            <p class="blink">Free Shipping on order above <b>Rs.10,000</b> till 31.08.2026</p>   
         </div>
     </div>
 
@@ -85,7 +85,7 @@
                     
                 </div>
                 <div class="quantity">
-                    <span class="minus"><</span>
+                    <span class="minus"></span>
                     <span>0</span>
                     <span class="plus">></span>
                 </div>
@@ -98,6 +98,7 @@
         <div class="btn">
             <button class="close">CLOSE</button>
             <button class="openPopup" onclick="openPopup()">SUBMIT</button>
+            <button class="whatsapp-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp</button>
         </div>
     </div>
     <div class="container_popup">
@@ -146,5 +147,48 @@
     </div>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
       <script src="app.js"></script>
+
+      function checkoutViaWhatsApp() {
+    // 1. Set your business phone number (include country code, no spaces or +)
+    const businessPhone = "918976029973"; 
+
+    // 2. Safety Check: Verify if the cart exists and has items
+    // (Replace 'cart' with the actual name of your cart array variable)
+    if (!carts || carts.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    let message = `🛒 *New Order Summary* \n\n`;
+    let grandTotal = 0;
+
+    // 3. Loop through your cart items to build the list
+    carts.forEach(cartItem => {
+        // Find the full product details from your master product array using the ID
+        // (Replace 'products' with your actual master data array name)
+        const productDetails = products.find(p => p.id == cartItem.product_id);
+        
+        if (productDetails) {
+            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.3)
+            const discountedPrice = Math.floor(productDetails.price * 0.3);
+            const itemTotal = discountedPrice * cartItem.quantity;
+            grandTotal += itemTotal;
+
+            // Add the item line item to your text message
+            message += `📦 *${productDetails.title}*\n`;
+            message += `   Qty: ${cartItem.quantity} x Rs.${discountedPrice} = Rs.${itemTotal}\n\n`;
+        }
+    });
+
+    // 4. Append the final bill total to the text message
+    message += `💰 *Grand Total:* Rs.${grandTotal}\n\n`;
+    message += `Please confirm my order and send payment details!`;
+
+    // 5. URL encode the message and trigger WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+}
 </body>
 </html>
