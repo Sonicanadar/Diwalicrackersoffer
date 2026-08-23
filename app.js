@@ -162,14 +162,39 @@ function addDataToHTML(productFilter){
 
 
 
+// =========================================================================
+// UNIFIED DELEGATED CLICK EVENT INTERCEPTOR (ALL ACTION PATHWAYS)
+// =========================================================================
 document.addEventListener('click', (event) => {
     let positionClick = event.target;
+    
+    // ---------------------------------------------------------------------
+    // PHASE A: CLOSE CART DRAWER AUTOMATICALLY IF CLICKED OUTSIDE BOUNDS
+    // ---------------------------------------------------------------------
+    let cartTabElement = document.querySelector('.cartTab');
+    if (body.classList.contains('activeTabCart') && cartTabElement && iconCart) {
+        // Evaluate structural containment trees for the active mouse touch target
+        const clickedInsideCartDrawer = cartTabElement.contains(positionClick);
+        const clickedHeaderCartIconRing = iconCart.contains(positionClick);
+
+        // If click falls completely outside both nodes, strip active viewing class
+        if (!clickedInsideCartDrawer && !clickedHeaderCartIconRing) {
+            body.classList.remove('activeTabCart');
+        }
+    }
+
+    // ---------------------------------------------------------------------
+    // PHASE B: EVALUATE & RESOLVE PRODUCT STATE UPDATES
+    // ---------------------------------------------------------------------
     let idProduct = positionClick.dataset.id;
     
     // Fallback tracker mapping tool if clicked directly on an absolute wrap container block
     if (!idProduct && positionClick.parentElement && positionClick.parentElement.dataset.id) {
         idProduct = positionClick.parentElement.dataset.id;
     }
+
+    // Skip array evaluations completely if click was not targeted at an actionable item node
+    if (!idProduct) return;
 
     let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
     let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
@@ -178,39 +203,46 @@ document.addEventListener('click', (event) => {
     if (positionClick.classList.contains('addCart')) {
         quantity = 1; 
         addToCart(idProduct, quantity, positionThisProductInCart);
-        // Refresh product display layout grid system mapping
-        addDataToHTML(listProducts); 
+        addDataToHTML(productFilter || listProducts); 
     } 
     // Branch 2: Clicking any element matching the 'plus' controller node rules
     else if (positionClick.classList.contains('plus')) {
         quantity++;
         addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(listProducts);
+        addDataToHTML(productFilter || listProducts);
     } 
     // Branch 3: Clicking any element matching the 'minus' controller node rules
     else if (positionClick.classList.contains('minus')) {
         quantity--;
         addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(listProducts);
+        addDataToHTML(productFilter || listProducts);
     }
 });
 
 
-const addToCart = (idProduct,quantity,positionThisProductInCart) => {
-    
-    if(quantity >0){
-        if(positionThisProductInCart < 0){
-           
-        carts.push({
-            product_id:idProduct,
-            quantity:quantity
-        }); 
-        }else {
-        carts[positionThisProductInCart].quantity = quantity;
+const addToCart = (idProduct, quantity, positionThisProductInCart) => {
+    if (quantity > 0) {
+        if (positionThisProductInCart < 0) {
+            carts.push({
+                product_id: idProduct,
+                quantity: quantity
+            }); 
+        } else {
+            carts[positionThisProductInCart].quantity = quantity;
+        }
+    } else {
+        if (positionThisProductInCart >= 0) {
+            carts.splice(positionThisProductInCart, 1);
+        }
     }
-}else{
-    carts.splice(positionThisProductInCart,1);
-}
+
+    // ⚡ PRE-SAVE PROTECTION: If the cart hits zero, instantly clear memory paths
+    if (carts.length === 0) {
+        localStorage.removeItem('shopping_cart');
+    } else {
+        localStorage.setItem('shopping_cart', JSON.stringify(carts));
+    }
+
     addCartToHTML();
 }
 
@@ -219,51 +251,74 @@ const addCartToHTML = () => {
     let totalHTML = document.querySelector('.icon-cart span');
     let totalPriceHTML = document.querySelector('.cartTab .foot span');
     let totalQuantity = 0;
-    listHTML.innerHTML = null;
-  
     
+    if (listHTML) listHTML.innerHTML = null;
+  
     let totalPrice = 0;
-    totalPriceHTML.innerText = totalPrice;
-   
-    totalHTML.innerText = totalQuantity;
-//  console.log(idProduct,positionThisProductInCart,quantity);
-if(carts.length == 0){
-    document.getElementById("total_price").innerHTML = "$ "+0+".00";
-    document.getElementsByClassName('.listCart .name').innerText = "Your cart is empty";
-   
-}
-else{
+    if (totalPriceHTML) totalPriceHTML.innerText = totalPrice;
+    if (totalHTML) totalHTML.innerText = totalQuantity;
+
+    if (carts.length == 0) {
+        // Safe document element selection verification gates
+        let totalPriceElement = document.getElementById("total_price");
+        if (totalPriceElement) {
+            totalPriceElement.innerHTML = "Rs. 0.00";
+        }
+        
+        if (listHTML) {
+            listHTML.innerHTML = `<div class="empty-message" style="padding: 20px; text-align: center; color: #8b949e;">Your cart is empty</div>`;
+        }
+    } 
+    else {
         carts.forEach(item => {
-        totalQuantity=totalQuantity + item.quantity;
+            totalQuantity = totalQuantity + item.quantity;
         
             let newCart = document.createElement('div');
             newCart.classList.add('item');
             let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
-            //console.log(positionProduct)
             let info = listProducts[positionProduct];
-            totalPrice = totalPrice+Math.floor(info.price*0.3*item.quantity);
-           // console.log(info);
-            newCart.innerHTML = `<div class="image">
-                    <img src="${info.image}" alt="">
-                </div>
-                <div class="name">
-                    ${info.title}
-                </div>
-                <div class="totalPrice">
-                    ${Math.floor(info.price*0.3*item.quantity)}
-                </div>
-                <div class="quantity">
-                    <button class="minus" data-id="${info.id}">-</button>
-                    <span>${item.quantity}</span>
-                    <span class="plus" data-id="${info.id}">+</span>
-                </div>`;
-                listCartHTML.appendChild(newCart);
-        })
+            
+            if (info) {
+                totalPrice = totalPrice + Math.floor(info.price * 0.3 * item.quantity);
+                newCart.innerHTML = `
+                    <div class="image">
+                        <img src="${info.image}" alt="">
+                    </div>
+                    <div class="name">
+                        ${info.title}
+                    </div>
+                    <div class="totalPrice">
+                        Rs.${Math.floor(info.price * 0.3 * item.quantity)}
+                    </div>
+                    <div class="quantity">
+                        <button class="minus" data-id="${info.id}">-</button>
+                        <span>${item.quantity}</span>
+                        <span class="plus" data-id="${info.id}">+</span>
+                    </div>`;
+                if (listHTML) listHTML.appendChild(newCart);
+            }
+        });
     }
-    totalHTML.innerText = totalQuantity;
-    totalPriceHTML.innerText ="Rs."+ totalPrice+".00";
-    console.log(totalPrice);
-    localStorage.setItem('shopping_cart', JSON.stringify(carts));
+
+    // Dynamic visibility controls for the navbar basket text indicators
+    if (totalHTML) {
+        if (totalQuantity > 0) {
+            totalHTML.innerText = totalQuantity;
+            totalHTML.style.display = 'flex';
+        } else {
+            totalHTML.innerText = '';
+            totalHTML.style.display = 'none'; // Hides empty badge circles completely
+        }
+    }
+
+    if (totalPriceHTML) {
+        totalPriceHTML.innerText = "Rs." + totalPrice + ".00";
+    }
+
+    // Secondary deep backup save if item array exists
+    if (carts.length > 0) {
+        localStorage.setItem('shopping_cart', JSON.stringify(carts));
+    }
 }
 
   function checkoutViaWhatsApp() {
