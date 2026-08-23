@@ -119,56 +119,82 @@ let totalQuantity = 0 ;
 
 
 function addDataToHTML(productFilter){
-    listProductHTML.innerHTML ='';
+    listProductHTML.innerHTML = '';
     
-        productFilter.forEach(product => {
-            let newProduct = document.createElement('div');
-            newProduct.classList.add('item');
-            newProduct.dataset.id=product.id;
-            newProduct.innerHTML =  `
-                <img src="${product.image}" alt="">
-                <h2>${product.title}</h2>
-                <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price*0.3))}</div>
-                 <button class="addCart" data-id="${product.id}">Add to Cart</button>
-                `;
-                listProductHTML.appendChild(newProduct);
-        })
-    
+    productFilter.forEach(product => {
+        let newProduct = document.createElement('div');
+        newProduct.classList.add('item');
+        newProduct.dataset.id = product.id;
+
+        // Check if this specific item is currently present in the cart array
+        let cartItemIndex = carts.findIndex((value) => value.product_id == product.id);
+        let currentQty = cartItemIndex < 0 ? 0 : carts[cartItemIndex].quantity;
+
+        // Visual setup conditions
+        let actionControlHTML = '';
+        if (currentQty > 0) {
+            // Render the continuous counter UI state
+            actionControlHTML = `
+                <div class="quantity-counter-inline" style="display: flex; align-items: center; border: 1px solid #333; border-radius: 4px; overflow: hidden; width: max-content; margin-top: 10px;">
+                    <button class="minus" data-id="${product.id}" style="padding: 5px 12px; background: #eee; border: none; cursor: pointer;">-</button>
+                    <span class="qty-display" style="padding: 5px 15px; font-weight: bold;">${currentQty}</span>
+                    <button class="plus" data-id="${product.id}" style="padding: 5px 12px; background: #eee; border: none; cursor: pointer;">+</button>
+                </div>
+            `;
+        } else {
+            // Render the raw standard Add to Cart element
+            actionControlHTML = `
+                <button class="addCart" data-id="${product.id}">Add to Cart</button>
+            `;
+        }
+
+        newProduct.innerHTML = `
+            <img src="${product.image}" alt="">
+            <h2>${product.title}</h2>
+            <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price * 0.3))}</div>
+            <div class="action-container" data-id="${product.id}">
+                ${actionControlHTML}
+            </div>
+        `;
+        listProductHTML.appendChild(newProduct);
+    });
 }
+
 
 
 document.addEventListener('click', (event) => {
     let positionClick = event.target;
-    console.log(positionClick);
     let idProduct = positionClick.dataset.id;
-    //console.log(positionClick.parentElement.dataset);
-    console.log(idProduct);
-    let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
-    //console.log(positionThisProductInCart);
     
+    // Fallback tracker mapping tool if clicked directly on an absolute wrap container block
+    if (!idProduct && positionClick.parentElement && positionClick.parentElement.dataset.id) {
+        idProduct = positionClick.parentElement.dataset.id;
+    }
+
+    let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
     let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
     
-    if(positionClick.classList.contains('addCart') ){
-        let idProduct = positionClick.parentElement.dataset.id;
-        // let idProduct = positionClick.parentElement.dataset.id;
-      //  console.log(positionClick.parentElement.dataset);
+    // Branch 1: Clicking the primitive primary "Add to Cart" button element
+    if (positionClick.classList.contains('addCart')) {
+        quantity = 1; 
+        addToCart(idProduct, quantity, positionThisProductInCart);
+        // Refresh product display layout grid system mapping
+        addDataToHTML(listProducts); 
+    } 
+    // Branch 2: Clicking any element matching the 'plus' controller node rules
+    else if (positionClick.classList.contains('plus')) {
         quantity++;
-        //console.log(positionThisProductInCart);
-        addToCart(idProduct,quantity,positionThisProductInCart);
-    } else if(positionClick.classList.contains('plus')){
-         let idProduct = positionClick.dataset.id; 
-        // positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
-        //console.log(idProduct);
-        //console.log(positionClick.parentElement.dataset);
-        quantity++;
-        //console.log(quantity);
-        addToCart(idProduct,quantity,positionThisProductInCart);
-        
-    }else if(positionClick.classList.contains('minus')){
+        addToCart(idProduct, quantity, positionThisProductInCart);
+        addDataToHTML(listProducts);
+    } 
+    // Branch 3: Clicking any element matching the 'minus' controller node rules
+    else if (positionClick.classList.contains('minus')) {
         quantity--;
-        addToCart(idProduct,quantity,positionThisProductInCart);
+        addToCart(idProduct, quantity, positionThisProductInCart);
+        addDataToHTML(listProducts);
     }
-})
+});
+
 
 const addToCart = (idProduct,quantity,positionThisProductInCart) => {
     
@@ -227,9 +253,9 @@ else{
                     ${Math.floor(info.price*0.3*item.quantity)}
                 </div>
                 <div class="quantity">
-                    <button class="minus" data-id="${info.id}"><</button>
+                    <button class="minus" data-id="${info.id}">-</button>
                     <span>${item.quantity}</span>
-                    <span class="plus" data-id="${info.id}">></span>
+                    <span class="plus" data-id="${info.id}">+</span>
                 </div>`;
                 listCartHTML.appendChild(newCart);
         })
