@@ -1188,30 +1188,71 @@ form button:hover {
 }
 
 @media screen and (max-width: 992px){
-    .listProduct{
-        grid-template-columns: repeat(3,1fr);
+    .listProduct {
+        /* Dynamically fits 3 column layouts neatly within the viewpoint bounds */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+        gap: 15px !important;
+        padding: 15px 3% !important;
     }
-    form .input-box{
+    form .input-box {
         display: grid;
         grid-template-columns: auto;
     }
 }
 @media screen and (max-width: 767px){
     .celebration-hero {
-        padding: 60px 15px; /* Compresses top/bottom padding to give text content space on mobile viewports */
-        min-height: 45vh;   /* Shrunk slightly to avoid forcing users to scroll excessively on tiny screens */
+        padding: 80px 15px !important;
+        min-height: 45vh !important;
     }
 
     .hero-text-container h1 {
-        font-size: 2rem;    /* Fluid typography scaling */
+        font-size: 1.8rem !important;
     }
-    .listProduct{
-        grid-template-columns: repeat(2,1fr);
+    .listProduct {
+        /* Force a smart, elegant 2-column layout on standard mobile touch screens */
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 10px 8px !important;
     }
-    .listProduct .item img{
-        height: 60%;
-         width: 90%;
-         filter: drop-shadow(0 50px 20px #0009);
+    .listProduct .item {
+        /* Scales down internal padding and dimensions slightly for small mobile screens */
+        padding: 12px !important;
+        min-height: 290px !important;
+        border-radius: 12px !important;
+    }
+    .listProduct .item img {
+        height: 100px !important; /* Compresses image scale cleanly to save screen real estate */
+        padding: 6px !important;
+        margin-bottom: 8px !important;
+    }
+    .listProduct .item h2 {
+        font-size: 0.85rem !important; /* Fluid micro typography scaling for mobile titles */
+        min-height: 32px !important;
+        margin-bottom: 4px !important;
+    }
+    .listProduct .item .price {
+        font-size: 0.85rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .listProduct .item .price span {
+        font-size: 0.75rem !important;
+    }
+
+    /* Shrinks the custom counter panel structure to fit mobile viewports flawlessly */
+    .quantity-counter-inline {
+        width: 110px !important;
+        height: 34px !important;
+    }
+    
+    .quantity-counter-inline .minus,
+    .quantity-counter-inline .plus {
+        width: 32px !important;
+    }
+
+    .addCart {
+        padding: 8px 16px !important;
+        font-size: 0.8rem !important;
     }
     .title{
         display: grid;
@@ -1242,12 +1283,9 @@ form button:hover {
 
 /* Styling the Subtitle Description */
 .hero-text-container p {
-    font-size: 1.2rem;
-    color: #8b949e; /* Soft, readable grey */
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
+        font-size: 0.95rem !important;
+        margin-bottom: 20px !important;
+    }
 /* Styling the optional Call to Action Button */
 .hero-cta-btn {
     display: inline-block;
@@ -1274,7 +1312,13 @@ form button:hover {
     }
 }
 
-
+@media screen and (max-width: 360px) {
+    .listProduct {
+        /* Drop to single clean columns on extremely cramped old browser sizes */
+        grid-template-columns: 1fr !important;
+        padding: 10px 15px !important;
+    }
+}
 }
 
 /* ==========================================
