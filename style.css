@@ -97,10 +97,18 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 90px 20px;
-    background: linear-gradient(rgba(13,17,23,0.85), rgba(13,17,23,0.95)), 
-                url('https://unsplash.com') no-repeat center center/cover;
-    border-bottom: 1px solid #30363d;
+    padding: 120px 20px;
+    background-color: #0d1117; /* Safety baseline fallback tint color */
+    
+    /* ⚡ THE UNIFIED TRAFFIC FIX: Sets up a smooth readability contrast filter */
+    background-image: linear-gradient(to bottom, rgba(13, 17, 23, 0.75), rgba(13, 17, 23, 0.85)), 
+                      url('Diwali_images3/fireworks.gif'); 
+    
+    min-height: 60vh; 
+    width: 100%;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
 }
 .hero-text-container { max-width: 750px; }
 .hero-text-container h1 {
@@ -651,37 +659,75 @@ header .icon-cart span{
     top:50%;
     right:-20px;
 }
-.listProduct .item img{
-   height: 60%;
-    width: 90%;
-    /* filter: drop-shadow(0 10px 20px #0009); */
 
-}
-.listProduct{
+.listProduct {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap:20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; /* Reduces base cell card width */
+    gap: 20px !important; /* Optimizes separation spaces between cards */
+    padding: 20px 5% !important; /* Adds balanced outer side margins */
 }
-.listProduct .item{
-    background-color:orange;
-    padding: 20px;
-    border-radius: 20px;
+
+/* Image scaling layout corrections inside container bounds */
+.listProduct .item img {
+    height: 120px !important;                 /* Restricts images to a smaller, uniform vertical box layer */
+    width: 100% !important;
+    object-fit: contain !important;            /* Fits dynamic image canvas perfectly without distortion */
+    margin-bottom: 12px !important;
+    border-radius: 6px !important;
+    background-color: #21262d !important;      /* Soft nested backdrop accent behind transparent item PNG lines */
+    padding: 8px !important;
 }
-.listProduct .item h2{
-    font-weight: 500;
-    font-size: large;
+
+/* Updated Product Item Container Box Framework */
+.listProduct .item {
+    background-color: #161b22 !important; /* Premium deep charcoal replaces harsh orange background panels */
+    border: 1px solid #30363d !important;    /* Polished, thin separator boundary framework line */
+    padding: 16px !important;                 /* Reduces internal container padding to make it smaller */
+    border-radius: 12px !important;           /* Clean, slightly curved modern corner profiles */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    justify-content: space-between !important; /* Evenly distributes text elements from top to bottom */
+    min-height: 340px !important;              /* Locks structural heights cleanly without ballooning space */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
-.listProduct .item .price{
-    /* letter-spacing: 7px; */
-    font-size: large;
-    font-weight: bold;
+
+.listProduct .item:hover {
+    transform: translateY(-3px) !important;   /* Subtle, clean upward card lift motion feedback */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important; /* Soft dark drop-shadow depth glow */
+    border-color: #ff9f43 !important;         /* Smoothly glows fire-orange on active card highlights */
 }
-.listProduct .item .price span{
-  
-    font-size: large;
-    text-decoration: line-through;
-    color: grey;
+
+/* Product Typography Titles */
+.listProduct .item h2 {
+    font-size: 0.95rem !important;            /* Shrunk down slightly to save typography line spacing */
+    font-weight: 600 !important;
+    color: #f0f6fc !important;                /* Clean, readable white font read layer */
+    margin-bottom: 6px !important;
+    min-height: 36px !important;               /* Reserves up to 2 lines cleanly without pushing content frames */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1.3 !important;
 }
+
+/* Pricing Section Details Layout tracking */
+.listProduct .item .price {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #ff9f43 !important;                /* Bright brand gold pricing indicator focus text highlight */
+    margin-bottom: 8px !important;
+}
+
+.listProduct .item .price span {
+    font-size: 0.85rem !important;
+    text-decoration: line-through !important;
+    color: #8b949e !important;                /* Soft silver-gray for crossed-out original values */
+    margin-right: 6px !important;
+    font-weight: 400 !important;
+}
+
 .listProduct .item button{
     background-color: black;
     color: #eee;
@@ -784,13 +830,17 @@ body.activeTabCart .cartTab{
     margin: 0;
     font-weight: 300;
 }
-.cartTab .foot{
-    display: flex;
-    justify-content: space-between;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color:#555;
-        
+.cartTab .foot {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Forces both labels and numbers to center point */
+    gap: 15px !important;               /* Creates a clean breathing space between text and price value */
+    padding: 0 20px !important;
+    background-color: #21262d !important; /* Modernized sleek dark charcoal background color */
+    border-top: 1px solid #30363d !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    color: white !important;          /* Premium theme gold focus color highlight */
 }
 .cartTab .btn{
     display: grid;
@@ -1147,6 +1197,14 @@ form button:hover {
     }
 }
 @media screen and (max-width: 767px){
+    .celebration-hero {
+        padding: 60px 15px; /* Compresses top/bottom padding to give text content space on mobile viewports */
+        min-height: 45vh;   /* Shrunk slightly to avoid forcing users to scroll excessively on tiny screens */
+    }
+
+    .hero-text-container h1 {
+        font-size: 2rem;    /* Fluid typography scaling */
+    }
     .listProduct{
         grid-template-columns: repeat(2,1fr);
     }
@@ -1165,22 +1223,7 @@ form button:hover {
         width: 100%;
     }
     /* Styling for the new text container section */
-.celebration-hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 120px 20px;
-    background-color: #0d1117; /* Matches dark theme */
-    background-image: url('Diwali_images3/fireworks.gif'); 
-    min-height: 60vh; 
-    width: 100%;
-    background-size: cover; 
-    background-position: center center; 
-    background-repeat: no-repeat; 
 
-
-}
 
 /* Restricts the width so the text does not stretch too wide */
 .hero-text-container {
