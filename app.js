@@ -453,17 +453,29 @@ if (buttonContainer) {
 }
 
 const initApp = () => {
-    //get data from json
+    // 1. Fetch the master catalog data structure from your local file
     fetch('products.json')
     .then(response => response.json())
-    .then(data=> {
+    .then(data => {
+        // 2. Hydrate your master tracking arrays FIRST
         listProducts = data;
-        productFilter = listProducts;
-        addDataToHTML(productFilter);
-         if (localStorage.getItem('shopping_cart')) {
-                carts = JSON.parse(localStorage.getItem('shopping_cart'));
-                addCartToHTML();
-         }
+        productFilter = listProducts; // Needed if you use the category filters
+        
+        // 3. Render the store layout item cards on screen next
+        addDataToHTML(productFilter || listProducts);
+        
+        // 4. 🎯 CRITICAL FIX: Only evaluate and draw the cart drawer AFTER listProducts exists!
+        if (localStorage.getItem('shopping_cart')) {
+            carts = JSON.parse(localStorage.getItem('shopping_cart'));
+        }
+        
+        // This execution call will now successfully find all matching product information details!
+        addCartToHTML();
     })
+    .catch(error => {
+        console.error("Critical: Master product data catalog failed to load properly.", error);
+    });
 }
+
+// Fire the application setup sequence
 initApp();
