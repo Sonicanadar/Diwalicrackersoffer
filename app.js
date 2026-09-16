@@ -133,12 +133,12 @@ function addDataToHTML(productFilter){
         // Visual setup conditions
         let actionControlHTML = '';
         if (currentQty > 0) {
-            // Render the continuous counter UI state
+            // 🛠️ UPDATED: Render the integrated dark continuous counter UI state matching your cart drawer exactly!
             actionControlHTML = `
-                <div class="quantity-counter-inline" style="display: flex; align-items: center; border: 1px solid #333; border-radius: 4px; overflow: hidden; width: max-content; margin-top: 10px;">
-                    <button class="minus" data-id="${product.id}" style="padding: 5px 12px; background: #eee; border: none; cursor: pointer;">-</button>
-                    <span class="qty-display" style="padding: 5px 15px; font-weight: bold;">${currentQty}</span>
-                    <button class="plus" data-id="${product.id}" style="padding: 5px 12px; background: #eee; border: none; cursor: pointer;">+</button>
+                <div class="quantity grid-quantity-counter">
+                    <button class="minus" data-id="${product.id}">-</button>
+                    <span>${currentQty}</span>
+                    <span class="plus" data-id="${product.id}">+</span>
                 </div>
             `;
         } else {
@@ -162,6 +162,7 @@ function addDataToHTML(productFilter){
 
 
 
+
 // =========================================================================
 // UNIFIED DELEGATED CLICK EVENT INTERCEPTOR (ALL ACTION PATHWAYS)
 // =========================================================================
@@ -173,14 +174,20 @@ document.addEventListener('click', (event) => {
     // ---------------------------------------------------------------------
     let cartTabElement = document.querySelector('.cartTab');
     if (body.classList.contains('activeTabCart') && cartTabElement && iconCart) {
-        // Evaluate structural containment trees for the active mouse touch target
         const clickedInsideCartDrawer = cartTabElement.contains(positionClick);
         const clickedHeaderCartIconRing = iconCart.contains(positionClick);
 
-        // If click falls completely outside both nodes, strip active viewing class
         if (!clickedInsideCartDrawer && !clickedHeaderCartIconRing) {
             body.classList.remove('activeTabCart');
         }
+    }
+
+    // ---------------------------------------------------------------------
+    // 🎯 NEW FIX: CAPTURE ACCESSIBLE CLOSE BUTTON EVENT CLICKS
+    // ---------------------------------------------------------------------
+    if (positionClick.classList.contains('close')) {
+        body.classList.remove('activeTabCart');
+        return; // Exit interceptor early since drawer window is closed
     }
 
     // ---------------------------------------------------------------------
@@ -188,30 +195,30 @@ document.addEventListener('click', (event) => {
     // ---------------------------------------------------------------------
     let idProduct = positionClick.dataset.id;
     
-    // Fallback tracker mapping tool if clicked directly on an absolute wrap container block
     if (!idProduct && positionClick.parentElement && positionClick.parentElement.dataset.id) {
         idProduct = positionClick.parentElement.dataset.id;
     }
 
-    // Skip array evaluations completely if click was not targeted at an actionable item node
     if (!idProduct) return;
 
     let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
     let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
     
-    // Branch 1: Clicking the primitive primary "Add to Cart" button element
-    if (positionClick.classList.contains('addCart')) {
+    if (positionClick.classList.contains('cart-item-delete')) {
+        quantity = 0;
+        addToCart(idProduct, quantity, positionThisProductInCart);
+        addDataToHTML(productFilter || listProducts);
+    }
+    else if (positionClick.classList.contains('addCart')) {
         quantity = 1; 
         addToCart(idProduct, quantity, positionThisProductInCart);
         addDataToHTML(productFilter || listProducts); 
     } 
-    // Branch 2: Clicking any element matching the 'plus' controller node rules
     else if (positionClick.classList.contains('plus')) {
         quantity++;
         addToCart(idProduct, quantity, positionThisProductInCart);
         addDataToHTML(productFilter || listProducts);
     } 
-    // Branch 3: Clicking any element matching the 'minus' controller node rules
     else if (positionClick.classList.contains('minus')) {
         quantity--;
         addToCart(idProduct, quantity, positionThisProductInCart);
@@ -255,18 +262,17 @@ const addCartToHTML = () => {
     if (listHTML) listHTML.innerHTML = null;
   
     let totalPrice = 0;
-    if (totalPriceHTML) totalPriceHTML.innerText = totalPrice;
+    if (totalPriceHTML) totalPriceHTML.innerText = "Rs. 0.00";
     if (totalHTML) totalHTML.innerText = totalQuantity;
 
     if (carts.length == 0) {
-        // Safe document element selection verification gates
         let totalPriceElement = document.getElementById("total_price");
         if (totalPriceElement) {
             totalPriceElement.innerHTML = "Rs. 0.00";
         }
         
         if (listHTML) {
-            listHTML.innerHTML = `<div class="empty-message" style="padding: 20px; text-align: center; color: #8b949e;">Your cart is empty</div>`;
+            listHTML.innerHTML = `<div class="empty-message" style="padding: 20px; text-align: center; color: #8b949e; width: 100%;">Your cart is empty</div>`;
         }
     } 
     else {
@@ -280,9 +286,11 @@ const addCartToHTML = () => {
             
             if (info) {
                 totalPrice = totalPrice + Math.floor(info.price * 0.5 * item.quantity);
+                
+                // Explicitly bind the template strings matching our updated tracking nodes layout mapping
                 newCart.innerHTML = `
-                    <div class="image">
-                        <img src="${info.image}" alt="">
+                    <div class="image" style="display: flex; align-items: center; justify-content: center;">
+                        <img src="${info.image}" alt="" style="max-height: 45px; width: auto; object-fit: contain;">
                     </div>
                     <div class="name">
                         ${info.title}
@@ -294,20 +302,21 @@ const addCartToHTML = () => {
                         <button class="minus" data-id="${info.id}">-</button>
                         <span>${item.quantity}</span>
                         <span class="plus" data-id="${info.id}">+</span>
-                    </div>`;
+                    </div>
+                    <button class="cart-item-delete" data-id="${info.id}" title="Remove Item">×</button>
+                `;
                 if (listHTML) listHTML.appendChild(newCart);
             }
         });
     }
 
-    // Dynamic visibility controls for the navbar basket text indicators
     if (totalHTML) {
         if (totalQuantity > 0) {
             totalHTML.innerText = totalQuantity;
             totalHTML.style.display = 'flex';
         } else {
             totalHTML.innerText = '';
-            totalHTML.style.display = 'none'; // Hides empty badge circles completely
+            totalHTML.style.display = 'none';
         }
     }
 
@@ -315,11 +324,11 @@ const addCartToHTML = () => {
         totalPriceHTML.innerText = "Rs." + totalPrice + ".00";
     }
 
-    // Secondary deep backup save if item array exists
     if (carts.length > 0) {
         localStorage.setItem('shopping_cart', JSON.stringify(carts));
     }
 }
+
 
   function checkoutViaWhatsApp() {
     // 1. Set your business phone number (include country code, no spaces or +)
@@ -424,6 +433,24 @@ function emailSend(){
 
 }
 
+// Locate the action footer buttons inside addCartToHTML and update the grid row container:
+let buttonContainer = document.querySelector('.cartTab .btn');
+if (buttonContainer) {
+    // 🛠️ CHANGED: Set up 3 dynamic columns for a clean side-by-side responsive layout buttons row
+    buttonContainer.style.display = 'grid';
+    buttonContainer.style.gridTemplateColumns = '1fr 1fr 1fr';
+    buttonContainer.style.height = '60px';
+    
+    buttonContainer.innerHTML = `
+        <button class="close">CLOSE</button>
+        <a href="tel:+919867731440" class="call-btn-link" style="display: flex; align-items: center; justify-content: center; background-color: #ff9f43; color: #0d1117; text-decoration: none; font-weight: 600; font-size: 14px; border-right: 1px solid #30363d;">
+            📞 Call Us
+        </a>
+        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 500; cursor: pointer;">
+            WhatsApp
+        </button>
+    `;
+}
 
 const initApp = () => {
     //get data from json

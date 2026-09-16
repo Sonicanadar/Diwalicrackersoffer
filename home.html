@@ -47,27 +47,27 @@
             <div class="product-card">
                 <span class="tag green-tag">Eco-Friendly</span>
                 <div class="product-img-placeholder">🎇</div>
-                <h3>Sparkling Fountains</h3>
-                <p>Bright golden showers with minimal smoke emissions and steady sparks.</p>
-                <button class="btn-add" onclick="addToCart('Sparkling Fountains')">Add to Cart</button>
+                <h3>Premium Pack 42 Items</h3>
+                <p>Rs. 830</p>
+               <button class="btn-add" onclick="addToCart('Premium Pack 42 Items')">Add to Cart</button>
             </div>
 
             <!-- Product Card 2 -->
             <div class="product-card">
                 <span class="tag">Family Pack</span>
                 <div class="product-img-placeholder">✨</div>
-                <h3>Multi-Color Sparklers</h3>
-                <p>Safe, long-lasting electric colorful sparklers ideal for all ages.</p>
-                <button class="btn-add" onclick="addToCart('Multi-Color Sparklers')">Add to Cart</button>
+                <h3>Diwali Special pack 50 Items</h3>
+                <p>Rs. 1000</p>
+                <button class="btn-add" onclick="addToCart('Diwali Special pack 50 Items')">Add to Cart</button> 
             </div>
 
             <!-- Product Card 3 -->
             <div class="product-card">
                 <span class="tag premium-tag">Premium</span>
                 <div class="product-img-placeholder">🚀</div>
-                <h3>Aerial Repeater (12 Shots)</h3>
-                <p>Spectacular sequence of vibrant cascading patterns in the night sky.</p>
-                <button class="btn-add" onclick="addToCart('Aerial Repeater')">Add to Cart</button>
+                <h3>V.I.P Pack 35 Items</h3>
+                <p>Rs. 530</p>
+                <button class="btn-add" onclick="addToCart('V.I.P Pack 35 Items')">Add to Cart</button> 
             </div>
         </div>
     </main>
@@ -135,10 +135,10 @@
             document.getElementById('cart-container').classList.remove('active');
 
             // Constructing WhatsApp outbound URI strings parameters
-            const phoneNumber = "919876543210"; // Replace with your company phone number string
+            const phoneNumber = "919867731440"; // Replace with your company phone number string
             const itemsList = cart.join(", ");
             const message = encodeURIComponent(`Hello! I want to place an order for these crackers: ${itemsList}`);
-            const whatsappUrl = `https://wa.me{phoneNumber}?text=${message}`;
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
             // Resetting runtime application states cleanly for post checkout experience
             cart = [];
