@@ -1,920 +1,947 @@
 [
     {
-        "id":0,
-        "image": "Diwali_images3/crackers1.jpg",
-        "title": "2 3/4″ kuruvi",
-        "price": 45,
-        "catogory":"One"
-    },
-    {
-        "id":1,
-        "image": "Diwali_images3/crackers2.png",
-        "title": "7cm Electric Sparklers",
-        "price": 50,
-        "category":"Sparklers"
-    },
-    {
-        "id":2,
-        "image": "Diwali_images3/crackers3.png",
-        "title": "Electric Stone",
-        "price": 50,
-        "category":"Colour"
-    },
-    {
-        "id":3,
-        "image": "Diwali_images3/crackers4.png",
-        "title": "7cm Colour Sparklerse",
-        "price": 60,
-        "category":"Sparklers"
-    },
-    {
-        "id":4,
-        "image": "Diwali_images3/crackers5.png",
-        "title": "7cm Green Sparklers",
-        "price": 70,
-        "category":"Sparklers"
-    },
-    {
-        "id":5,
-        "image": "Diwali_images3/crackers6.png",
-        "title": "3 1/2\" Lakshmi",
-        "price": 75,
-        "category":"One"
-    },
-    {
-        "id":6,
-        "image": "Diwali_images3/crackers7.png",
-        "title": "10cm Electric Sparklers",
-        "price":90,
-        "category":"Sparklers"
-    },
-    {
-        "id":7,
-        "image": "Diwali_images3/crackers8.png",
-        "title": "4\" Lakshmi",
+        "id": 0,
+        "image": "Diwali_images3/crackers1.png",
+        "title": "7 cm Electric Sparklers (10 Pcs)",
         "price": 100,
-        "category":"One"
+        "category": "SPARKLERS"
     },
     {
-        "id":8,
-        "image": "Diwali_images3/crackers9.png",
-        "title": "10cm Colour Sparklers",
-        "price": 105,
-        "category":"Sparklers"
-    },
-    {
-        "id":9,
-        "image": "Diwali_images3/crackers10.png",
-        "title": "11/2\" Twinkling Star",
-        "price": 110,
-        "category":"Twinkling"
-    },
-    {
-        "id":10,
-        "image": "Diwali_images3/crackers11.png",
-        "title": "10cm Green Sparklers",
+        "id": 1,
+        "image": "Diwali_images3/crackers2.png",
+        "title": "7 cm Color Sparklers (10 Pcs)",
         "price": 120,
-        "category":"Sparklers"
+        "category": "SPARKLERS"
     },
     {
-        "id":11,
+        "id": 2,
+        "image": "Diwali_images3/crackers3.png",
+        "title": "10 cm Electric Sparklers (10 Pcs)",
+        "price": 150,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 3,
+        "image": "Diwali_images3/crackers4.png",
+        "title": "10 cm Color Sparklers (10 Pcs)",
+        "price": 170,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 4,
+        "image": "Diwali_images3/crackers5.png",
+        "title": "12 cm Electric Sparklers (10 Pcs)",
+        "price": 200,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 5,
+        "image": "Diwali_images3/crackers6.png",
+        "title": "12 cm Color Sparklers (10 Pcs)",
+        "price": 220,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 6,
+        "image": "Diwali_images3/crackers7.png",
+        "title": "15 cm Electric Sparklers (10 Pcs)",
+        "price": 300,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 7,
+        "image": "Diwali_images3/crackers8.png",
+        "title": "15 cm Color Sparklers (10 Pcs)",
+        "price": 330,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 8,
+        "image": "Diwali_images3/crackers9.png",
+        "title": "30 cm Electric Sparklers (5 Pcs)",
+        "price": 350,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 9,
+        "image": "Diwali_images3/crackers10.png",
+        "title": "30 cm Color Sparklers (5 Pcs)",
+        "price": 380,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 10,
+        "image": "Diwali_images3/crackers11.png",
+        "title": "50 cm Electric Sparklers (5 Pcs)",
+        "price": 600,
+        "category": "SPARKLERS"
+    },
+    {
+        "id": 11,
         "image": "Diwali_images3/crackers12.png",
-        "title": "4\" Deluxe Lakshmi",
-        "price": 125,
-        "category":"One"
+        "title": "50 cm Color Sparklers (5 Pcs)",
+        "price": 650,
+        "category": "SPARKLERS"
     },
     {
-        "id":12,
+        "id": 12,
         "image": "Diwali_images3/crackers13.png",
-        "title": "Red Bijili",
-        "price": 135,
-        "category":"Bijili"
+        "title": "Ground Chakkar Big (10 Pcs)",
+        "price": 180,
+        "category": "CHAKKARS"
     },
     {
-        "id":13,
+        "id": 13,
         "image": "Diwali_images3/crackers14.png",
-        "title": "12cm Electric Sparklers",
-        "price": 135,
-        "category":"Sparklers"
+        "title": "Ground Chakkar Asoka (10 Pcs)",
+        "price": 240,
+        "category": "CHAKKARS"
     },
     {
-        "id":14,
+        "id": 14,
         "image": "Diwali_images3/crackers15.png",
-        "title": "4\" Gold Lakshmi",
-        "price": 150,
-        "category":"One"
+        "title": "Ground Chakkar Special (10 Pcs)",
+        "price": 300,
+        "category": "CHAKKARS"
     },
     {
-        "id":15,
+        "id": 15,
         "image": "Diwali_images3/crackers16.png",
-        "title": "Two Sound Crackers",
-        "price": 150,
-        "category":"One"
+        "title": "Ground Chakkar Deluxe (10 Pcs)",
+        "price": 450,
+        "category": "CHAKKARS"
     },
     {
-        "id":16,
+        "id": 16,
         "image": "Diwali_images3/crackers17.png",
-        "title": "Bullet Bomb / Super Bullet",
-        "price": 150,
-        "category":"Bombs"
+        "title": "Chakkar Jumbo (5 Pcs)",
+        "price": 600,
+        "category": "CHAKKARS"
     },
     {
-        "id":17,
+        "id": 17,
         "image": "Diwali_images3/crackers18.png",
-        "title": "Stripped Bijili",
-        "price": 150,
-        "category":"Bijili"
+        "title": "Flower Pots Small (10 Pcs)",
+        "price": 200,
+        "category": "FLOWER POTS"
     },
     {
-        "id":18,
+        "id": 18,
         "image": "Diwali_images3/crackers19.png",
-        "title": "12cm Colour Sparklers",
-        "price": 150,
-        "category":"Sparklers"
+        "title": "Flower Pots Big (10 Pcs)",
+        "price": 280,
+        "category": "FLOWER POTS"
     },
     {
-        "id":19,
+        "id": 19,
         "image": "Diwali_images3/crackers20.png",
-        "title": "12cm Green Sparklers",
-        "price": 179,
-        "category":"Sparklers"
+        "title": "Flower Pots Special (10 Pcs)",
+        "price": 380,
+        "category": "FLOWER POTS"
     },
     {
-        "id":20,
+        "id": 20,
         "image": "Diwali_images3/crackers21.png",
-        "title": "5\" Deluxe Lakshmi",
-        "price": 200,
-        "category":"One"
+        "title": "Flower Pots Ashoka (10 Pcs)",
+        "price": 480,
+        "category": "FLOWER POTS"
     },
     {
-        "id":21,
+        "id": 21,
         "image": "Diwali_images3/crackers22.png",
-        "title": "Ground Chakkar Big(10 Pcs)",
-        "price": 200,
-        "category":"Chakkar"
+        "title": "Flower Pots Deluxe (10 Pcs)",
+        "price": 650,
+        "category": "FLOWER POTS"
     },
     {
-        "id":22,
+        "id": 22,
         "image": "Diwali_images3/crackers23.png",
-        "title": "10\" Pencil",
-        "price": 200,
-        "category":"Twinkling"
+        "title": "Flower Pots Mega (5 Pcs)",
+        "price": 800,
+        "category": "FLOWER POTS"
     },
     {
-        "id":23,
+        "id": 23,
         "image": "Diwali_images3/crackers24.png",
-        "title": "Kit Kat / Tick Tak /Chit Phut",
-        "price": 200,
-        "category":"Fountain"
+        "title": "Flower Pots Jumbo (5 Pcs)",
+        "price": 1000,
+        "category": "FLOWER POTS"
     },
     {
-        "id":24,
+        "id": 24,
         "image": "Diwali_images3/crackers25.png",
-        "title": "15cm Electric Sparklers",
-        "price": 215,
-        "category":53
-    },
-    {
-        "id":25,
-        "image": "Diwali_images3/crackers26.png",
-        "title": "30cm Electric Sparklers",
-        "price": 215,
-        "category":"Sparklers"
-    },
-    {
-        "id":26,
-        "image": "Diwali_images3/crackers27.png",
-        "title": "15cm Colour Sparklers",
-        "price": 225,
-        "category":"Sparklers"
-    },
-    {
-        "id":27,
-        "image": "Diwali_images3/crackers28.png",
-        "title": "30cm Colour Sparklers",
-        "price": 225,
-        "category":"Sparklers"
-    },
-    {
-        "id":28,
-        "image": "Diwali_images3/crackers29.png",
-        "title": "15cm Green Sparklers",
-        "price": 235,
-        "category":"Sparklers"
-    },
-    {
-        "id":29,
-        "image": "Diwali_images3/crackers30.png",
-        "title": "30cm Green Sparklers",
-        "price": 235,
-        "category":"Sparklers"
-    },
-  
-
-
-    {
-    "id":30,
-        "image": "Diwali_images3/crackers31.png",
-        "title": "6″ Deluxe Lakshmi / Jallikattu",
+        "title": "Twinkling Star 1.5 mts (10 Pcs)",
         "price": 250,
-        "category":"One"
+        "category": "TWINKLING STARS"
     },
     {
-        "id":31,
-            "image": "Diwali_images3/crackers32.png",
-            "title": "4″ Twinkling Star",
-            "price": 250,
-            "category":"Twinkling"
+        "id": 25,
+        "image": "Diwali_images3/crackers26.png",
+        "title": "Twinkling Star 4.0 mts (10 Pcs)",
+        "price": 500,
+        "category": "TWINKLING STARS"
     },
     {
-        "id":32,
-            "image": "Diwali_images3/crackers33.png",
-            "title": "Rocket Bomb / Colour Rocket",
-            "price": 250,
-            "category":"Bombs"
+        "id": 26,
+        "image": "Diwali_images3/crackers27.png",
+        "title": "28 Chorsa (Garland)",
+        "price": 150,
+        "category": "GARLANDS"
     },
     {
-        "id":33,
-            "image": "Diwali_images3/crackers34.png",
-            "title": "1/4 Kg Paper Bomb ( Adiyal )",
-            "price": 250,
-            "category":"Bombs"
+        "id": 27,
+        "image": "Diwali_images3/crackers28.png",
+        "title": "56 Chorsa (Garland)",
+        "price": 300,
+        "category": "GARLANDS"
     },
     {
-        "id":34,
-            "image": "Diwali_images3/crackers35.png",
-            "title": "Chotta Fancy",
-            "price": 250,
-            "category":11
+        "id": 28,
+        "image": "Diwali_images3/crackers29.png",
+        "title": "1000 Wala (Garland)",
+        "price": 1200,
+        "category": "GARLANDS"
     },
     {
-        "id":35,
-            "image": "Diwali_images3/crackers36.png",
-            "title": "Cartoon (25 Pcs)",
-            "price": 250,
-            "category":"Colour"
+        "id": 29,
+        "image": "Diwali_images3/crackers30.png",
+        "title": "2000 Wala (Garland)",
+        "price": 2400,
+        "category": "GARLANDS"
     },
     {
-        "id":36,
-            "image": "Diwali_images3/crackers37.png",
-            "title": "12″ Pencil",
-            "price": 265,
-            "category":"Twinkling"
+        "id": 30,
+        "image": "Diwali_images3/crackers31.png",
+        "title": "Bullet Bomb/Super Bullet (10 Pcs)",
+        "price": 300,
+        "category": "BOMBS"
     },
     {
-        "id":37,
-            "image": "Diwali_images3/crackers38.jpg",
-            "title": "Flower Pots Big",
-            "price": 275,
-            "category":"Flower"
+        "id": 31,
+        "image": "Diwali_images3/crackers32.png",
+        "title": "Hydro Bomb (10 Pcs)",
+        "price": 700,
+        "category": "BOMBS"
     },
     {
-        "id":38,
-            "image": "Diwali_images3/crackers39.png",
-            "title": "Hydro Bomb",
-            "price": 275,
-            "category":"Bombs"
+        "id": 32,
+        "image": "Diwali_images3/crackers33.png",
+        "title": "King Kong Bomb (10 Pcs)",
+        "price": 900,
+        "category": "BOMBS"
     },
     {
-        "id":39,
-            "image": "Diwali_images3/crackers40.png",
-            "title": "Roll Caps",
-            "price": 300,
-            "category":"Colour"
+        "id": 33,
+        "image": "Diwali_images3/crackers34.png",
+        "title": "Classic Bomb (10 Pcs)",
+        "price": 1200,
+        "category": "BOMBS"
     },
     {
-        "id":40,
-            "image": "Diwali_images3/crackers41.png",
-            "title": "Flower Pots Special",
-            "price": 325,
-            "category":"Flower"
+        "id": 34,
+        "image": "Diwali_images3/crackers35.png",
+        "title": "Dinosaur Bomb (10 Pcs)",
+        "price": 2200,
+        "category": "BOMBS"
     },
     {
-        "id":41,
-            "image": "Diwali_images3/crackers42.png",
-            "title": "Ground Chakkar Big (25 Pcs)",
-            "price": 350,
-            "category":"Chakkar"
+        "id": 35,
+        "image": "Diwali_images3/crackers36.png",
+        "title": "Digital Bomb (10 Pcs)",
+        "price": 2500,
+        "category": "BOMBS"
     },
     {
-        "id":42,
-            "image": "Diwali_images3/crackers43.png",
-            "title": "Ground Chakkar Special",
-            "price": 350,
-            "category":"Chakkar"
+        "id": 36,
+        "image": "Diwali_images3/crackers37.png",
+        "title": "555 Bomb (10 Pcs)",
+        "price": 1600,
+        "category": "BOMBS"
     },
     {
-        "id":43,
-            "image": "Diwali_images3/crackers44.png",
-            "title": "Photo Flash",
-            "price": 350,
-            "category":"Fountain"
+        "id": 37,
+        "image": "Diwali_images3/crackers38.png",
+        "title": "1/4 Kg Paper Bomb (1 Pce)",
+        "price": 450,
+        "category": "BOMBS"
     },
     {
-        "id":44,
-            "image": "Diwali_images3/crackers45.png",
-            "title": "15″ Pencil",
-            "price": 360,
-            "category":"Twinkling"
+        "id": 38,
+        "image": "Diwali_images3/crackers39.png",
+        "title": "1/2 Kg Paper Bomb (1 Pce)",
+        "price": 900,
+        "category": "BOMBS"
     },
     {
-        "id":45,
-            "image": "Diwali_images3/crackers46.png",
-            "title": "King Kong Bomb",
-            "price": 375,
-            "category":"Bombs"
+        "id": 39,
+        "image": "Diwali_images3/crackers40.png",
+        "title": "1 Kg Paper Bomb (1 Pce)",
+        "price": 180,
+        "category": "BOMBS"
     },
     {
-        "id":46,
-            "image": "Diwali_images3/crackers47.png",
-            "title": "Butterfly Green (10 Pcs)",
-            "price": 400,
-            "category":"Fountain"
+        "id": 40,
+        "image": "Diwali_images3/crackers41.png",
+        "title": "Red Bijili (100 Pcs)",
+        "price": 330,
+        "category": "BIJILI CRACKERS"
     },
     {
-        "id":47,
-            "image": "Diwali_images3/crackers48.png",
-            "title": "18″ Pencil",
-            "price": 450,
-            "category":"Twinkling"
+        "id": 41,
+        "image": "Diwali_images3/crackers42.png",
+        "title": "Stripped Bijili (100 Pcs)",
+        "price": 350,
+        "category": "BIJILI CRACKERS"
     },
     {
-        "id":48,
-            "image": "Diwali_images3/crackers49.png",
-            "title": "Classic Bomb",
-            "price": 450,
-            "category":"Bombs"
+        "id": 42,
+        "image": "Diwali_images3/crackers43.png",
+        "title": "Butterfly (10 Pcs)",
+        "price": 900,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":49,
-            "image": "Diwali_images3/crackers50.png",
-            "title": "Colour Rain",
-            "price": 450,
-            "category":"Glitters"
+        "id": 43,
+        "image": "Diwali_images3/crackers44.png",
+        "title": "Mega Siren (3 Pcs)",
+        "price": 1800,
+        "category": "FOUNTAIN & VARIETIES"
     },
- 
-
-
     {
-        "id":50,
-            "image": "Diwali_images/crackers51.png",
-            "title": "Peacock Feather",
-            "price": 450,
-            "category":"Fountain"
+        "id": 44,
+        "image": "Diwali_images3/crackers45.png",
+        "title": "Shower (5 Pcs)",
+        "price": 1200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":51,
-            "image": "Diwali_images/crackers52.png",
-            "title": "Golden Rise",
-            "price": 450,
-            "category":"Glitters"
+        "id": 45,
+        "image": "Diwali_images3/crackers46.png",
+        "title": "Tri Colour Fountain(5 Pcs)",
+        "price": 2500,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":52,
-            "image": "Diwali_images/crackers53.png",
-            "title": "Flower Pots Ashoka",
-            "price": 475,
-            "category":"Flower"
+        "id": 46,
+        "image": "Diwali_images3/crackers47.png",
+        "title": "Kit Kat / Chit Put / TitTak (10 Pcs)",
+        "price": 400,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":53,
-            "image": "Diwali_images/crackers54.png",
-            "title": "Ground Chakkar Disco Wheel",
-            "price": 500,
-            "category":"Chakkar"
+        "id": 47,
+        "image": "Diwali_images3/crackers48.png",
+        "title": "Photo Flash (5 Pcs)",
+        "price": 700,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":54,
-            "image": "Diwali_images/crackers55.png",
-            "title": "1/2 Kg Paper Bomb ( Adiyal )",
-            "price": 500,
-            "category":"Bombs"
+        "id": 48,
+        "image": "Diwali_images3/crackers49.png",
+        "title": "Peacock (1 Pce)",
+        "price": 1600,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":55,
-            "image": "Diwali_images/crackers56.png",
-            "title": "Shower",
-            "price": 500,
-            "category":"Fountain"
+        "id": 49,
+        "image": "Diwali_images3/crackers50.png",
+        "title": "Helicopter (5 Pcs)",
+        "price": 1000,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":56,
-            "image": "Diwali_images/crackers57.png",
-            "title": "Magic Candle",
-            "price": 500,
-            "category":"Fountain"
+        "id": 50,
+        "image": "Diwali_images3/crackers51.png",
+        "title": "Drone (5 Pcs)",
+        "price": 1600,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":57,
-            "image": "Diwali_images/crackers58.png",
-            "title": "Snake Serpent (Big)",
-            "price": 500,
-            "category":"Colour"
+        "id": 51,
+        "image": "Diwali_images3/crackers52.png",
+        "title": "Tin Beer (1 Pce)",
+        "price": 1200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":58,
-            "image": "Diwali_images/crackers59.png",
-            "title": "Ground Chakkar Deluxe",
-            "price": 600,
-            "category":"Chakkar"
+        "id": 52,
+        "image": "Diwali_images3/crackers53.png",
+        "title": "Peacock Feather (5 Pcs)",
+        "price": 1000,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":59,
-            "image": "Diwali_images/crackers60.png",
-            "title": "Lunik Rocket",
-            "price": 600,
-            "category":"Rockets"
+        "id": 53,
+        "image": "Diwali_images3/crackers54.png",
+        "title": "Golden Rain (5 Pcs)",
+        "price": 1000,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":60,
-            "image": "Diwali_images/crackers61.png",
-            "title": "Whizzling Wheel",
-            "price": 600,
-            "category":"Fountain"
+        "id": 54,
+        "image": "Diwali_images3/crackers55.png",
+        "title": "Cronepati / Jackpot (2 Pcs)",
+        "price": 2200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":61,
-            "image": "Diwali_images/crackers62.png",
-            "title": "Helicopter",
-            "price": 600,
-            "category":"Fountain"
+        "id": 55,
+        "image": "Diwali_images3/crackers56.png",
+        "title": "Rainbow Smoke (3 Pcs)",
+        "price": 1500,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":62,
-            "image": "Diwali_images/crackers63.png",
-            "title": "Tin Beer",
-            "price": 600,
-            "category":"Fountain"
+        "id": 56,
+        "image": "Diwali_images3/crackers57.png",
+        "title": "Bambaram (10 Pcs)",
+        "price": 1200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":63,
-            "image": "Diwali_images/crackers64.png",
-            "title": "Bambaram (10 Pcs )",
-            "price": 600,
-            "category":"Glitters"
+        "id": 57,
+        "image": "Diwali_images3/crackers58.png",
+        "title": "Black Money (5 Pcs)",
+        "price": 2200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":64,
-            "image": "Diwali_images/crackers65.png",
-            "title": "2″ Pipe (3 Varieties)",
-            "price": 600,
-            "category":"Aerial"
+        "id": 58,
+        "image": "Diwali_images3/crackers59.png",
+        "title": "Lollipop (Stick) (5 Pcs)",
+        "price": 1700,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":65,
-            "image": "Diwali_images/crackers66.png",
-            "title": "7 Shots Multicolour (5 Pcs)",
-            "price": 600,
-            "category":"Aerial"
+        "id": 59,
+        "image": "Diwali_images3/crackers60.png",
+        "title": "Pada Peacock (1 Pce)",
+        "price": 4000,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":66,
-            "image": "Diwali_images/crackers67.png",
-            "title": "555 Bomb",
-            "price": 650,
-            "category":"Bombs"
+        "id": 60,
+        "image": "Diwali_images3/crackers61.png",
+        "title": "90 Watts (3 Pcs)",
+        "price": 1200,
+        "category": "FOUNTAIN & VARIETIES"
     },
     {
-        "id":67,
-            "image": "Diwali_images/crackers68.png",
-            "title": "Dora (5 Pcs)",
-            "price": 650,
-            "category":"Glitters"
+        "id": 61,
+        "image": "Diwali_images3/crackers62.png",
+        "title": "Chotta Fancy",
+        "price": 400,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":68,
-            "image": "Diwali_images/crackers69.png",
-            "title": "12 Shots Rider / Crackling",
-            "price": 700,
-            "category":"Aerial"
+        "id": 62,
+        "image": "Diwali_images3/crackers63.png",
+        "title": "2\" Pipe (5 Varieties) (1 Pce)",
+        "price": 1200,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":69,
-            "image": "Diwali_images2/crackers70.png",
-            "title": "Colour Matches (Small)",
-            "price": 700,
-            "category":"Colour"
+        "id": 63,
+        "image": "Diwali_images3/crackers64.png",
+        "title": "2\" Pipe (3 Pcs)",
+        "price": 2800,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":70,
-            "image": "Diwali_images2/crackers71.png",
-            "title": "2 Sound Rocket",
-            "price": 750,
-            "category":"Rockets"
+        "id": 64,
+        "image": "Diwali_images3/crackers65.png",
+        "title": "3\" Pipe (6 Varieties) (1 Pce)",
+        "price": 2400,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":71,
-            "image": "Diwali_images2/crackers72.png",
-            "title": "Peacock",
-            "price": 800,
-            "category":"Fountain"
+        "id": 65,
+        "image": "Diwali_images3/crackers66.png",
+        "title": "3.5\" Pipe (5 Varieties) (1 Pce)",
+        "price": 3000,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":72,
-            "image": "Diwali_images2/crackers73.png",
-            "title": "Drone",
-            "price": 800,
-            "category":"Fountain"
+        "id": 66,
+        "image": "Diwali_images3/crackers67.png",
+        "title": "4\" Pipe (5 Varieties) (1 Pce)",
+        "price": 3500,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":73,
-            "image": "Diwali_images2/crackers74.png",
-            "title": "4×4 Wheel (5 Pcs)",
-            "price": 800,
-            "category":"Glitters"
+        "id": 67,
+        "image": "Diwali_images3/crackers68.png",
+        "title": "4\" Pipe Niagara Falls (Spl) (1 Pce)",
+        "price": 4000,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":74,
-            "image": "Diwali_images2/crackers75.png",
-            "title": "50cm Electric Sparklers",
-            "price": 800,
-            "category":"Sparklers"
+        "id": 68,
+        "image": "Diwali_images3/crackers69.png",
+        "title": "4\" 7 Steps (1 Pce)",
+        "price": 4300,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":75,
-            "image": "Diwali_images2/crackers76.png",
-            "title": "3 Sound Rocket",
-            "price": 850,
-            "category":"Rockets"
+        "id": 69,
+        "image": "Diwali_images3/crackers70.png",
+        "title": "4\" 12 Steps (1 Pce)",
+        "price": 4800,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":76,
-            "image": "Diwali_images2/crackers77.png",
-            "title": "Mega Siren (3 Pcs)",
-            "price": 850,
-            "category":"Fountain"
+        "id": 70,
+        "image": "Diwali_images3/crackers71.png",
+        "title": "4\" Pipe (2 Pcs)",
+        "price": 9000,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":77,
-            "image": "Diwali_images2/crackers78.png",
-            "title": "Ultra Voltage (2 Pcs)",
-            "price": 850,
-            "category":"Glitters"
+        "id": 71,
+        "image": "Diwali_images3/crackers72.png",
+        "title": "5\" Lemon wow (1 Pce)",
+        "price": 5300,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":78,
-            "image": "Diwali_images2/crackers79.png",
-            "title": "Lollipop (2 Pcs)",
-            "price": 850,
-            "category":"Glitters"
+        "id": 72,
+        "image": "Diwali_images3/crackers73.png",
+        "title": "5\" Orange wow (1 Pce)",
+        "price": 5300,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":79,
-            "image": "Diwali_images2/crackers80.png",
-            "title": "Majito (2 Pcs)",
-            "price": 850,
-            "category":"Glitters"
+        "id": 73,
+        "image": "Diwali_images3/crackers74.png",
+        "title": "5\" Purple wow (1 Pce)",
+        "price": 5300,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":80,
-            "image": "Diwali_images2/crackers81.png",
-            "title": "Cock Fight (2 Pcs)",
-            "price": 850,
-            "category":"Glitters"
+        "id": 74,
+        "image": "Diwali_images3/crackers75.png",
+        "title": "5\" Pipe (2 Pcs)",
+        "price": 10000,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":81,
-            "image": "Diwali_images2/crackers82.png",
-            "title": "50cm Colour Sparklers",
-            "price": 900,
-            "category":"Sparklers"
+        "id": 75,
+        "image": "Diwali_images3/crackers76.png",
+        "title": "Cool Baby Cool (5 Pcs)",
+        "price": 2000,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":82,
-            "image": "Diwali_images2/crackers83.png",
-            "title": "Flower Pots Color Koti",
-            "price": 950,
-            "category":"Flower"
+        "id": 76,
+        "image": "Diwali_images3/crackers77.png",
+        "title": "7 Shots Multicolour (5 Pcs)",
+        "price": 1100,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":83,
-            "image": "Diwali_images2/crackers84.png",
-            "title": "Flower Pots Deluxe (5 Pcs)",
-            "price": 1000,
-            "category":"Flower"
+        "id": 77,
+        "image": "Diwali_images3/crackers78.png",
+        "title": "12 Shots Rider / Crackling",
+        "price": 1400,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":84,
-            "image": "Diwali_images2/crackers85.png",
-            "title": "Whistling Rocket",
-            "price": 1000,
-            "category":"Rockets"
+        "id": 78,
+        "image": "Diwali_images3/crackers79.png",
+        "title": "25 Shots Rider / Crackling",
+        "price": 2500,
+        "category": "SKY SPECTACULARS"
     },
     {
-        "id":85,
-            "image": "Diwali_images2/crackers86.jpg",
-            "title": "Jurassic Bomb / 7 Ply Bomb",
-            "price": 1000,
-            "category":"Bombs"
+        "id": 79,
+        "image": "Diwali_images3/crackers80.png",
+        "title": "30 Shots Multicolour",
+        "price": 350,
+        "category": "SILVER"
     },
     {
-        "id":86,
-            "image": "Diwali_images2/crackers87.png",
-            "title": "1 Kg Paper Bomb ( Adiyal )",
-            "price": 1000,
-            "category":"Bombs"
+        "id": 80,
+        "image": "Diwali_images3/crackers81.png",
+        "title": "60 Shots Multicolour",
+        "price": 7000,
+        "category": "SILVER"
     },
     {
-        "id":87,
-            "image": "Diwali_images2/crackers88.png",
-            "title": "Rainbow Smoke",
-            "price": 1000,
-            "category":"Glitters"
+        "id": 81,
+        "image": "Diwali_images3/crackers82.png",
+        "title": "120 Shots Multicolour",
+        "price": 14000,
+        "category": "SILVER"
     },
     {
-        "id":88,
-            "image": "Diwali_images2/crackers89.png",
-            "title": "Water falls Pencil (3Pcs)",
-            "price": 1000,
-            "category":"Glitters"
+        "id": 82,
+        "image": "Diwali_images3/crackers83.png",
+        "title": "30 Shots Multicolour",
+        "price": 4000,
+        "category": "GOLD"
     },
     {
-        "id":89,
-            "image": "Diwali_images2/crackers90.png",
-            "title": "Pop Corn Pencil (3 Pcs)",
-            "price": 1000,
-            "category":"Glitters"
+        "id": 83,
+        "image": "Diwali_images3/crackers84.png",
+        "title": "60 Shots Multicolour",
+        "price": 8000,
+        "category": "GOLD"
     },
     {
-        "id":90,
-            "image": "Diwali_images2/crackers91.png",
-            "title": "Colour Matches (Deluxe)",
-            "price": 1000,
-            "category":"Colour"
+        "id": 84,
+        "image": "Diwali_images3/crackers85.png",
+        "title": "120 Shots Multicolour",
+        "price": 16000,
+        "category": "GOLD"
     },
     {
-        "id":91,
-            "image": "Diwali_images2/crackers92.png",
-            "title": "Sivakasi Special (2 Pcs)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 85,
+        "image": "Diwali_images3/crackers86.png",
+        "title": "240 Shots Multicolour",
+        "price": 32000,
+        "category": "GOLD"
     },
     {
-        "id":92,
-            "image": "Diwali_images2/crackers93.png",
-            "title": "Top Gun (5 Pcs)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 86,
+        "image": "Diwali_images3/crackers87.png",
+        "title": "Money Penny (5 Pcs) (Standard FW)",
+        "price": 3550,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":93,
-            "image": "Diwali_images2/crackers94.png",
-            "title": "Black money (3 Pcs)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 87,
+        "image": "Diwali_images3/crackers88.png",
+        "title": "Sun Drops (5 Pcs) (Standard FW)",
+        "price": 3550,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":94,
-            "image": "Diwali_images2/crackers95.png",
-            "title": "Lollipop (Stick)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 88,
+        "image": "Diwali_images3/crackers89.png",
+        "title": "Twin Spin (5 Pcs) (Standard FW)",
+        "price": 1550,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":95,
-            "image": "Diwali_images2/crackers96.png",
-            "title": "Sound Marriage (3 Pcs)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 89,
+        "image": "Diwali_images3/crackers90.png",
+        "title": "Scarlet Saucer (5 Pcs) (Standard FW)",
+        "price": 1550,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":96,
-            "image": "Diwali_images2/crackers97.png",
-            "title": "Old is Gold",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 90,
+        "image": "Diwali_images3/crackers91.png",
+        "title": "Red & White Chakkar (10 Pcs) (Standard FW)",
+        "price": 880,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":97,
-            "image": "Diwali_images2/crackers98.png",
-            "title": "Trend Wheel (5 pcs)",
-            "price": 1100,
-            "category":"Glitters"
+        "id": 91,
+        "image": "Diwali_images3/crackers92.png",
+        "title": "Colour Burst (10 Pcs) (Standard FW)",
+        "price": 2440,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":98,
-            "image": "Diwali_images2/crackers99.png",
-            "title": "3″ Pipe (5 Varieties)",
-            "price": 1200,
-            "category":"Aerial"
+        "id": 92,
+        "image": "Diwali_images3/crackers93.png",
+        "title": "Whistling Dixie (5 Pcs) (Vadivel FW)",
+        "price": 1200,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":99,
-            "image": "Diwali_images2/crackers100.png",
-            "title": "Mega Tri Colour Fountain",
-            "price": 1250,
-            "category":"Fountain"
+        "id": 93,
+        "image": "Diwali_images3/crackers94.png",
+        "title": "Ring Ring (5 Pcs) (Vadivel FW)",
+        "price": 2000,
+        "category": "LUMINOUS SPECTACLES"
     },
-   
     {
-        "id":100,
-            "image": "Diwali_images2/crackers101.png",
-            "title": "Rangoon",
-            "price": 1250,
-            "category":"Fountain"
+        "id": 94,
+        "image": "Diwali_images3/crackers95.png",
+        "title": "Bad Boy (3 Pcs) (Vadivel FW)",
+        "price": 3300,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":101,
-            "image": "Diwali_images2/crackers102.png",
-            "title": "Mario",
-            "price": 1250,
-            "category":"Fountain"
+        "id": 95,
+        "image": "Diwali_images3/crackers96.png",
+        "title": "Autumn Rain (1 Pce) (Vadivel FW)",
+        "price": 1400,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":102,
-            "image": "Diwali_images2/crackers103.png",
-            "title": "Pop Corn",
-            "price": 1250,
-            "category":"Fountain"
+        "id": 96,
+        "image": "Diwali_images3/crackers97.png",
+        "title": "Winter Rain (1 Pce) (Vadivel FW)",
+        "price": 1400,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":103,
-            "image": "Diwali_images2/crackers104.png",
-            "title": "Money Money / Jockpot",
-            "price": 1250,
-            "category":"Glitters"
+        "id": 97,
+        "image": "Diwali_images3/crackers98.png",
+        "title": "Scooby-Doo (5 Pcs) (Vadivel FW)",
+        "price": 1600,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":104,
-            "image": "Diwali_images2/crackers105.png",
-            "title": "25 Shots Rider / Crackling",
-            "price": 1250,
-            "category":"Aerial"
+        "id": 98,
+        "image": "Diwali_images3/crackers99.png",
+        "title": "Dexter (5 Pcs) (Vadivel FW)",
+        "price": 1600,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":105,
-            "image": "Diwali_images2/crackers106.png",
-            "title": "Colour Matches 10 in 1",
-            "price": 1250,
-            "category":"Colour"
+        "id": 99,
+        "image": "Diwali_images3/crackers100.png",
+        "title": "Popeye (5 Pcs) (Vadivel FW)",
+        "price": 1600,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":106,
-            "image": "Diwali_images2/crackers107.png",
-            "title": "2″ Pipe (3 Pcs)",
-            "price": 1400,
-            "category":"Aerial"
+        "id": 100,
+        "image": "Diwali_images3/crackers101.png",
+        "title": "Power Puff Girls (5 Pcs) (Vadivel FW)",
+        "price": 1600,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":107,
-            "image": "Diwali_images2/crackers108.png",
-            "title": "Smiley",
-            "price": 1500,
-            "category":"Fountain"
+        "id": 101,
+        "image": "Diwali_images3/crackers102.png",
+        "title": "Recycle (5 Pcs) (Vadivel FW)",
+        "price": 2000,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":108,
-            "image": "Diwali_images2/crackers109.png",
-            "title": "Party Apple",
-            "price": 1500,
-            "category":"Glitters"
+        "id": 102,
+        "image": "Diwali_images3/crackers103.png",
+        "title": "Fire Egg (2 Pcs) (Vadivel FW)",
+        "price": 1800,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":109,
-            "image": "Diwali_images2/crackers110.png",
-            "title": "31/2″ Pipe (4 Varieties)",
-            "price": 1500,
-            "category":"Aerial"
+        "id": 103,
+        "image": "Diwali_images3/crackers104.png",
+        "title": "Rangoon (2 Pcs) (Ajantha FW)",
+        "price": 2500,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":110,
-            "image": "Diwali_images2/crackers111.jpg",
-            "title": "Darling Pack 20 Items",
-            "price": 1650,
-            "category":"Gift"
+        "id": 104,
+        "image": "Diwali_images3/crackers105.png",
+        "title": "Magical Sword (2 Pcs) (Ajantha FW)",
+        "price": 3200,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":111,
-            "image": "Diwali_images2/crackers112.png",
-            "title": "Silver 30 Shots Multicolour",
-            "price": 1750,
-            "category":"Aerial"
+        "id": 105,
+        "image": "Diwali_images3/crackers106.png",
+        "title": "Galaxy Sword (2 Pcs) (Ajantha FW)",
+        "price": 3200,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":112,
-            "image": "Diwali_images2/crackers113.jpg",
-            "title": "Family Pack 25 Items",
-            "price": 1900,
-            "category":"Gift"
+        "id": 106,
+        "image": "Diwali_images3/crackers107.png",
+        "title": "Mitico (2 Pcs) (Ajantha FW)",
+        "price": 2200,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":113,
-            "image": "Diwali_images2/crackers114.png",
-            "title": "Pada Peacock",
-            "price": 2000,
-            "category":"Glitters"
+        "id": 107,
+        "image": "Diwali_images3/crackers108.png",
+        "title": "Tropical Mushroom (Ajantha FW) (1 Pc)",
+        "price": 2500,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":114,
-            "image": "Diwali_images2/crackers115.png",
-            "title": "4″ Pipe Nayagra Falls (SPL)",
-            "price": 2000,
-            "category":"Aerial"
+        "id": 108,
+        "image": "Diwali_images3/crackers109.png",
+        "title": "Smiling Elephant (1 Pc) (Ajantha FW)",
+        "price": 3350,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":115,
-            "image": "Diwali_images2/crackers116.png",
-            "title": "Gold 30 Shots Multicolour",
-            "price": 2000,
-            "category":"Aerial"
+        "id": 109,
+        "image": "Diwali_images3/crackers110.png",
+        "title": "Lucky Lion (1 Pc) (Ajantha FW)",
+        "price": 3350,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":116,
-            "image": "Diwali_images2/crackers117.jpg",
-            "title": "Golden Pack 30 Items",
-            "price": 2150,
-            "category":"Gift"
+        "id": 110,
+        "image": "Diwali_images3/crackers111.png",
+        "title": "Lemon Tree (1 Pce) (Ayyan FW)",
+        "price": 1450,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":117,
-            "image": "Diwali_images2/crackers118.jpg",
-            "title": "V.I.P Pack 35 Items",
-            "price": 2500,
-            "category":"Gift"
+        "id": 111,
+        "image": "Diwali_images3/crackers112.png",
+        "title": "Cocktail (10 Pcs) (Ayyan FW)",
+        "price": 650,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":118,
-            "image": "Diwali_images2/crackers119.png",
-            "title": "4″ Pipe (2 Pcs)",
-            "price": 3500,
-            "category":"Aerial"
+        "id": 112,
+        "image": "Diwali_images3/crackers113.png",
+        "title": "Jadugar (5 Pcs) (Ayyan FW)",
+        "price": 3350,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":119,
-            "image": "Diwali_images2/crackers120.png",
-            "title": "Silver 60 Shots Multicolour",
-            "price": 3500,
-            "category":"Aerial"
+        "id": 113,
+        "image": "Diwali_images3/crackers114.png",
+        "title": "Manorajan (5 Pcs) (Ayyan FW)",
+        "price": 3350,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":120,
-            "image": "Diwali_images2/crackers121.jpg",
-            "title": "Premium Pack 42 Items",
-            "price": 3750,
-            "category":"Gift"
+        "id": 114,
+        "image": "Diwali_images3/crackers115.png",
+        "title": "Dix Pots (5 Pcs)",
+        "price": 2500,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":121,
-            "image": "Diwali_images2/crackers122.png",
-            "title": "5″ Pipe (2 Pcs)",
-            "price": 4000,
-            "category":"Aerial"
+        "id": 115,
+        "image": "Diwali_images3/crackers116.png",
+        "title": "Kit Kat (Red) (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":122,
-            "image": "Diwali_images2/crackers123.png",
-            "title": "Gold 60 Shots Multicolour",
-            "price": 4000,
-            "category":"Aerial"
+        "id": 116,
+        "image": "Diwali_images3/crackers117.png",
+        "title": "Tic Tac Mint (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":123,
-            "image": "Diwali_images2/crackers124.jpg",
-            "title": "Diwali Special Pack 50 Items",
-            "price": 4750,
-            "category":"Gift"
+        "id": 117,
+        "image": "Diwali_images3/crackers118.png",
+        "title": "Milky Bar White (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":124,
-            "image": "Diwali_images2/crackers125.png",
-            "title": "Silver 120 Shots Multicolour",
-            "price": 7000,
-            "category":"Aerial"
+        "id": 118,
+        "image": "Diwali_images3/crackers119.png",
+        "title": "5 Star Gold (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":125,
-            "image": "Diwali_images2/crackers126.png",
-            "title": "Gold 120 Shots Multicolour",
-            "price": 8000,
-            "category":"Aerial"
+        "id": 119,
+        "image": "Diwali_images3/crackers120.png",
+        "title": "Dairy Milk (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":126,
-            "image": "Diwali_images2/crackers127.png",
-            "title": "Silver 240 Shots Multicolour",
-            "price": 14000,
-            "category":"Aerial"
+        "id": 120,
+        "image": "Diwali_images3/crackers121.png",
+        "title": "Gems Colour Mix (5 Pcs)",
+        "price": 1750,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":127,
-            "image": "Diwali_images3/crackers128.jpg",
-            "title": "Special Family Pack – 30 Items",
-            "price": 15000,
-            "category":"Gift"
+        "id": 121,
+        "image": "Diwali_images3/crackers122.png",
+        "title": "Karaoke Night (1 Pc)",
+        "price": 1450,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":128,
-            "image": "Diwali_images2/crackers129.png",
-            "title": "Gold 240 Shots Multicolour",
-            "price": 16000,
-            "category":"Aerial"
+        "id": 122,
+        "image": "Diwali_images3/crackers123.png",
+        "title": "Jazz Music (1 Pc)",
+        "price": 1650,
+        "category": "LUMINOUS SPECTACLES"
     },
     {
-        "id":129,
-            "image": "Diwali_images3/crackers130.png",
-            "title": "Special Family Pack – 50 Items",
-            "price": 25000,
-            "category":"Gift"
+        "id": 123,
+        "image": "Diwali_images3/crackers124.png",
+        "title": "Dr.Pepper (1 Pc)",
+        "price": 1650,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 124,
+        "image": "Diwali_images3/crackers125.png",
+        "title": "Big Bang (1 Pc)",
+        "price": 1650,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 125,
+        "image": "Diwali_images3/crackers126.png",
+        "title": "Red Apple (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 126,
+        "image": "Diwali_images3/crackers127.png",
+        "title": "Carnival Fun Fair (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 127,
+        "image": "Diwali_images3/crackers128.png",
+        "title": "Mr.Big (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 128,
+        "image": "Diwali_images3/crackers129.png",
+        "title": "Tooty Frootly (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 129,
+        "image": "Diwali_images3/crackers130.png",
+        "title": "Bingo Music (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 130,
+        "image": "Diwali_images3/crackers131.png",
+        "title": "Party Time (5 Pcs)",
+        "price": 1700,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 131,
+        "image": "Diwali_images3/crackers132.png",
+        "title": "Kulfi (3 Pcs)",
+        "price": 2450,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 132,
+        "image": "Diwali_images3/crackers133.png",
+        "title": "Hot Cone (2 Pcs)",
+        "price": 2200,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 133,
+        "image": "Diwali_images3/crackers134.png",
+        "title": "King Version (1 Pc)",
+        "price": 2200,
+        "category": "LUMINOUS SPECTACLES"
+    },
+    {
+        "id": 134,
+        "image": "Diwali_images3/crackers135.png",
+        "title": "Cylinder Smoke (2 Pcs)",
+        "price": 2555,
+        "category": "LUMINOUS SPECTACLES"
     }
-       
 ]

@@ -110,7 +110,7 @@ let totalQuantity = 0 ;
 //             newProduct.innerHTML =  `
 //                 <img src="${product.image}" alt="">
 //                 <h2>${product.title}</h2>
-//                 <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.3))}</div>
+//                 <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.5))}</div>
 //                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
 //                 `;
 //                 listProductHTML.appendChild(newProduct); 
@@ -151,7 +151,7 @@ function addDataToHTML(productFilter){
         newProduct.innerHTML = `
             <img src="${product.image}" alt="">
             <h2>${product.title}</h2>
-            <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price * 0.3))}</div>
+            <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price * 0.5))}</div>
             <div class="action-container" data-id="${product.id}">
                 ${actionControlHTML}
             </div>
@@ -279,7 +279,7 @@ const addCartToHTML = () => {
             let info = listProducts[positionProduct];
             
             if (info) {
-                totalPrice = totalPrice + Math.floor(info.price * 0.3 * item.quantity);
+                totalPrice = totalPrice + Math.floor(info.price * 0.5 * item.quantity);
                 newCart.innerHTML = `
                     <div class="image">
                         <img src="${info.image}" alt="">
@@ -288,7 +288,7 @@ const addCartToHTML = () => {
                         ${info.title}
                     </div>
                     <div class="totalPrice">
-                        Rs.${Math.floor(info.price * 0.3 * item.quantity)}
+                        Rs.${Math.floor(info.price * 0.5 * item.quantity)}
                     </div>
                     <div class="quantity">
                         <button class="minus" data-id="${info.id}">-</button>
@@ -342,8 +342,8 @@ const addCartToHTML = () => {
         const productDetails = listProducts.find(p => p.id == cartItem.product_id);
         
         if (productDetails) {
-            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.3)
-            const discountedPrice = Math.floor(productDetails.price * 0.3);
+            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.5)
+            const discountedPrice = Math.floor(productDetails.price * 0.5);
             const itemTotal = discountedPrice * cartItem.quantity;
             grandTotal += itemTotal;
 
@@ -376,8 +376,8 @@ function emailSend(){
       
     //     let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
     //     let info = listProducts[positionProduct];
-    //     totalPrice = totalPrice+(info.price*0.3*item.quantity);
-    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.3*item.quantity;
+    //     totalPrice = totalPrice+(info.price*0.5*item.quantity);
+    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.5*item.quantity;
     // })
 
     // <table><tr><th>Company</th><th>Contact</th><th>Country</th></tr></table>
@@ -390,9 +390,9 @@ function emailSend(){
       
         let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
         let info = listProducts[positionProduct];
-        totalPrice = totalPrice+Math.floor(info.price*0.3*item.quantity);
+        totalPrice = totalPrice+Math.floor(info.price*0.5*item.quantity);
         totalQuantity = totalQuantity+(item.quantity);
-        messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">"+info.title+"</td><td style=\"border:1px solid black;\">"+item.quantity+"</td><td style=\"border:1px solid black;\">"+Math.floor(info.price*0.3)+"</td></tr>";
+        messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">"+info.title+"</td><td style=\"border:1px solid black;\">"+item.quantity+"</td><td style=\"border:1px solid black;\">"+Math.floor(info.price*0.5)+"</td></tr>";
     })
     messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">Total</td><td style=\"border:1px solid black;\">"+totalQuantity+"</td><td style=\"border:1px solid black;\">"+totalPrice+"</td></tr>";
     messageBody = messageBody + "</table>";
