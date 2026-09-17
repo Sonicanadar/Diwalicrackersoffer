@@ -124,8 +124,8 @@ function addDataToHTML(productFilter){
     
     productFilter.forEach(product => {
         let newProduct = document.createElement('div');
-        newProduct.classList.add('item'); // 👈 MUST HAVE THIS CLASS
-        newProduct.dataset.id = product.id; // 👈 MUST HAVE THIS ATTRIBUTE
+        newProduct.classList.add('item'); 
+        newProduct.dataset.id = product.id; 
 
         let cartItemIndex = carts.findIndex((value) => value.product_id == product.id);
         let currentQty = cartItemIndex < 0 ? 0 : carts[cartItemIndex].quantity;
@@ -145,10 +145,19 @@ function addDataToHTML(productFilter){
             `;
         }
 
+        // 🎯 FIX: Remove discount specifically for the GIFT BOXES category
+        let finalDisplayPrice = Math.floor(product.price * 0.5);
+        let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
+
+        if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
+            finalDisplayPrice = product.price; // Sell at full price
+            mrpTagHTML = ''; // Hide the slashed-out lower price text decoration
+        }
+
         newProduct.innerHTML = `
             <img src="${product.image}" alt="">
             <h2>${product.title}</h2>
-            <div class="price"><span>MRP. ${product.price} </span>Rs.${Math.floor((product.price * 0.5))}</div>
+            <div class="price">${mrpTagHTML}Rs.${finalDisplayPrice}</div>
             <div class="action-container" data-id="${product.id}">
                 ${actionControlHTML}
             </div>
@@ -156,6 +165,7 @@ function addDataToHTML(productFilter){
         listProductHTML.appendChild(newProduct);
     });
 }
+
 
 
 
