@@ -343,7 +343,7 @@ const addCartToHTML = () => {
         }
     } 
     else {
-        carts.forEach(item => {
+                carts.forEach(item => {
             totalQuantity = totalQuantity + item.quantity;
         
             let newCart = document.createElement('div');
@@ -352,9 +352,15 @@ const addCartToHTML = () => {
             let info = listProducts[positionProduct];
             
             if (info) {
-                totalPrice = totalPrice + Math.floor(info.price * 0.5 * item.quantity);
+                // 🎯 FIX: Apply category specific base calculations inside the drawer summary fields
+                let itemUnitPrice = Math.floor(info.price * 0.5);
+                if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
+                    itemUnitPrice = info.price;
+                }
+
+                let totalItemCost = itemUnitPrice * item.quantity;
+                totalPrice = totalPrice + totalItemCost;
                 
-                // Explicitly bind the template strings matching our updated tracking nodes layout mapping
                 newCart.innerHTML = `
                     <div class="image" style="display: flex; align-items: center; justify-content: center;">
                         <img src="${info.image}" alt="" style="max-height: 45px; width: auto; object-fit: contain;">
@@ -363,7 +369,7 @@ const addCartToHTML = () => {
                         ${info.title}
                     </div>
                     <div class="totalPrice">
-                        Rs.${Math.floor(info.price * 0.5 * item.quantity)}
+                        Rs.${totalItemCost}
                     </div>
                     <div class="quantity">
                         <button class="minus" data-id="${info.id}">-</button>
@@ -375,6 +381,7 @@ const addCartToHTML = () => {
                 if (listHTML) listHTML.appendChild(newCart);
             }
         });
+
     }
 
     if (totalHTML) {
@@ -411,23 +418,26 @@ const addCartToHTML = () => {
     let message = ` *New Order Summary* \n\n`;
     let grandTotal = 0;
 
-    // 3. Loop through your cart items to build the list
+        // Loop through your cart items to build the list
     carts.forEach(cartItem => {
-        // Find the full product details from your master product array using the ID
-        // (Replace 'products' with your actual master data array name)
         const productDetails = listProducts.find(p => p.id == cartItem.product_id);
         
         if (productDetails) {
-            // Calculate your discounted price matching your HTML: Rs. Math.floor(price * 0.5)
-            const discountedPrice = Math.floor(productDetails.price * 0.5);
-            const itemTotal = discountedPrice * cartItem.quantity;
+            // 🎯 FIX: Calculate price based on category rule variations
+            let transactionalPrice = Math.floor(productDetails.price * 0.5);
+            if (productDetails.category && productDetails.category.trim().toUpperCase() === "GIFT BOXES") {
+                transactionalPrice = productDetails.price;
+            }
+
+            const itemTotal = transactionalPrice * cartItem.quantity;
             grandTotal += itemTotal;
 
             // Add the item line item to your text message
             message += ` *${productDetails.title}*\n`;
-            message += `   Qty: ${cartItem.quantity} x Rs.${discountedPrice} = Rs.${itemTotal}\n\n`;
+            message += `   Qty: ${cartItem.quantity} x Rs.${transactionalPrice} = Rs.${itemTotal}\n\n`;
         }
     });
+
 
     // 4. Append the final bill total to the text message
     message += `💰 *Grand Total:* Rs.${grandTotal}\n\n`;
@@ -532,13 +542,12 @@ function openProductModal(productId) {
     mainDetailsContainer.innerHTML = '';
     relatedContainer.innerHTML = '';
 
-    // 🎯 DYNAMIC STATE ENGINE: Determine if this item is currently inside the shopping cart memory matrix
+    // DYNAMIC STATE ENGINE: Determine if this item is currently inside the shopping cart memory matrix
     let cartItemIndex = carts.findIndex((value) => value.product_id == targetProduct.id);
     let currentQty = cartItemIndex < 0 ? 0 : carts[cartItemIndex].quantity;
 
     let modalActionControlHTML = '';
     if (currentQty > 0) {
-        // Render the integrated horizontal quantitative display counter component block
         modalActionControlHTML = `
             <div class="quantity-counter-inline" data-id="${targetProduct.id}">
                 <button class="minus" data-id="${targetProduct.id}">-</button>
@@ -547,11 +556,29 @@ function openProductModal(productId) {
             </div>
         `;
     } else {
-        // Render standard functional Add to Cart button layout element
         modalActionControlHTML = `
             <button class="addCart" data-id="${targetProduct.id}">Add to Cart</button>
         `;
     }
+
+    // ==========================================
+    // 🎯 START OF STEP 4 ADDITION
+    // ==========================================
+    let modalDisplayPrice = Math.floor(targetProduct.price * 0.5);
+    let modalMrpTagHTML = `
+        <span style="font-size: 0.9rem; text-decoration: line-through; color: #8b949e; margin-left: 8px;">
+            MRP. ${targetProduct.price}
+        </span>
+    `;
+
+    // Remove discount tracking layout variables strictly for the GIFT BOXES category
+    if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "GIFT BOXES") {
+        modalDisplayPrice = targetProduct.price;
+        modalMrpTagHTML = ''; // Hides slashed original pricing text completely
+    }
+    // ==========================================
+    // 🎯 END OF STEP 4 ADDITION
+    // ==========================================
 
     mainDetailsContainer.innerHTML = `
         <img src="${targetProduct.image}" alt="${targetProduct.title}">
@@ -559,13 +586,11 @@ function openProductModal(productId) {
             <h2>${targetProduct.title}</h2>
             <p style="color: #8b949e; font-size: 13px; margin-bottom: 8px;">Category: ${targetProduct.category}</p>
             <div style="font-size: 1.2rem; font-weight: 700; color: #ff9f43; margin-bottom: 10px;">
-                Rs.${Math.floor(targetProduct.price * 0.5)}
-                <span style="font-size: 0.9rem; text-decoration: line-through; color: #8b949e; margin-left: 8px;">
-                    MRP. ${targetProduct.price}
-                </span>
+                Rs.${modalDisplayPrice}
+                ${modalMrpTagHTML}
             </div>
             
-            <!-- 🎯 CART INTERFACE ANCHOR POINT -->
+            <!-- CART INTERFACE ANCHOR POINT -->
             <div class="action-container" data-id="${targetProduct.id}">
                 ${modalActionControlHTML}
             </div>
@@ -577,7 +602,7 @@ function openProductModal(productId) {
         p.category === targetProduct.category && p.id != targetProduct.id
     );
 
-    if (relatedItems.length === 0) {
+        if (relatedItems.length === 0) {
         relatedContainer.innerHTML = `<div style="color: #8b949e; font-size: 13px; padding: 10px;">No related items found in this category.</div>`;
     } else {
         relatedItems.forEach(item => {
@@ -585,16 +610,23 @@ function openProductModal(productId) {
             relatedCard.classList.add('related-item-card');
             relatedCard.dataset.id = item.id; 
             
+            // 🎯 FIX: Apply category specific base calculations for related items strip prices
+            let relatedDisplayPrice = Math.floor(item.price * 0.5);
+            if (item.category && item.category.trim().toUpperCase() === "GIFT BOXES") {
+                relatedDisplayPrice = item.price; // Sell related gift boxes at full MRP
+            }
+            
             relatedCard.innerHTML = `
                 <img src="${item.image}" alt="${item.title}">
                 <h4>${item.title}</h4>
                 <div style="color: #ff9f43; font-size: 12px; font-weight: bold; margin-top: 4px;">
-                    Rs.${Math.floor(item.price * 0.5)}
+                    Rs.${relatedDisplayPrice}
                 </div>
             `;
             relatedContainer.appendChild(relatedCard);
         });
     }
+
 
     modal.classList.add("active");
 }
