@@ -468,88 +468,171 @@ if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
     addCartToHTML();
 }
 
-function emailSend(){
-    
-    var messageBody = '';
-     let totalPrice = 0;
+function emailSend() {
+    let totalPrice = 0;
     let totalQuantity = 0;
-    // carts.forEach(item => {
-      
-    //     let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
-    //     let info = listProducts[positionProduct];
-    //     totalPrice = totalPrice+(info.price*0.5*item.quantity);
-    //     messageBody = messageBody + "<br>Name :"+info.title+" &nbsp;Quantity :"+item.quantity+" &emsp; Price :"+info.price*0.5*item.quantity;
-    // })
 
-    // <table><tr><th>Company</th><th>Contact</th><th>Country</th></tr></table>
-
-    messageBody = `Full Name: ${fullName.value}<br> Email: ${email.value}<br> Phone Number: ${phone.value}<br> Pincode : ${pincode.value}<br>Address: ${address.value}<br>`;
-
-    messageBody=messageBody+"<br><table style=\"border:1px solid black;\"><tr style=\"border:1px solid black;\"><th style=\"border:1px solid black;\">Name</th><th style=\"border:1px solid black;\">Quantity</th><th style=\"border:1px solid black;\">Price</th></tr>";
-    messaageSubject = `Crackers Order - ${fullName.value}`;
+    // 1. Build the dynamic order HTML breakdown table matching your custom layouts
+    let messageBody = `Full Name: ${fullName.value}<br> Email: ${email.value}<br> Phone Number: ${phone.value}<br> Pincode : ${pincode.value}<br>Address: ${address.value}<br>`;
+    messageBody += "<br><table style=\"border:1px solid black; border-collapse: collapse; width: 100%;\"><tr style=\"background-color: #21262d; color: white;\"><th style=\"border:1px solid black; padding: 8px;\">Name</th><th style=\"border:1px solid black; padding: 8px;\">Quantity</th><th style=\"border:1px solid black; padding: 8px;\">Price</th></tr>";
+    
+    let messageSubject = `Crackers Order - ${fullName.value}`;
+    
     carts.forEach(item => {
-      
         let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
         let info = listProducts[positionProduct];
-        totalPrice = totalPrice+Math.floor(info.price*0.5*item.quantity);
-        totalQuantity = totalQuantity+(item.quantity);
-        messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">"+info.title+"</td><td style=\"border:1px solid black;\">"+item.quantity+"</td><td style=\"border:1px solid black;\">"+Math.floor(info.price*0.5)+"</td></tr>";
-    })
-    messageBody = messageBody + "<tr style=\"border:1px solid black;\"><td style=\"border:1px solid black;\">Total</td><td style=\"border:1px solid black;\">"+totalQuantity+"</td><td style=\"border:1px solid black;\">"+totalPrice+"</td></tr>";
-    messageBody = messageBody + "</table>";
+        if (info) {
+            let itemUnitPrice = Math.floor(info.price * 0.5);
+            if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
+                itemUnitPrice = info.price;
+            }
+            
+            totalPrice += (itemUnitPrice * item.quantity);
+            totalQuantity += item.quantity;
+            messageBody += `<tr><td style="border:1px solid black; padding: 8px;">${info.title}</td><td style="border:1px solid black; padding: 8px; text-align: center;">${item.quantity}</td><td style="border:1px solid black; padding: 8px; text-align: right;">Rs.${itemUnitPrice * item.quantity}</td></tr>`;
+        }
+    });
     
-     //messageBody = messageBody + "<br>Total Price :"+totalPrice;
-    // messageBody = messageBody + "<table style=\"border:1px solid black;\"><tr style=\"border:1px solid black;\"><th style=\"border:1px solid black;\">Total</th><th style=\"border:1px solid black;\">"+totalQuantity+"</th><th style=\"border:1px solid black;\">"+totalPrice+"</th></tr>";
-     messageBody = messageBody + "<br><br>Regards<br>Team";
-     
+    messageBody += `<tr style="font-weight: bold; background-color: #f1f3f6;"><td style="border:1px solid black; padding: 8px;">Total</td><td style="border:1px solid black; padding: 8px; text-align: center;">${totalQuantity}</td><td style="border:1px solid black; padding: 8px; text-align: right;">Rs.${totalPrice}</td></tr>`;
+    messageBody += "</table><br><br>Regards<br>Team";
 
-   
-    Email.send({
-    SecureToken : "5bd59612-66e9-4b83-a8a7-1defb6c6490e",
-    To : 'sonicawebdev@gmail.com',
-    From : "sonicawebdev@gmail.com",
-    Subject : messaageSubject,
-    Body : messageBody
- }).then(
-  message => {
-      if(message=='OK'){
-          //alert("Successful", "You clicked the button!", "success");
-          carts = [];
-          addCartToHTML();
-          }
-      else{
-          alert("Error", "You clicked the button!", "error");
-      }
-  }
- );
+    // =========================================================================
+    // 🛠️ ELASTIC EMAIL REST API V4 INTEGRATION PATHWAY
+    // =========================================================================
+    
+    // ⚠️ CRITICAL STEP: Paste your full unmasked API key from Elastic Email between the quotes below
+    const MyElasticApiKey = "YOUR_FULL_UNMASKED_API_KEY_HERE"; 
 
+    // Elastic Email v4 structured request payload
+    const emailPayload = {
+        Recipients: {
+            To: ["sonicawebdev@gmail.com"] // Where you want to receive the order notification
+        },
+        Content: {
+            Body: [
+                {
+                    ContentType: "HTML",
+                    Charset: "utf-8",
+                    Content: messageBody
+                }
+            ],
+            From: "sonicawebdev@gmail.com", // ⚠️ Must be your verified Sender email in Elastic Email!
+            Subject: messageSubject
+        }
+    };
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-ElasticEmail-ApiKey': MyElasticApiKey
+        },
+        body: JSON.stringify(emailPayload)
+    };
+
+    // Fire network call directly to the official Elastic Email v4 endpoints transaction hub
+    fetch('https://elasticemail.com', requestOptions)
+    .then(response => {
+        if (response.ok) {
+            alert("Order Submitted Successfully!");
+            carts = []; // Instantly wipe shopping cart layout tracking matrix arrays
+            localStorage.removeItem('shopping_cart');
+            addCartToHTML(); // Refresh storefront drawer indicators
+        } else {
+            return response.json().then(errData => {
+                console.error("Elastic Email Error Context:", errData);
+                alert("Server rejected the email draft. Verify if your sender domain is authenticated.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Network Dispatch Failed:", error);
+        alert("Failed to connect to email servers. Please try again.");
+    });
 }
 
 // Locate the action footer buttons inside addCartToHTML and update the grid row container:
 let buttonContainer = document.querySelector('.cartTab .btn');
 if (buttonContainer) {
-    // Set up 3 dynamic columns for a clean side-by-side responsive layout buttons row
+    // 🛠️ RESTORED: Restored clean 3-column side-by-side button footer row layout
     buttonContainer.style.display = 'grid';
     buttonContainer.style.gridTemplateColumns = '1fr 1fr 1fr';
     buttonContainer.style.height = '60px';
     
     buttonContainer.innerHTML = `
-        <!-- 🛠️ CHANGED: Combined the geometric "×" symbol and the text "Close" together smoothly -->
+        <!-- Restored clean '× Close' text button combo -->
         <button class="close" style="font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; background-color: #ffffff; color: #0d1117; border: none; padding: 0 5px;">
             <span style="font-size: 20px; line-height: 1; vertical-align: middle;">&times;</span> Close
         </button>
+        <!-- 🛠️ RESTORED: Brought back your original direct 'Call Us' connection link -->
         <a href="tel:+919867731440" class="call-btn-link" style="display: flex; align-items: center; justify-content: center; background-color: #ff9f43; color: #0d1117; text-decoration: none; font-weight: 600; font-size: 14px; border-right: 1px solid #30363d;">
             📞 Call Us
         </a>
-        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; padding: 0 5px;">
-            <!-- Official Font Awesome High-Definition Crisp WhatsApp SVG -->
-            <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" viewBox="0 0 448 512" style="display: inline-block; vertical-align: middle; flex-shrink: 0;">
+        <!-- Restored high-definition WhatsApp instant checkout button -->
+        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; padding: 0 5px;">
+            <svg xmlns="http://w3.org" width="15" height="15" fill="currentColor" viewBox="0 0 448 512" style="display: inline-block; vertical-align: middle; flex-shrink: 0;">
                 <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
             </svg>
             WhatsApp
         </button>
     `;
 }
+
+// Intelligent step-by-step validator workflow engine
+function handleEmailCheckoutStep() {
+    if (!carts || carts.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    
+    let formWrapper = document.getElementById('cart-form-scroll-wrapper');
+    let triggerBtn = document.getElementById('toggle-email-checkout-btn');
+    
+    // Step A: If fields are hidden, expand them smoothly with a vibrant layout adjustment focus cue
+    if (formWrapper.style.display === 'none' || !formWrapper.style.display) {
+        formWrapper.style.display = 'block';
+        triggerBtn.innerHTML = '🚀 Send Email';
+        triggerBtn.style.backgroundColor = '#161b22'; // Sleek dark confirmation tone
+        triggerBtn.style.color = '#ff9f43';
+        triggerBtn.style.border = '1px solid #ff9f43';
+        formWrapper.scrollTop = 0;
+    } 
+    // Step B: If fields are visible and filled out, programmatically trigger the submission request
+    else {
+        let hiddenSubmitButton = formWrapper.querySelector('#hidden-submit-trigger');
+        if (hiddenSubmitButton) {
+            hiddenSubmitButton.click(); // Fires HTML5 validation constraints natively
+        }
+    }
+}
+
+// 🛠️ ADDED: Intelligent step-by-step validator workflow engine
+function handleEmailCheckoutStep() {
+    if (!carts || carts.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    
+    let formWrapper = document.getElementById('cart-form-scroll-wrapper');
+    let triggerBtn = document.getElementById('toggle-email-checkout-btn');
+    
+    // Step A: If fields are hidden, expand them smoothly with a vibrant layout adjustment focus cue
+    if (formWrapper.style.display === 'none' || !formWrapper.style.display) {
+        formWrapper.style.display = 'block';
+        triggerBtn.innerHTML = '🚀 Finalize & Send Email';
+        triggerBtn.style.backgroundColor = '#238636'; // Turns vibrant green signaling final execution action
+        triggerBtn.style.color = '#ffffff';
+        formWrapper.scrollTop = 0;
+    } 
+    // Step B: If fields are visible and filled out, programmatically trigger the submission request
+    else {
+        let hiddenSubmitButton = formWrapper.querySelector('#hidden-submit-trigger');
+        if (hiddenSubmitButton) {
+            hiddenSubmitButton.click(); // Fires HTML5 validation constraints natively
+        }
+    }
+}
+
 
 
 

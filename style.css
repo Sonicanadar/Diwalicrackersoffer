@@ -796,23 +796,20 @@ header .icon-cart span{
 }
 
 
-.cartTab{
+.cartTab {
     width: 400px;
     max-width: 100%;
     background-color: grey;
     color: white;
     position: fixed;
-   top:0;
-   right:0;
-   bottom: 0;
+    top: 0;
+    right: -400px;
+    bottom: 0;
+    /* 🛠️ RESTORED: Restored native grid structure layers layout */
     display: grid;
     grid-template-rows: 70px 1fr 70px;
-   
-}
-.cartTab{
-   right: -400px;
-   transition: 0.5s;
-   z-index: 99999 !important; 
+    transition: 0.5s;
+    z-index: 99999 !important; 
 }
 .cartTab h1{
     background-color: goldenrod;

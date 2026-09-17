@@ -22,11 +22,12 @@
             <span><p><img src="/Diwali_images/location_icon.jpg" class="location_img">Sivakasi</p></span>
         </div>
     </div>
-    <div class="container_title_free">    
-        <div class="title1">
-            <p class="blink">Free Shipping on order above <b>Rs.999 </b> till 15.10.2026</p>   
-        </div>
-    </div>
+    <!-- 🛠️ HIGH-CONTRAST TOP PROMOTIONAL BANNER STRIP -->
+<div class="container_title_free" style="width: 100%; background: linear-gradient(90deg, #1b1510 0%, #bd4b00 50%, #1b1510 100%); border-bottom: 2px solid #ff9f43; padding: 12px 20px; text-align: center; display: flex; justify-content: center; align-items: center; z-index: 1001;">
+    <p style="margin: 0; font-family: sans-serif; font-size: 14px; font-weight: 600; color: #f0f6fc; letter-spacing: 0.5px; line-height: 1.4;">
+        💥 <span style="color: #ff9f43; font-weight: 700;">GRAND FESTIVE SALE:</span> Get <b style="color: #0d1117; background-color: #ff9f43; padding: 2px 8px; border-radius: 4px; font-weight: 700; margin: 0 4px;">FLAT 50% OFF</b> on Premium Crackers! + <span style="color: #25D366; font-weight: 700;">FREE SHIPPING</span> on orders above <b>Rs.999</b>! 🚚 <span style="font-size: 11px; color: #8b949e; margin-left: 6px;">(Excludes Gift Boxes)</span>
+    </p>
+</div>
 
          <div class="container">
         <header>
@@ -156,6 +157,29 @@
             <button type="button" onclick="closePopup2()">OK</button>
         </div>
     </div>
+    <!-- 🛠️ ADDED: Self-contained scrollable details layout matrix for the cart panel -->
+    <div id="cart-checkout-form-template" style="display: none;">
+        <div id="cart-form-scroll-wrapper" style="padding: 15px; background-color: #1c2128; border-top: 1px solid #30363d; max-height: 280px; overflow-y: auto;">
+            <p style="color: #8b949e !important; text-align: center !important; margin: 0 0 12px 0 !important; font-size: 12px !important; font-family: sans-serif;">Enter delivery details to complete email checkout:</p>
+            <form name="my-form" autocomplete="off" style="margin: 0 !important; padding: 0 !important;">
+                <div style="margin-bottom: 10px !important;">
+                    <input type="text" id="name" placeholder="Full Name" required style="width: 100% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
+                </div>
+                <div style="margin-bottom: 10px !important;">
+                    <input type="email" id="email" placeholder="Email Address" required style="width: 100% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
+                </div>
+                <div style="display: flex !important; gap: 8px !important; margin-bottom: 10px !important;">
+                    <input type="tel" id="phone" placeholder="Phone Number" required style="width: 55% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
+                    <input type="text" id="pincode" placeholder="Pincode" required style="width: 45% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
+                </div>
+                <div style="margin-bottom: 10px !important;">
+                    <textarea id="address" rows="2" placeholder="Complete Delivery Address" required style="width: 100% !important; padding: 8px 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; resize: none !important; box-sizing: border-box !important; font-family: inherit; line-height: 1.4 !important;"></textarea>
+                </div>
+                <button type="submit" id="hidden-submit-trigger" style="display: none;"></button>
+            </form>
+        </div>
+    </div>
+
     <script src="https://smtpjs.com/v3/smtp.js"></script>
       <script src="app.js"></script>
 
