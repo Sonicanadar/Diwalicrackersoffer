@@ -118,22 +118,20 @@ let totalQuantity = 0 ;
 // }
 
 
+// 🎯 CRITICAL CHECK: Verify your grid card renderer matches this exactly
 function addDataToHTML(productFilter){
     listProductHTML.innerHTML = '';
     
     productFilter.forEach(product => {
         let newProduct = document.createElement('div');
-        newProduct.classList.add('item');
-        newProduct.dataset.id = product.id;
+        newProduct.classList.add('item'); // 👈 MUST HAVE THIS CLASS
+        newProduct.dataset.id = product.id; // 👈 MUST HAVE THIS ATTRIBUTE
 
-        // Check if this specific item is currently present in the cart array
         let cartItemIndex = carts.findIndex((value) => value.product_id == product.id);
         let currentQty = cartItemIndex < 0 ? 0 : carts[cartItemIndex].quantity;
 
-        // Visual setup conditions
         let actionControlHTML = '';
         if (currentQty > 0) {
-            // 🛠️ UPDATED: Render the integrated dark continuous counter UI state matching your cart drawer exactly!
             actionControlHTML = `
                 <div class="quantity grid-quantity-counter">
                     <button class="minus" data-id="${product.id}">-</button>
@@ -142,7 +140,6 @@ function addDataToHTML(productFilter){
                 </div>
             `;
         } else {
-            // Render the raw standard Add to Cart element
             actionControlHTML = `
                 <button class="addCart" data-id="${product.id}">Add to Cart</button>
             `;
@@ -163,16 +160,19 @@ function addDataToHTML(productFilter){
 
 
 
+
 // =========================================================================
 // UNIFIED DELEGATED CLICK EVENT INTERCEPTOR (ALL ACTION PATHWAYS)
 // =========================================================================
 document.addEventListener('click', (event) => {
     let positionClick = event.target;
+    let targetTag = positionClick.tagName.toUpperCase();
     
     // ---------------------------------------------------------------------
-    // PHASE A: CLOSE CART DRAWER AUTOMATICALLY IF CLICKED OUTSIDE BOUNDS
+    // PHASE A: CLOSE DRAWERS & POPUPS ON ACCESSIBLE INPUT ACTIONS
     // ---------------------------------------------------------------------
     let cartTabElement = document.querySelector('.cartTab');
+    
     if (body.classList.contains('activeTabCart') && cartTabElement && iconCart) {
         const clickedInsideCartDrawer = cartTabElement.contains(positionClick);
         const clickedHeaderCartIconRing = iconCart.contains(positionClick);
@@ -182,49 +182,106 @@ document.addEventListener('click', (event) => {
         }
     }
 
-    // ---------------------------------------------------------------------
-    // 🎯 NEW FIX: CAPTURE ACCESSIBLE CLOSE BUTTON EVENT CLICKS
-    // ---------------------------------------------------------------------
     if (positionClick.classList.contains('close')) {
         body.classList.remove('activeTabCart');
-        return; // Exit interceptor early since drawer window is closed
+        return; 
+    }
+
+    if (positionClick.classList.contains('modal-close-btn')) {
+        closeProductModal();
+        return; 
     }
 
     // ---------------------------------------------------------------------
-    // PHASE B: EVALUATE & RESOLVE PRODUCT STATE UPDATES
+    // PHASE B: INTERCEPT VISUAL MODAL TRIGGERS (IMAGE / TITLE SELECTION)
     // ---------------------------------------------------------------------
-    let idProduct = positionClick.dataset.id;
-    
-    if (!idProduct && positionClick.parentElement && positionClick.parentElement.dataset.id) {
-        idProduct = positionClick.parentElement.dataset.id;
+    // Skip modal opening triggers completely if clicking action buttons!
+    let isCartActionButton = positionClick.classList.contains('addCart') || 
+                             positionClick.classList.contains('plus') || 
+                             positionClick.classList.contains('minus') ||
+                             positionClick.classList.contains('cart-item-delete');
+
+    if (!isCartActionButton) {
+        // Trigger 1: Clicked Main Grid Item Card Images/Titles
+        if (targetTag === 'IMG' || targetTag === 'H2') {
+            let itemCard = positionClick.closest('.item');
+            if (itemCard) {
+                let clickedProductId = itemCard.dataset.id;
+                openProductModal(clickedProductId);
+                return; 
+            }
+        }
+
+        // Trigger 2: Clicked Related Cards Inside the Opened Popup View Strip
+        let relatedCardTarget = positionClick.closest('.related-item-card');
+        if (relatedCardTarget) {
+            let nestedProductId = relatedCardTarget.dataset.id;
+            
+            document.getElementById("modalMainDetails").innerHTML = '';
+            document.getElementById("relatedProductsList").innerHTML = '';
+            
+            openProductModal(nestedProductId);
+            return;
+        }
     }
 
-    if (!idProduct) return;
+    // ---------------------------------------------------------------------
+    // PHASE C: BULLETPROOF PRODUCT QUANTITY & CART SYSTEM MUTATIONS
+    // ---------------------------------------------------------------------
+    if (isCartActionButton) {
+        // 1. Trace product ID from dataset attributes across the target or closest action parent element
+        let idProduct = positionClick.dataset.id;
+        if (!idProduct && positionClick.parentElement) {
+            idProduct = positionClick.parentElement.dataset.id;
+        }
+        if (!idProduct) {
+            let contextWrapper = positionClick.closest('.action-container') || positionClick.closest('.quantity-counter-inline');
+            if (contextWrapper) idProduct = contextWrapper.dataset.id;
+        }
 
-    let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
-    let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
-    
-    if (positionClick.classList.contains('cart-item-delete')) {
-        quantity = 0;
-        addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(productFilter || listProducts);
-    }
-    else if (positionClick.classList.contains('addCart')) {
-        quantity = 1; 
-        addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(productFilter || listProducts); 
-    } 
-    else if (positionClick.classList.contains('plus')) {
-        quantity++;
-        addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(productFilter || listProducts);
-    } 
-    else if (positionClick.classList.contains('minus')) {
-        quantity--;
-        addToCart(idProduct, quantity, positionThisProductInCart);
-        addDataToHTML(productFilter || listProducts);
+        // Exit early if we absolutely cannot find an ID
+        if (!idProduct) return;
+
+        // 2. Core lookup logic using loose comparison (==) to handle string/number mismatches safely
+        let positionThisProductInCart = carts.findIndex((value) => value.product_id == idProduct);
+        let quantity = positionThisProductInCart < 0 ? 0 : carts[positionThisProductInCart].quantity;
+        
+        if (positionClick.classList.contains('cart-item-delete')) {
+            quantity = 0;
+            addToCart(idProduct, quantity, positionThisProductInCart);
+            addDataToHTML(productFilter || listProducts);
+        }
+        else if (positionClick.classList.contains('addCart')) {
+            quantity = 1; 
+            addToCart(idProduct, quantity, positionThisProductInCart);
+            addDataToHTML(productFilter || listProducts); 
+            
+            // Instantly refresh the popup elements if open
+            if (document.getElementById("productModal").classList.contains("active")) {
+                openProductModal(idProduct);
+            }
+        } 
+        else if (positionClick.classList.contains('plus')) {
+            quantity++;
+            addToCart(idProduct, quantity, positionThisProductInCart);
+            addDataToHTML(productFilter || listProducts);
+            
+            if (document.getElementById("productModal").classList.contains("active")) {
+                openProductModal(idProduct);
+            }
+        } 
+        else if (positionClick.classList.contains('minus')) {
+            quantity--;
+            addToCart(idProduct, quantity, positionThisProductInCart);
+            addDataToHTML(productFilter || listProducts);
+            
+            if (document.getElementById("productModal").classList.contains("active")) {
+                openProductModal(idProduct);
+            }
+        }
     }
 });
+
 
 
 const addToCart = (idProduct, quantity, positionThisProductInCart) => {
@@ -451,7 +508,101 @@ if (buttonContainer) {
         </button>
     `;
 }
+// =========================================================================
+// ⭐ ADD STEP 3 HERE: STANDALONE MODAL STATE RENDERING CONTROLLERS
+// =========================================================================
+function openProductModal(productId) {
+    const modal = document.getElementById("productModal");
+    const mainDetailsContainer = document.getElementById("modalMainDetails");
+    const relatedContainer = document.getElementById("relatedProductsList");
+    
+    const targetProduct = listProducts.find(p => p.id == productId);
+    if (!targetProduct) return;
 
+    mainDetailsContainer.innerHTML = '';
+    relatedContainer.innerHTML = '';
+
+    // 🎯 DYNAMIC STATE ENGINE: Determine if this item is currently inside the shopping cart memory matrix
+    let cartItemIndex = carts.findIndex((value) => value.product_id == targetProduct.id);
+    let currentQty = cartItemIndex < 0 ? 0 : carts[cartItemIndex].quantity;
+
+    let modalActionControlHTML = '';
+    if (currentQty > 0) {
+        // Render the integrated horizontal quantitative display counter component block
+        modalActionControlHTML = `
+            <div class="quantity-counter-inline" data-id="${targetProduct.id}">
+                <button class="minus" data-id="${targetProduct.id}">-</button>
+                <div class="qty-display">${currentQty}</div>
+                <button class="plus" data-id="${targetProduct.id}">+</button>
+            </div>
+        `;
+    } else {
+        // Render standard functional Add to Cart button layout element
+        modalActionControlHTML = `
+            <button class="addCart" data-id="${targetProduct.id}">Add to Cart</button>
+        `;
+    }
+
+    mainDetailsContainer.innerHTML = `
+        <img src="${targetProduct.image}" alt="${targetProduct.title}">
+        <div class="modal-info-text">
+            <h2>${targetProduct.title}</h2>
+            <p style="color: #8b949e; font-size: 13px; margin-bottom: 8px;">Category: ${targetProduct.category}</p>
+            <div style="font-size: 1.2rem; font-weight: 700; color: #ff9f43; margin-bottom: 10px;">
+                Rs.${Math.floor(targetProduct.price * 0.5)}
+                <span style="font-size: 0.9rem; text-decoration: line-through; color: #8b949e; margin-left: 8px;">
+                    MRP. ${targetProduct.price}
+                </span>
+            </div>
+            
+            <!-- 🎯 CART INTERFACE ANCHOR POINT -->
+            <div class="action-container" data-id="${targetProduct.id}">
+                ${modalActionControlHTML}
+            </div>
+        </div>
+    `;
+
+    // Render related item category strip loops metrics below
+    const relatedItems = listProducts.filter(p => 
+        p.category === targetProduct.category && p.id != targetProduct.id
+    );
+
+    if (relatedItems.length === 0) {
+        relatedContainer.innerHTML = `<div style="color: #8b949e; font-size: 13px; padding: 10px;">No related items found in this category.</div>`;
+    } else {
+        relatedItems.forEach(item => {
+            let relatedCard = document.createElement('div');
+            relatedCard.classList.add('related-item-card');
+            relatedCard.dataset.id = item.id; 
+            
+            relatedCard.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <h4>${item.title}</h4>
+                <div style="color: #ff9f43; font-size: 12px; font-weight: bold; margin-top: 4px;">
+                    Rs.${Math.floor(item.price * 0.5)}
+                </div>
+            `;
+            relatedContainer.appendChild(relatedCard);
+        });
+    }
+
+    modal.classList.add("active");
+}
+
+
+function closeProductModal() {
+    document.getElementById("productModal").classList.remove("active");
+}
+
+// Optional background auto-close handle listener layer configurations
+let modalOverlayNode = document.getElementById("productModal");
+if(modalOverlayNode) {
+    modalOverlayNode.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeProductModal();
+        }
+    });
+}
 const initApp = () => {
     // 1. Fetch the master catalog data structure from your local file
     fetch('products.json')
