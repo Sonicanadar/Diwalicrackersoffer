@@ -146,13 +146,15 @@ function addDataToHTML(productFilter){
         }
 
         // 🎯 FIX: Remove discount specifically for the GIFT BOXES category
-        let finalDisplayPrice = Math.floor(product.price * 0.5);
-        let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
+let finalDisplayPrice = Math.floor(product.price * 0.5);
+let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
 
-        if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
-            finalDisplayPrice = product.price; // Sell at full price
-            mrpTagHTML = ''; // Hide the slashed-out lower price text decoration
-        }
+if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
+    finalDisplayPrice = product.price; // Sell at full price
+    // 🛠️ CHANGED: Show a clean, bright badge stating "No Discount" for Gift Boxes
+    mrpTagHTML = `<span style="font-size: 0.75rem; color: #ff9f43; background-color: rgba(255, 159, 67, 0.15); padding: 2px 6px; border-radius: 4px; margin-right: 6px; font-weight: 600; text-decoration: none !important;">No Discount</span>`;
+}
+
 
         newProduct.innerHTML = `
             <img src="${product.image}" alt="">
@@ -343,7 +345,7 @@ const addCartToHTML = () => {
         }
     } 
     else {
-                carts.forEach(item => {
+        carts.forEach(item => {
             totalQuantity = totalQuantity + item.quantity;
         
             let newCart = document.createElement('div');
@@ -352,15 +354,25 @@ const addCartToHTML = () => {
             let info = listProducts[positionProduct];
             
             if (info) {
-                // 🎯 FIX: Apply category specific base calculations inside the drawer summary fields
-                let itemUnitPrice = Math.floor(info.price * 0.5);
-                if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
-                    itemUnitPrice = info.price;
-                }
+                // 1. Calculate pricing structures based on category rules
+            // Calculate pricing structures based on category rules
+let itemUnitPrice = Math.floor(info.price * 0.5);
+let originalItemCost = info.price * item.quantity; 
+
+// Set up the crossed-out MRP display string
+let mrpTagHTML = `<span style="font-size: 0.85rem; text-decoration: line-through; color: #b3b9c1; margin-bottom: 2px; font-weight: 500; opacity: 0.85;">Rs.${originalItemCost}</span>`;
+
+if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
+    itemUnitPrice = info.price; // Sell at full price
+    // 🛠️ CHANGED: Show a small "No Discount" text layout label stacked in the cart price column
+    mrpTagHTML = `<span style="font-size: 0.75rem; color: #ff9f43; margin-bottom: 2px; font-weight: 600;">No Discount</span>`;
+}
+
 
                 let totalItemCost = itemUnitPrice * item.quantity;
                 totalPrice = totalPrice + totalItemCost;
                 
+                // 2. Inject updated inner content layout inside the drawer item nodes
                 newCart.innerHTML = `
                     <div class="image" style="display: flex; align-items: center; justify-content: center;">
                         <img src="${info.image}" alt="" style="max-height: 45px; width: auto; object-fit: contain;">
@@ -368,8 +380,11 @@ const addCartToHTML = () => {
                     <div class="name">
                         ${info.title}
                     </div>
-                    <div class="totalPrice">
-                        Rs.${totalItemCost}
+                    <div class="totalPrice" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; line-height: 1.3;">
+                        <!-- Original Total Price on top row line -->
+                        ${mrpTagHTML}
+                        <!-- Final Active Selling Price below it -->
+                        <span style="font-weight: 700; color: #ff9f43; font-size: 0.95rem;">Rs.${totalItemCost}</span>
                     </div>
                     <div class="quantity">
                         <button class="minus" data-id="${info.id}">-</button>
@@ -381,7 +396,6 @@ const addCartToHTML = () => {
                 if (listHTML) listHTML.appendChild(newCart);
             }
         });
-
     }
 
     if (totalHTML) {
@@ -398,10 +412,11 @@ const addCartToHTML = () => {
         totalPriceHTML.innerText = "Rs." + totalPrice + ".00";
     }
 
+    // 🛠️ FIXED CRITICAL ERROR: Restored the complete local storage string payload structure parameter
     if (carts.length > 0) {
         localStorage.setItem('shopping_cart', JSON.stringify(carts));
     }
-}
+};
 
 
   function checkoutViaWhatsApp() {
@@ -513,21 +528,31 @@ function emailSend(){
 // Locate the action footer buttons inside addCartToHTML and update the grid row container:
 let buttonContainer = document.querySelector('.cartTab .btn');
 if (buttonContainer) {
-    // 🛠️ CHANGED: Set up 3 dynamic columns for a clean side-by-side responsive layout buttons row
+    // Set up 3 dynamic columns for a clean side-by-side responsive layout buttons row
     buttonContainer.style.display = 'grid';
     buttonContainer.style.gridTemplateColumns = '1fr 1fr 1fr';
     buttonContainer.style.height = '60px';
     
     buttonContainer.innerHTML = `
-        <button class="close">CLOSE</button>
+        <!-- 🛠️ CHANGED: Combined the geometric "×" symbol and the text "Close" together smoothly -->
+        <button class="close" style="font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; background-color: #ffffff; color: #0d1117; border: none; padding: 0 5px;">
+            <span style="font-size: 20px; line-height: 1; vertical-align: middle;">&times;</span> Close
+        </button>
         <a href="tel:+919867731440" class="call-btn-link" style="display: flex; align-items: center; justify-content: center; background-color: #ff9f43; color: #0d1117; text-decoration: none; font-weight: 600; font-size: 14px; border-right: 1px solid #30363d;">
             📞 Call Us
         </a>
-        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 500; cursor: pointer;">
+        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; padding: 0 5px;">
+            <!-- Official Font Awesome High-Definition Crisp WhatsApp SVG -->
+            <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" viewBox="0 0 448 512" style="display: inline-block; vertical-align: middle; flex-shrink: 0;">
+                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+            </svg>
             WhatsApp
         </button>
     `;
 }
+
+
+
 // =========================================================================
 // ⭐ ADD STEP 3 HERE: STANDALONE MODAL STATE RENDERING CONTROLLERS
 // =========================================================================
@@ -561,31 +586,33 @@ function openProductModal(productId) {
         `;
     }
 
-    // ==========================================
-    // 🎯 START OF STEP 4 ADDITION
-    // ==========================================
+    // =========================================================================
+    // 🛠️ CHANGED: Set up the bright pricing structure layout matching the cart specs
+    // =========================================================================
     let modalDisplayPrice = Math.floor(targetProduct.price * 0.5);
-    let modalMrpTagHTML = `
-        <span style="font-size: 0.9rem; text-decoration: line-through; color: #8b949e; margin-left: 8px;">
-            MRP. ${targetProduct.price}
-        </span>
-    `;
 
-    // Remove discount tracking layout variables strictly for the GIFT BOXES category
-    if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "GIFT BOXES") {
-        modalDisplayPrice = targetProduct.price;
-        modalMrpTagHTML = ''; // Hides slashed original pricing text completely
-    }
-    // ==========================================
-    // 🎯 END OF STEP 4 ADDITION
-    // ==========================================
+let modalMrpTagHTML = `
+    <span style="font-size: 0.95rem; text-decoration: line-through; color: #b3b9c1; margin-left: 8px; font-weight: 500; opacity: 0.85;">
+        MRP. ${targetProduct.price}
+    </span>
+`;
+
+// Remove discount tracking layout variables strictly for the GIFT BOXES category
+if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "GIFT BOXES") {
+    modalDisplayPrice = targetProduct.price;
+    // 🛠️ CHANGED: Show the "No Discount" badge next to the main modal price label row
+    modalMrpTagHTML = `<span style="font-size: 0.8rem; color: #ff9f43; background-color: rgba(255, 159, 67, 0.15); padding: 3px 8px; border-radius: 4px; margin-left: 8px; font-weight: 600;">No Discount</span>`;
+}
+
 
     mainDetailsContainer.innerHTML = `
         <img src="${targetProduct.image}" alt="${targetProduct.title}">
         <div class="modal-info-text">
             <h2>${targetProduct.title}</h2>
             <p style="color: #8b949e; font-size: 13px; margin-bottom: 8px;">Category: ${targetProduct.category}</p>
-            <div style="font-size: 1.2rem; font-weight: 700; color: #ff9f43; margin-bottom: 10px;">
+            
+            <!-- Stacks the pricing components cleanly just like the shopping cart drawer row grid -->
+            <div style="font-size: 1.3rem; font-weight: 700; color: #ff9f43; margin-bottom: 15px; display: flex; align-items: center; gap: 4px;">
                 Rs.${modalDisplayPrice}
                 ${modalMrpTagHTML}
             </div>
@@ -602,7 +629,7 @@ function openProductModal(productId) {
         p.category === targetProduct.category && p.id != targetProduct.id
     );
 
-        if (relatedItems.length === 0) {
+    if (relatedItems.length === 0) {
         relatedContainer.innerHTML = `<div style="color: #8b949e; font-size: 13px; padding: 10px;">No related items found in this category.</div>`;
     } else {
         relatedItems.forEach(item => {
@@ -610,23 +637,27 @@ function openProductModal(productId) {
             relatedCard.classList.add('related-item-card');
             relatedCard.dataset.id = item.id; 
             
-            // 🎯 FIX: Apply category specific base calculations for related items strip prices
-            let relatedDisplayPrice = Math.floor(item.price * 0.5);
-            if (item.category && item.category.trim().toUpperCase() === "GIFT BOXES") {
-                relatedDisplayPrice = item.price; // Sell related gift boxes at full MRP
-            }
+            // Apply category specific base calculations for related items strip prices
+let relatedDisplayPrice = Math.floor(item.price * 0.5);
+let relatedMrpHTML = `<span style="font-size: 0.75rem; text-decoration: line-through; color: #b3b9c1; margin-left: 4px; font-weight: 400; opacity: 0.8;">Rs.${item.price}</span>`;
+
+if (item.category && item.category.trim().toUpperCase() === "GIFT BOXES") {
+    relatedDisplayPrice = item.price; // Sell related gift boxes at full MRP
+    // 🛠️ CHANGED: Add inline indicator layout for compact related item cards
+    relatedMrpHTML = `<span style="font-size: 0.7rem; color: #ff9f43; font-weight: 600; margin-left: 4px;">(No Disc.)</span>`;
+}
+
             
             relatedCard.innerHTML = `
                 <img src="${item.image}" alt="${item.title}">
                 <h4>${item.title}</h4>
-                <div style="color: #ff9f43; font-size: 12px; font-weight: bold; margin-top: 4px;">
-                    Rs.${relatedDisplayPrice}
+                <div style="color: #ff9f43; font-size: 12px; font-weight: bold; margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 2px;">
+                    Rs.${relatedDisplayPrice} ${relatedMrpHTML}
                 </div>
             `;
             relatedContainer.appendChild(relatedCard);
         });
     }
-
 
     modal.classList.add("active");
 }

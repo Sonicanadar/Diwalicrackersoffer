@@ -899,12 +899,13 @@ body.activeTabCart .cartTab{
 
 .cartTab .listCart .item {
     display: grid !important;
-    /* Adjust grid columns to explicitly give the delete column its own balanced pixel space */
-    grid-template-columns: 50px 1fr 65px 95px 30px !important; 
-    gap: 12px !important;
+    /* CHANGED: Increased the price column from 65px to 105px to fit both numbers comfortably */
+    grid-template-columns: 50px 1fr 105px 95px 30px !important; 
+    gap: 8px !important;
     align-items: center !important;
     padding: 12px 10px !important;
     border-bottom: 1px solid #30363d !important;
+    background-color: transparent !important;
 }
 
 .cartTab .listCart .name {
@@ -1373,15 +1374,10 @@ form button:hover {
 }
 /* Universal dynamic layout tracking architecture alignment updates */
 .cartTab .listCart .item {
-    display: grid !important;
-    /* Uses fluid flex sizing arrays rather than pixel bounds to ensure text behaves correctly */
-    grid-template-columns: 45px 1fr 65px 85px 25px !important; 
-    gap: 10px !important;
-    align-items: center !important;
-    padding: 12px 10px !important;
-    border-bottom: 1px solid #30363d !important;
-    background-color: transparent !important;
-}
+        display: grid !important;
+        grid-template-columns: 45px 1fr 100px 85px 25px !important;
+        gap: 6px !important;
+    }
 
 /* Ensure long product text scales inside the dynamic columns map */
 .cartTab .listCart .name {
