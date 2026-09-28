@@ -969,3 +969,53 @@ const initApp = () => {
 
 // Fire the application setup sequence
 initApp();
+
+// =========================================================================
+// CUSTOM CATEGORY DROPDOWN (replaces the phone's native picker, so there is no "Done" button)
+// =========================================================================
+(function buildCategoryDropdown() {
+    const nativeSelect = document.querySelector('.filter select[name="category"]');
+    if (!nativeSelect) return;
+    const filterForm = nativeSelect.closest('.filter');
+    filterForm.classList.add('cx-custom');
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cx-dd';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cx-dd-btn';
+    const list = document.createElement('ul');
+    list.className = 'cx-dd-list';
+    list.setAttribute('role', 'listbox');
+
+    const setLabel = () => {
+        btn.textContent = nativeSelect.options[nativeSelect.selectedIndex].text;
+        list.querySelectorAll('li').forEach(li =>
+            li.classList.toggle('selected', li.dataset.value === nativeSelect.value));
+    };
+
+    Array.from(nativeSelect.options).forEach(opt => {
+        const li = document.createElement('li');
+        li.textContent = opt.text;
+        li.dataset.value = opt.value;
+        li.setAttribute('role', 'option');
+        li.addEventListener('click', () => {
+            nativeSelect.value = opt.value;
+            setLabel();
+            wrap.classList.remove('open');
+            nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        list.appendChild(li);
+    });
+
+    btn.addEventListener('click', () => {
+        wrap.classList.toggle('open');
+        if (wrap.classList.contains('open')) wrap.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+    document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(list);
+    filterForm.appendChild(wrap);
+    setLabel();
+})();
