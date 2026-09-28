@@ -209,9 +209,13 @@
             <p class="upi-or">or scan this QR with any UPI app</p>
             <div id="upiQr" class="upi-qr"></div>
             <p class="upi-id">UPI ID: <b id="upiIdText"></b> <button class="upi-copy" onclick="copyUpiId()">Copy</button></p>
-            <p class="upi-note">After paying, enter the 12-digit UPI reference (UTR) number and send it to us on WhatsApp to confirm your order.</p>
-            <input id="upiUtr" class="upi-utr" type="text" inputmode="numeric" maxlength="12" placeholder="12-digit UPI Ref / UTR number">
-            <button class="upi-confirm" onclick="confirmUpiPaymentOnWhatsApp()">I have paid - Confirm on WhatsApp</button>
+            <p class="upi-note">After paying, attach a screenshot of the payment. It will be sent to us on WhatsApp along with your order.</p>
+            <label class="upi-file" for="upiShot">
+                <span id="upiShotLabel">📸 Attach payment screenshot</span>
+                <input id="upiShot" type="file" accept="image/*" onchange="onUpiScreenshotChange(this)">
+            </label>
+            <img id="upiShotPreview" class="upi-shot-preview" alt="Payment screenshot preview" style="display:none;">
+            <button class="upi-confirm" onclick="confirmUpiPaymentOnWhatsApp()">Send order + screenshot on WhatsApp</button>
         </div>
     </div>
 
