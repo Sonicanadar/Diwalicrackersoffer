@@ -402,7 +402,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -555,6 +555,54 @@ function resetUpiScreenshot() {
     onUpiScreenshotChange({ files: [] });
 }
 
+// ---------------------------------------------------------------------
+// Screenshot upload (Cloudinary, free). The uploaded image link is put in
+// the WhatsApp order message, so it goes to YOUR number like a COD order.
+// Setup: cloudinary.com -> free account -> Settings > Upload > add an
+// UNSIGNED upload preset. Then paste your cloud name and preset name below.
+// ---------------------------------------------------------------------
+const CLOUDINARY_CLOUD_NAME = "your_cloud_name";
+const CLOUDINARY_UPLOAD_PRESET = "your_unsigned_preset";
+
+function cloudinaryConfigured() {
+    return CLOUDINARY_CLOUD_NAME !== "your_cloud_name" &&
+           CLOUDINARY_UPLOAD_PRESET !== "your_unsigned_preset";
+}
+
+// Shrinks big phone screenshots so the upload is quick on mobile data
+function shrinkImage(file, maxSide = 1280, quality = 0.8) {
+    return new Promise(resolve => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob(blob => { URL.revokeObjectURL(url); resolve(blob || file); }, 'image/jpeg', quality);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+    });
+}
+
+async function uploadScreenshot(file) {
+    const blob = await shrinkImage(file);
+    const fd = new FormData();
+    fd.append('file', blob, 'payment.jpg');
+    fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    fd.append('folder', 'payment-screenshots');
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: fd
+    });
+    if (!res.ok) throw new Error('Upload failed: ' + res.status);
+    const data = await res.json();
+    if (!data.secure_url) throw new Error('No image URL returned');
+    return data.secure_url;
+}
+
 async function confirmUpiPaymentOnWhatsApp() {
     const input = document.getElementById('upiShot');
     const file = input.files && input.files[0];
@@ -565,39 +613,64 @@ async function confirmUpiPaymentOnWhatsApp() {
     const customer = getCustomerDetails();
     if (!customer) return;
 
-    // Preferred: share the screenshot + order text straight into WhatsApp (phones)
-    const shareData = {
-        files: [file],
-        text: buildOrderMessage(
-            "New Order - Paid via UPI",
-            customer,
-            `✅ *Paid via UPI to:* ${UPI_ID}\n📸 Payment screenshot attached\n\nPlease verify the payment and confirm my order.`
-        )
-    };
+    const btn = document.querySelector('.upi-confirm');
+    const btnText = btn.innerText;
 
+    // MAIN FLOW: upload screenshot, then send the order + image link to your WhatsApp number
+    if (cloudinaryConfigured()) {
+        // Open the tab now (inside the tap) so phone browsers do not block it after the upload
+        const waTab = window.open('', '_blank');
+        btn.disabled = true;
+        btn.innerText = 'Uploading screenshot...';
+        try {
+            const imageUrl = await uploadScreenshot(file);
+            const message = buildOrderMessage(
+                "New Order - Paid via UPI",
+                customer,
+                `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`
+            );
+            const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+            if (waTab) { waTab.location.href = waUrl; } else { window.location.href = waUrl; }
+            closeUpiModal();
+            resetUpiScreenshot();
+            finishOrder();
+            btn.disabled = false;
+            btn.innerText = btnText;
+            return;
+        } catch (err) {
+            console.error(err);
+            if (waTab) waTab.close();
+            alert("Could not upload the screenshot. Please check your internet and try again.");
+            btn.disabled = false;
+            btn.innerText = btnText;
+            return;
+        }
+    }
+
+    // BACKUP FLOW (only if Cloudinary is not set up): share sheet on phones, or text-only WhatsApp link
+    const shareText = buildOrderMessage(
+        "New Order - Paid via UPI",
+        customer,
+        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 Payment screenshot attached\n\nPlease verify the payment and confirm my order.`
+    );
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
-            await navigator.share(shareData);
+            await navigator.share({ files: [file], text: shareText });
             closeUpiModal();
             resetUpiScreenshot();
             finishOrder();
         } catch (err) {
-            // Customer closed the share sheet: keep the cart so they can retry
-            if (err && err.name !== 'AbortError') {
-                alert("Could not open sharing. Please try again.");
-            }
+            if (err && err.name !== 'AbortError') alert("Could not open sharing. Please try again.");
         }
         return;
     }
-
-    // Fallback (desktop / browsers that cannot share files): WhatsApp link opens with text only
     const message = buildOrderMessage(
         "New Order - Paid via UPI",
         customer,
         `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`
     );
     window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
-    alert("WhatsApp is opening. Please attach your payment screenshot in the chat (tap the 📎 / + icon) and send it.");
+    alert("WhatsApp is opening. Please attach your payment screenshot in the chat and send it.");
     closeUpiModal();
     resetUpiScreenshot();
     finishOrder();
