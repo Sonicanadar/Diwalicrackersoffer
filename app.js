@@ -402,7 +402,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -525,23 +525,81 @@ function copyUpiId() {
     }
 }
 
-function confirmUpiPaymentOnWhatsApp() {
-    const utr = document.getElementById("upiUtr").value.trim();
-    if (!/^\d{12}$/.test(utr)) {
-        alert("Please enter the 12-digit UPI transaction / UTR number from your payment app.");
+function onUpiScreenshotChange(input) {
+    const file = input.files && input.files[0];
+    const preview = document.getElementById('upiShotPreview');
+    const label = document.getElementById('upiShotLabel');
+    if (!file) {
+        preview.style.display = 'none';
+        label.innerText = '📸 Attach payment screenshot';
+        return;
+    }
+    if (!file.type.startsWith('image/')) {
+        alert('Please choose an image (screenshot) file.');
+        input.value = '';
+        return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+        alert('This image is too large. Please choose a smaller screenshot.');
+        input.value = '';
+        return;
+    }
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+    label.innerText = '✅ ' + file.name + ' (tap to change)';
+}
+
+function resetUpiScreenshot() {
+    const input = document.getElementById('upiShot');
+    if (input) input.value = '';
+    onUpiScreenshotChange({ files: [] });
+}
+
+async function confirmUpiPaymentOnWhatsApp() {
+    const input = document.getElementById('upiShot');
+    const file = input.files && input.files[0];
+    if (!file) {
+        alert("Please attach a screenshot of your UPI payment.");
         return;
     }
     const customer = getCustomerDetails();
     if (!customer) return;
 
+    // Preferred: share the screenshot + order text straight into WhatsApp (phones)
+    const shareData = {
+        files: [file],
+        text: buildOrderMessage(
+            "New Order - Paid via UPI",
+            customer,
+            `✅ *Paid via UPI to:* ${UPI_ID}\n📸 Payment screenshot attached\n\nPlease verify the payment and confirm my order.`
+        )
+    };
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+            await navigator.share(shareData);
+            closeUpiModal();
+            resetUpiScreenshot();
+            finishOrder();
+        } catch (err) {
+            // Customer closed the share sheet: keep the cart so they can retry
+            if (err && err.name !== 'AbortError') {
+                alert("Could not open sharing. Please try again.");
+            }
+        }
+        return;
+    }
+
+    // Fallback (desktop / browsers that cannot share files): WhatsApp link opens with text only
     const message = buildOrderMessage(
         "New Order - Paid via UPI",
         customer,
-        `✅ *Paid via UPI to:* ${UPI_ID}\n🧾 *UPI Ref / UTR:* ${utr}\n\nPlease verify the payment and confirm my order.`
+        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`
     );
     window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+    alert("WhatsApp is opening. Please attach your payment screenshot in the chat (tap the 📎 / + icon) and send it.");
     closeUpiModal();
-    document.getElementById("upiUtr").value = "";
+    resetUpiScreenshot();
     finishOrder();
 }
 
