@@ -514,6 +514,7 @@ function openUpiModal() {
 }
 
 function closeUpiModal() {
+    resetUpiConfirmButton();
     document.getElementById("upiModal").classList.remove("active");
 }
 
@@ -526,6 +527,7 @@ function copyUpiId() {
 }
 
 function onUpiScreenshotChange(input) {
+    resetUpiConfirmButton();
     const file = input.files && input.files[0];
     const preview = document.getElementById('upiShotPreview');
     const label = document.getElementById('upiShotLabel');
@@ -603,6 +605,15 @@ async function uploadScreenshot(file) {
     return data.secure_url;
 }
 
+let pendingUpiWaUrl = null;
+const UPI_BTN_DEFAULT_TEXT = 'Send order + screenshot on WhatsApp';
+
+function resetUpiConfirmButton() {
+    pendingUpiWaUrl = null;
+    const b = document.querySelector('.upi-confirm');
+    if (b) { b.disabled = false; b.innerText = UPI_BTN_DEFAULT_TEXT; }
+}
+
 async function confirmUpiPaymentOnWhatsApp() {
     const input = document.getElementById('upiShot');
     const file = input.files && input.files[0];
@@ -616,10 +627,19 @@ async function confirmUpiPaymentOnWhatsApp() {
     const btn = document.querySelector('.upi-confirm');
     const btnText = btn.innerText;
 
-    // MAIN FLOW: upload screenshot, then send the order + image link to your WhatsApp number
+    // Step 2: screenshot already uploaded -> this tap (a real user tap) opens WhatsApp on your number
+    if (pendingUpiWaUrl) {
+        const url = pendingUpiWaUrl;
+        pendingUpiWaUrl = null;
+        window.open(url, '_blank');
+        closeUpiModal();
+        resetUpiScreenshot();
+        finishOrder();
+        return;
+    }
+
+    // MAIN FLOW, step 1: upload the screenshot, then wait for one more tap to open WhatsApp
     if (cloudinaryConfigured()) {
-        // Open the tab now (inside the tap) so phone browsers do not block it after the upload
-        const waTab = window.open('', '_blank');
         btn.disabled = true;
         btn.innerText = 'Uploading screenshot...';
         try {
@@ -629,17 +649,12 @@ async function confirmUpiPaymentOnWhatsApp() {
                 customer,
                 `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`
             );
-            const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
-            if (waTab) { waTab.location.href = waUrl; } else { window.location.href = waUrl; }
-            closeUpiModal();
-            resetUpiScreenshot();
-            finishOrder();
+            pendingUpiWaUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
             btn.disabled = false;
-            btn.innerText = btnText;
+            btn.innerText = '✅ Screenshot uploaded - Tap to open WhatsApp';
             return;
         } catch (err) {
             console.error(err);
-            if (waTab) waTab.close();
             alert("Could not upload the screenshot. Please check your internet and try again.");
             btn.disabled = false;
             btn.innerText = btnText;
