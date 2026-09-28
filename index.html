@@ -105,34 +105,31 @@
     
 
     
-    <div class="cartTab">
-        <h1>Shopping Cart</h1>
-        <div class="listCart" id="listCart">
-            <div class="item">
-                <div class="image">
-                    <img src="" alt="">
-                </div>
-                <div class="name">
-                    Your cart is empty
-                </div>
-                <div class="totalPrice">
-                    
-                </div>
-                <div class="quantity">
-                    <span class="minus"></span>
-                    <span>0</span>
-                    <span class="plus">></span>
-                </div>
+    <div class="cartTab cx-empty">
+        <div class="cx-head">
+            <div>
+                <h3>🛒 Your Cart</h3>
+                <small id="cx-count">0 items</small>
             </div>
+            <button class="close cx-x" aria-label="Close cart">&times;</button>
         </div>
-        <div class="foot">
-            <h3>Total</h3>
-            <h2 id="total"><span>Rs. 0.00</span></h2>
-        </div>
-        <div class="btn">
-            <button class="close">CLOSE</button>
-            <!-- <button class="openPopup" onclick="openPopup()">SUBMIT</button> -->
-            <button class="whatsapp-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp</button>
+
+        <div class="listCart" id="listCart"></div>
+
+        <div class="cx-foot">
+            <div class="cx-fields">
+                <input id="cx-name" type="text" placeholder="Your name" autocomplete="name">
+                <textarea id="cx-address" rows="2" placeholder="Full delivery address with pincode" autocomplete="street-address"></textarea>
+            </div>
+
+            <div class="cx-row"><span>Total MRP</span><b id="cx-mrp">Rs.0</b></div>
+            <div class="cx-row save" id="cx-save-row"><span>You save</span><b id="cx-save">Rs.0</b></div>
+            <div class="cx-row total"><span>Total to pay</span><b id="cx-total">Rs.0</b></div>
+
+            <div class="cx-actions">
+                <button class="cx-btn upi" onclick="openUpiModal()">Pay via UPI<small>GPay, PhonePe, Paytm, any UPI app</small></button>
+                <button class="cx-btn cod" onclick="checkoutCOD()">Cash on Delivery<small>Confirm your order on WhatsApp</small></button>
+            </div>
         </div>
     </div>
     <div class="container_popup">
