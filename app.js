@@ -419,6 +419,102 @@ if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
 };
 
 
+
+// =========================================================================
+// UPI PAYMENT
+// =========================================================================
+// ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
+const UPI_ID = "yourname@upi";
+const UPI_PAYEE_NAME = "Vav Pyro Park";
+
+function getCartTotal() {
+    let total = 0;
+    carts.forEach(item => {
+        const info = listProducts.find(p => p.id == item.product_id);
+        if (!info) return;
+        let unit = Math.floor(info.price * 0.5);
+        if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") unit = info.price;
+        total += unit * item.quantity;
+    });
+    return total;
+}
+
+function buildUpiLink(amount) {
+    const params = new URLSearchParams({
+        pa: UPI_ID,
+        pn: UPI_PAYEE_NAME,
+        am: amount.toFixed(2),
+        cu: "INR",
+        tn: "Crackers order"
+    });
+    return "upi://pay?" + params.toString();
+}
+
+function openUpiModal() {
+    if (!carts || carts.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+    const total = getCartTotal();
+    const link = buildUpiLink(total);
+
+    document.getElementById("upiAmount").innerText = "Rs." + total;
+    document.getElementById("upiIdText").innerText = UPI_ID;
+    document.getElementById("upiPayLink").href = link;
+
+    const qrBox = document.getElementById("upiQr");
+    qrBox.innerHTML = "";
+    if (window.QRCode) {
+        new QRCode(qrBox, { text: link, width: 180, height: 180 });
+    } else {
+        qrBox.innerText = "QR unavailable. Use the button or UPI ID above.";
+    }
+    document.getElementById("upiModal").classList.add("active");
+}
+
+function closeUpiModal() {
+    document.getElementById("upiModal").classList.remove("active");
+}
+
+function copyUpiId() {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(UPI_ID).then(() => alert("UPI ID copied: " + UPI_ID));
+    } else {
+        prompt("Copy this UPI ID:", UPI_ID);
+    }
+}
+
+function confirmUpiPaymentOnWhatsApp() {
+    const businessPhone = "919867731440";
+    const utr = document.getElementById("upiUtr").value.trim();
+    if (!/^\d{12}$/.test(utr)) {
+        alert("Please enter the 12-digit UPI transaction / UTR number from your payment app.");
+        return;
+    }
+    let message = ` *New Order - Paid via UPI* \n\n`;
+    let grandTotal = 0;
+    carts.forEach(cartItem => {
+        const p = listProducts.find(x => x.id == cartItem.product_id);
+        if (!p) return;
+        let unit = Math.floor(p.price * 0.5);
+        if (p.category && p.category.trim().toUpperCase() === "GIFT BOXES") unit = p.price;
+        const line = unit * cartItem.quantity;
+        grandTotal += line;
+        message += ` *${p.title}*\n   Qty: ${cartItem.quantity} x Rs.${unit} = Rs.${line}\n\n`;
+    });
+    message += `💰 *Grand Total:* Rs.${grandTotal}\n`;
+    message += `✅ *Paid via UPI to:* ${UPI_ID}\n`;
+    message += `🧾 *UPI Ref / UTR:* ${utr}\n\n`;
+    message += `Please verify the payment and confirm my order.`;
+
+    window.open(`https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`, '_blank');
+    closeUpiModal();
+    document.getElementById("upiUtr").value = "";
+    carts = [];
+    localStorage.removeItem('shopping_cart');
+    addCartToHTML();
+}
+
   function checkoutViaWhatsApp() {
     // 1. Set your business phone number (include country code, no spaces or +)
     const businessPhone = "919867731440"; 
@@ -556,7 +652,7 @@ let buttonContainer = document.querySelector('.cartTab .btn');
 if (buttonContainer) {
     // 🛠️ RESTORED: Restored clean 3-column side-by-side button footer row layout
     buttonContainer.style.display = 'grid';
-    buttonContainer.style.gridTemplateColumns = '1fr 1fr 1fr';
+    buttonContainer.style.gridTemplateColumns = '1fr 1fr 1.1fr 1.3fr';
     buttonContainer.style.height = '60px';
     
     buttonContainer.innerHTML = `
@@ -568,6 +664,10 @@ if (buttonContainer) {
         <a href="tel:+919867731440" class="call-btn-link" style="display: flex; align-items: center; justify-content: center; background-color: #ff9f43; color: #0d1117; text-decoration: none; font-weight: 600; font-size: 14px; border-right: 1px solid #30363d;">
             📞 Call Us
         </a>
+        <!-- UPI payment button -->
+        <button onclick="openUpiModal()" style="background-color: #5f259f; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 5px;">
+            Pay UPI
+        </button>
         <!-- Restored high-definition WhatsApp instant checkout button -->
         <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; padding: 0 5px;">
             <svg xmlns="http://w3.org" width="15" height="15" fill="currentColor" viewBox="0 0 448 512" style="display: inline-block; vertical-align: middle; flex-shrink: 0;">

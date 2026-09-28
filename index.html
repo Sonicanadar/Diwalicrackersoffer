@@ -202,6 +202,23 @@
         </div>
     </div>
 
+    <!-- UPI PAYMENT MODAL -->
+    <div id="upiModal" class="upi-modal">
+        <div class="upi-box">
+            <button class="upi-close" onclick="closeUpiModal()">&times;</button>
+            <h2>Pay via UPI</h2>
+            <div class="upi-amount" id="upiAmount">Rs.0</div>
+            <a id="upiPayLink" class="upi-pay-btn" href="#">Open UPI App (GPay / PhonePe / Paytm)</a>
+            <p class="upi-or">or scan this QR with any UPI app</p>
+            <div id="upiQr" class="upi-qr"></div>
+            <p class="upi-id">UPI ID: <b id="upiIdText"></b> <button class="upi-copy" onclick="copyUpiId()">Copy</button></p>
+            <p class="upi-note">After paying, enter the 12-digit UPI reference (UTR) number and send it to us on WhatsApp to confirm your order.</p>
+            <input id="upiUtr" class="upi-utr" type="text" inputmode="numeric" maxlength="12" placeholder="12-digit UPI Ref / UTR number">
+            <button class="upi-confirm" onclick="confirmUpiPaymentOnWhatsApp()">I have paid - Confirm on WhatsApp</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
       <script src="app.js"></script>
 

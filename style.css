@@ -1641,3 +1641,19 @@ form button:hover {
 .modal-info-text .quantity-counter-inline .plus:hover {
     background-color: #30363d !important;
 }
+
+/* ===== UPI PAYMENT MODAL ===== */
+.upi-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100000;align-items:center;justify-content:center;padding:15px;}
+.upi-modal.active{display:flex;}
+.upi-box{position:relative;background:#161b22;color:#fff;width:360px;max-width:100%;max-height:95vh;overflow-y:auto;border-radius:14px;padding:22px 20px;text-align:center;border:1px solid #30363d;}
+.upi-box h2{margin:0 0 6px;color:#ff9f43;}
+.upi-close{position:absolute;top:8px;right:12px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;}
+.upi-amount{font-size:1.8rem;font-weight:700;margin-bottom:12px;}
+.upi-pay-btn{display:block;background:#5f259f;color:#fff !important;text-decoration:none;padding:12px;border-radius:8px;font-weight:600;font-size:14px;}
+.upi-or{color:#8b949e;font-size:12px;margin:12px 0 8px;}
+.upi-qr{display:flex;justify-content:center;background:#fff;padding:10px;border-radius:10px;width:fit-content;margin:0 auto;color:#000;font-size:12px;}
+.upi-id{font-size:13px;margin:12px 0 4px;}
+.upi-copy{background:#ff9f43;border:none;border-radius:4px;padding:2px 8px;cursor:pointer;font-weight:600;margin-left:4px;}
+.upi-note{color:#8b949e;font-size:12px;margin:10px 0;}
+.upi-utr{width:100%;box-sizing:border-box;padding:10px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#fff;margin-bottom:10px;text-align:center;}
+.upi-confirm{width:100%;background:#25D366;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;}
