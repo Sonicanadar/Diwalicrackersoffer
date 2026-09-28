@@ -9,8 +9,8 @@ let plus = document.querySelector('.plus');
 let popup = document.getElementById("popup");
 let popup2 = document.getElementById("popup2");
 let form1 = document.forms['my-form'];
-let menu = form1.category;
-let options =form1.category.options;
+let menu = form1 ? form1.category : null;
+let options = form1 && form1.category ? form1.category.options : null;
 let filter = document.querySelector(".filter");
 
 
@@ -64,10 +64,10 @@ if (form1) {
         }
 
 
-iconCart.addEventListener('click', ()=> {
+if (iconCart) iconCart.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
-closeBtn.addEventListener('click', ()=> {
+if (closeBtn) closeBtn.addEventListener('click', ()=> {
     body.classList.toggle('activeTabCart')
 })
 
@@ -85,7 +85,7 @@ const address = document.getElementById("address");
 
 
 
-form.addEventListener("submit",(e)=>{
+if (form) form.addEventListener("submit",(e)=>{
     e.preventDefault();
     emailSend();
 })
@@ -830,6 +830,7 @@ const initApp = () => {
         addCartToHTML();
     })
     .catch(error => {
+        if (listProductHTML) { listProductHTML.innerHTML = '<p style="color:#ff9f43;text-align:center;padding:30px;grid-column:1/-1;">Could not load products. Please refresh (Ctrl+F5). If you opened the file directly from your computer, run it through a web server or your hosting instead.</p>'; }
         console.error("Critical: Master product data catalog failed to load properly.", error);
     });
 }
