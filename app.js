@@ -402,7 +402,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -561,8 +561,8 @@ function resetUpiScreenshot() {
 // Setup: cloudinary.com -> free account -> Settings > Upload > add an
 // UNSIGNED upload preset. Then paste your cloud name and preset name below.
 // ---------------------------------------------------------------------
-const CLOUDINARY_CLOUD_NAME = "your_cloud_name";
-const CLOUDINARY_UPLOAD_PRESET = "your_unsigned_preset";
+const CLOUDINARY_CLOUD_NAME = "jewcomoh";
+const CLOUDINARY_UPLOAD_PRESET = "l42y0qa6";
 
 function cloudinaryConfigured() {
     return CLOUDINARY_CLOUD_NAME !== "your_cloud_name" &&
