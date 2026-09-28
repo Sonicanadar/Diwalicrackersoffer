@@ -647,23 +647,7 @@ async function confirmUpiPaymentOnWhatsApp() {
         }
     }
 
-    // BACKUP FLOW (only if Cloudinary is not set up): share sheet on phones, or text-only WhatsApp link
-    const shareText = buildOrderMessage(
-        "New Order - Paid via UPI",
-        customer,
-        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 Payment screenshot attached\n\nPlease verify the payment and confirm my order.`
-    );
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-            await navigator.share({ files: [file], text: shareText });
-            closeUpiModal();
-            resetUpiScreenshot();
-            finishOrder();
-        } catch (err) {
-            if (err && err.name !== 'AbortError') alert("Could not open sharing. Please try again.");
-        }
-        return;
-    }
+    // BACKUP FLOW (only if Cloudinary is not set up): opens your WhatsApp number directly, text only
     const message = buildOrderMessage(
         "New Order - Paid via UPI",
         customer,
