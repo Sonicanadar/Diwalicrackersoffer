@@ -402,7 +402,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -462,6 +462,8 @@ function finishOrder() {
     document.getElementById('cx-name').value = '';
     document.getElementById('cx-address').value = '';
     addCartToHTML();
+    // Reset the product grid so every card goes back to "Add to Cart"
+    addDataToHTML(productFilter || listProducts);
     body.classList.remove('activeTabCart');
 }
 
