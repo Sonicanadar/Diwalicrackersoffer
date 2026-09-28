@@ -403,7 +403,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -440,8 +440,130 @@ function getCustomerDetails() {
     return { name, address };
 }
 
-function buildOrderMessage(heading, customer, paymentLines) {
-    let message = `*${heading}*\n\n`;
+// ---------------------------------------------------------------------
+// ORDER IDs + ORDER RECORDS (saved to your Google Sheet)
+// Setup: paste the Google Apps Script web-app URL between the quotes below.
+// Leave it empty ("") to skip saving orders to a sheet (WhatsApp still works).
+// ---------------------------------------------------------------------
+const ORDER_SHEET_URL = "";
+
+// Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
+const WEB3FORMS_KEY = "";
+
+function generateOrderId() {
+    const d = new Date();
+    const yy = String(d.getFullYear()).slice(2);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // no confusing 0/O/1/I
+    let rand = '';
+    for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+    return `VPP-${yy}${mm}${dd}-${rand}`;
+}
+
+function buildOrderRecord(orderId, customer, payment, screenshotUrl) {
+    let total = 0;
+    const parts = [];
+    carts.forEach(ci => {
+        const p = listProducts.find(x => x.id == ci.product_id);
+        if (!p) return;
+        const unit = unitPriceOf(p);
+        const line = unit * ci.quantity;
+        total += line;
+        parts.push(`${p.title} x${ci.quantity} @Rs.${unit} = Rs.${line}`);
+    });
+    return {
+        orderId,
+        time: new Date().toISOString(),
+        name: customer.name,
+        address: customer.address,
+        payment,
+        items: parts.join('\n'),
+        total,
+        screenshot: screenshotUrl || '',
+        status: 'New'
+    };
+}
+
+function postOrderRecord(record) {
+    return fetch(ORDER_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(record)
+    });
+}
+
+function sendOrderEmail(record) {
+    if (!WEB3FORMS_KEY) return;
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `New Order ${record.orderId} - Rs.${record.total} (${record.payment})`,
+            from_name: 'Vav Pyro Park Website',
+            'Order ID': record.orderId,
+            'Date & Time': new Date(record.time).toLocaleString('en-IN'),
+            'Customer Name': record.name,
+            'Address': record.address,
+            'Payment': record.payment,
+            'Items': record.items,
+            'Total (Rs)': record.total,
+            'Payment Screenshot': record.screenshot || 'N/A'
+        })
+    }).catch(() => { /* email is only a backup, ignore failures */ });
+}
+
+function sendOrderRecord(record) {
+    // Customer's own device keeps a short history of their order IDs
+    try {
+        const hist = JSON.parse(localStorage.getItem('vpp_my_orders') || '[]');
+        hist.unshift({ id: record.orderId, time: record.time, total: record.total, payment: record.payment });
+        localStorage.setItem('vpp_my_orders', JSON.stringify(hist.slice(0, 50)));
+    } catch (e) { /* ignore */ }
+
+    sendOrderEmail(record);
+
+    if (!ORDER_SHEET_URL) return;
+    postOrderRecord(record).catch(() => {
+        // No internet at that moment: keep it and retry next time the site opens
+        try {
+            const q = JSON.parse(localStorage.getItem('vpp_unsent_orders') || '[]');
+            q.push(record);
+            localStorage.setItem('vpp_unsent_orders', JSON.stringify(q));
+        } catch (e) { /* ignore */ }
+    });
+}
+
+function flushUnsentOrders() {
+    if (!ORDER_SHEET_URL) return;
+    let q = [];
+    try { q = JSON.parse(localStorage.getItem('vpp_unsent_orders') || '[]'); } catch (e) { return; }
+    if (!q.length) return;
+    localStorage.removeItem('vpp_unsent_orders');
+    q.forEach(rec => postOrderRecord(rec).catch(() => {
+        const again = JSON.parse(localStorage.getItem('vpp_unsent_orders') || '[]');
+        again.push(rec);
+        localStorage.setItem('vpp_unsent_orders', JSON.stringify(again));
+    }));
+}
+
+function showOrderToast(orderId) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100002;max-width:92vw;background:#161b22;color:#fff;border:2px solid #ff9f43;border-radius:12px;padding:14px 18px;text-align:center;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.6);';
+    t.innerHTML = `✅ <b>Order placed!</b><br>Your Order ID: <b style="color:#ff9f43;font-size:16px;">${orderId}</b><br><span style="color:#8b949e;font-size:12px;">Send the WhatsApp message to confirm. Keep this ID for reference.</span>`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 12000);
+    t.addEventListener('click', () => t.remove());
+}
+
+flushUnsentOrders();
+
+function buildOrderMessage(heading, customer, paymentLines, orderId) {
+    let message = `*${heading}*\n🆔 *Order ID:* ${orderId}\n\n`;
     message += `*Name:* ${customer.name}\n*Address:* ${customer.address}\n\n`;
     let grandTotal = 0;
     carts.forEach(cartItem => {
@@ -474,13 +596,17 @@ function checkoutCOD() {
     const customer = getCustomerDetails();
     if (!customer) return;
 
+    const orderId = generateOrderId();
     const message = buildOrderMessage(
         "New Order - Cash on Delivery",
         customer,
-        `💵 *Payment:* Cash on Delivery (COD)\n\nPlease confirm my order.`
+        `💵 *Payment:* Cash on Delivery (COD)\n\nPlease confirm my order.`,
+        orderId
     );
+    sendOrderRecord(buildOrderRecord(orderId, customer, 'Cash on Delivery', ''));
     window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     finishOrder();
+    showOrderToast(orderId);
 }
 
 // ---------- UPI ----------
@@ -608,11 +734,11 @@ async function uploadScreenshot(file) {
     return data.secure_url;
 }
 
-let pendingUpiWaUrl = null;
+let pendingUpi = null;
 const UPI_BTN_DEFAULT_TEXT = 'Send order + screenshot on WhatsApp';
 
 function resetUpiConfirmButton() {
-    pendingUpiWaUrl = null;
+    pendingUpi = null;
     const b = document.querySelector('.upi-confirm');
     if (b) { b.disabled = false; b.innerText = UPI_BTN_DEFAULT_TEXT; }
 }
@@ -631,13 +757,15 @@ async function confirmUpiPaymentOnWhatsApp() {
     const btnText = btn.innerText;
 
     // Step 2: screenshot already uploaded -> this tap (a real user tap) opens WhatsApp on your number
-    if (pendingUpiWaUrl) {
-        const url = pendingUpiWaUrl;
-        pendingUpiWaUrl = null;
-        window.open(url, '_blank');
+    if (pendingUpi) {
+        const sent = pendingUpi;
+        pendingUpi = null;
+        sendOrderRecord(sent.record);
+        window.open(sent.url, '_blank');
         closeUpiModal();
         resetUpiScreenshot();
         finishOrder();
+        showOrderToast(sent.record.orderId);
         return;
     }
 
@@ -647,12 +775,17 @@ async function confirmUpiPaymentOnWhatsApp() {
         btn.innerText = 'Uploading screenshot...';
         try {
             const imageUrl = await uploadScreenshot(file);
+            const orderId = generateOrderId();
             const message = buildOrderMessage(
                 "New Order - Paid via UPI",
                 customer,
-                `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`
+                `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`,
+                orderId
             );
-            pendingUpiWaUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+            pendingUpi = {
+                url: `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`,
+                record: buildOrderRecord(orderId, customer, 'UPI (paid)', imageUrl)
+            };
             btn.disabled = false;
             btn.innerText = '✅ Screenshot uploaded - Tap to open WhatsApp';
             return;
@@ -666,16 +799,20 @@ async function confirmUpiPaymentOnWhatsApp() {
     }
 
     // BACKUP FLOW (only if Cloudinary is not set up): opens your WhatsApp number directly, text only
+    const orderId = generateOrderId();
     const message = buildOrderMessage(
         "New Order - Paid via UPI",
         customer,
-        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`
+        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`,
+        orderId
     );
+    sendOrderRecord(buildOrderRecord(orderId, customer, 'UPI (paid)', ''));
     window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     alert("WhatsApp is opening. Please attach your payment screenshot in the chat and send it.");
     closeUpiModal();
     resetUpiScreenshot();
     finishOrder();
+    showOrderToast(orderId);
 }
 
 function emailSend() {
