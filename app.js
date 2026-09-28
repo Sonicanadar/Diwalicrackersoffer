@@ -403,7 +403,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "yourname@upi";
+const UPI_ID = "sonica.nadar-3@okhdfcbank";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -448,7 +448,7 @@ function getCustomerDetails() {
 const ORDER_SHEET_URL = "";
 
 // Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
-const WEB3FORMS_KEY = "";
+const WEB3FORMS_KEY = "f0a9dfd9-73e7-4671-aeb4-37b44c118cfa";
 
 function generateOrderId() {
     const d = new Date();
