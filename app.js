@@ -154,6 +154,7 @@ if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") 
 
 
         newProduct.innerHTML = `
+            <button class="share-btn" data-id="${product.id}" aria-label="Share this product" title="Share"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg></button>
             <img src="${product.image}" alt="">
             <h2>${product.title}</h2>
             <div class="price">${mrpTagHTML}Rs.${finalDisplayPrice}</div>
@@ -886,6 +887,7 @@ if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "G
             <div class="action-container" data-id="${targetProduct.id}">
                 ${modalActionControlHTML}
             </div>
+            <button class="share-btn share-inline" data-id="${targetProduct.id}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg> Share</button>
         </div>
     `;
 
@@ -960,6 +962,12 @@ const initApp = () => {
         
         // This execution call will now successfully find all matching product information details!
         addCartToHTML();
+
+        // Opened from a shared link (?p=ID): show that product
+        const sharedId = new URLSearchParams(window.location.search).get('p');
+        if (sharedId !== null && listProducts.some(p => p.id == sharedId)) {
+            openProductModal(sharedId);
+        }
     })
     .catch(error => {
         if (listProductHTML) { listProductHTML.innerHTML = '<p style="color:#ff9f43;text-align:center;padding:30px;grid-column:1/-1;">Could not load products. Please refresh (Ctrl+F5). If you opened the file directly from your computer, run it through a web server or your hosting instead.</p>'; }
@@ -1019,3 +1027,46 @@ initApp();
     filterForm.appendChild(wrap);
     setLabel();
 })();
+
+// =========================================================================
+// SHARE A PRODUCT WITH FRIENDS
+// =========================================================================
+async function shareProduct(id) {
+    const p = listProducts.find(x => x.id == id);
+    if (!p) return;
+
+    const price = unitPriceOf(p);
+    const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
+    const link = `${window.location.origin}${window.location.pathname}?p=${p.id}`;
+    const priceLine = isGift ? `Rs.${price}` : `Rs.${price} (MRP Rs.${p.price} - 50% OFF)`;
+    const text = `🎆 ${p.title}\n💰 ${priceLine}\nDiwali crackers at Vav Pyro Park\n\n${link}`;
+
+    if (navigator.share) {
+        // Try to include the product picture so friends see it in WhatsApp
+        try {
+            const res = await fetch(p.image);
+            const blob = await res.blob();
+            const file = new File([blob], 'product.' + (blob.type.split('/')[1] || 'png'), { type: blob.type });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], text });
+                return;
+            }
+        } catch (err) {
+            if (err && err.name === 'AbortError') return;
+        }
+        try {
+            await navigator.share({ title: p.title, text });
+        } catch (err) { /* user closed the share sheet */ }
+        return;
+    }
+
+    // Desktop fallback: WhatsApp share link
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+document.addEventListener('click', (event) => {
+    const shareBtn = event.target.closest('.share-btn');
+    if (!shareBtn) return;
+    event.stopPropagation();
+    shareProduct(shareBtn.dataset.id);
+});
