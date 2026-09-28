@@ -72,10 +72,7 @@ closeBtn.addEventListener('click', ()=> {
 })
 
 
-plus.addEventListener('click', ()=> {
-    let idProduct = positionClick.dataset.id; 
-    console.log(idProduct);
-})
+
 
 
  
@@ -189,7 +186,7 @@ document.addEventListener('click', (event) => {
         const clickedInsideCartDrawer = cartTabElement.contains(positionClick);
         const clickedHeaderCartIconRing = iconCart.contains(positionClick);
 
-        if (!clickedInsideCartDrawer && !clickedHeaderCartIconRing) {
+        if (!clickedInsideCartDrawer && !clickedHeaderCartIconRing && !positionClick.closest('.upi-modal')) {
             body.classList.remove('activeTabCart');
         }
     }
@@ -323,122 +320,167 @@ const addToCart = (idProduct, quantity, positionThisProductInCart) => {
 }
 
 const addCartToHTML = () => {
-    let listHTML = document.querySelector('.listCart');
-    let totalHTML = document.querySelector('.icon-cart span');
-    let totalPriceHTML = document.querySelector('.cartTab .foot span');
-    let totalQuantity = 0;
-    
-    if (listHTML) listHTML.innerHTML = null;
-  
-    let totalPrice = 0;
-    if (totalPriceHTML) totalPriceHTML.innerText = "Rs. 0.00";
-    if (totalHTML) totalHTML.innerText = totalQuantity;
+    const listHTML = document.querySelector('.listCart');
+    const badge = document.querySelector('.icon-cart span');
+    const cartTab = document.querySelector('.cartTab');
+    let totalQuantity = 0, totalPrice = 0, totalMrp = 0;
 
-    if (carts.length == 0) {
-        let totalPriceElement = document.getElementById("total_price");
-        if (totalPriceElement) {
-            totalPriceElement.innerHTML = "Rs. 0.00";
-        }
-        
-        if (listHTML) {
-            listHTML.innerHTML = `<div class="empty-message" style="padding: 20px; text-align: center; color: #8b949e; width: 100%;">Your cart is empty</div>`;
-        }
-    } 
-    else {
-        carts.forEach(item => {
-            totalQuantity = totalQuantity + item.quantity;
-        
-            let newCart = document.createElement('div');
-            newCart.classList.add('item');
-            let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
-            let info = listProducts[positionProduct];
-            
-            if (info) {
-                // 1. Calculate pricing structures based on category rules
-            // Calculate pricing structures based on category rules
-let itemUnitPrice = Math.floor(info.price * 0.5);
-let originalItemCost = info.price * item.quantity; 
+    if (listHTML) listHTML.innerHTML = '';
 
-// Set up the crossed-out MRP display string
-let mrpTagHTML = `<span style="font-size: 0.85rem; text-decoration: line-through; color: #b3b9c1; margin-bottom: 2px; font-weight: 500; opacity: 0.85;">Rs.${originalItemCost}</span>`;
+    carts.forEach(item => {
+        const info = listProducts.find(v => v.id == item.product_id);
+        if (!info) return;
 
-if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
-    itemUnitPrice = info.price; // Sell at full price
-    // 🛠️ CHANGED: Show a small "No Discount" text layout label stacked in the cart price column
-    mrpTagHTML = `<span style="font-size: 0.75rem; color: #ff9f43; margin-bottom: 2px; font-weight: 600;">No Discount</span>`;
-}
+        const isGift = info.category && info.category.trim().toUpperCase() === "GIFT BOXES";
+        const unit = isGift ? info.price : Math.floor(info.price * 0.5);
+        const lineMrp = info.price * item.quantity;
+        const linePay = unit * item.quantity;
 
+        totalQuantity += item.quantity;
+        totalPrice += linePay;
+        totalMrp += lineMrp;
 
-                let totalItemCost = itemUnitPrice * item.quantity;
-                totalPrice = totalPrice + totalItemCost;
-                
-                // 2. Inject updated inner content layout inside the drawer item nodes
-                newCart.innerHTML = `
-                    <div class="image" style="display: flex; align-items: center; justify-content: center;">
-                        <img src="${info.image}" alt="" style="max-height: 45px; width: auto; object-fit: contain;">
-                    </div>
-                    <div class="name">
-                        ${info.title}
-                    </div>
-                    <div class="totalPrice" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; line-height: 1.3;">
-                        <!-- Original Total Price on top row line -->
-                        ${mrpTagHTML}
-                        <!-- Final Active Selling Price below it -->
-                        <span style="font-weight: 700; color: #ff9f43; font-size: 0.95rem;">Rs.${totalItemCost}</span>
-                    </div>
-                    <div class="quantity">
-                        <button class="minus" data-id="${info.id}">-</button>
-                        <span>${item.quantity}</span>
-                        <span class="plus" data-id="${info.id}">+</span>
-                    </div>
-                    <button class="cart-item-delete" data-id="${info.id}" title="Remove Item">×</button>
-                `;
-                if (listHTML) listHTML.appendChild(newCart);
-            }
-        });
+        const row = document.createElement('div');
+        row.classList.add('cx-item');
+        row.innerHTML = `
+            <img class="cx-img" src="${info.image}" alt="">
+            <div class="cx-mid">
+                <div class="cx-name">${info.title}</div>
+                <div class="cx-unit">Rs.${unit} each${isGift ? ' · No discount' : ''}</div>
+                <div class="cx-qty">
+                    <button class="minus" data-id="${info.id}">&minus;</button>
+                    <span>${item.quantity}</span>
+                    <button class="plus" data-id="${info.id}">+</button>
+                </div>
+            </div>
+            <div class="cx-right">
+                <button class="cart-item-delete" data-id="${info.id}" title="Remove item">&times;</button>
+                <div class="cx-line">
+                    ${isGift ? '' : `<s>Rs.${lineMrp}</s>`}
+                    <b>Rs.${linePay}</b>
+                </div>
+            </div>
+        `;
+        if (listHTML) listHTML.appendChild(row);
+    });
+
+    if (totalQuantity === 0 && listHTML) {
+        listHTML.innerHTML = `
+            <div class="cx-empty-msg">
+                <div class="cx-empty-icon">🎆</div>
+                <p>Your cart is empty</p>
+                <span>Add some crackers to get started</span>
+            </div>`;
     }
 
-    if (totalHTML) {
+    if (cartTab) cartTab.classList.toggle('cx-empty', totalQuantity === 0);
+
+    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+    setText('cx-count', totalQuantity + (totalQuantity === 1 ? ' item' : ' items'));
+    setText('cx-mrp', 'Rs.' + totalMrp);
+    setText('cx-save', '- Rs.' + (totalMrp - totalPrice));
+    setText('cx-total', 'Rs.' + totalPrice);
+    const saveRow = document.getElementById('cx-save-row');
+    if (saveRow) saveRow.style.display = (totalMrp - totalPrice) > 0 ? 'flex' : 'none';
+
+    if (badge) {
         if (totalQuantity > 0) {
-            totalHTML.innerText = totalQuantity;
-            totalHTML.style.display = 'flex';
+            badge.innerText = totalQuantity;
+            badge.style.display = 'flex';
         } else {
-            totalHTML.innerText = '';
-            totalHTML.style.display = 'none';
+            badge.innerText = '';
+            badge.style.display = 'none';
         }
     }
 
-    if (totalPriceHTML) {
-        totalPriceHTML.innerText = "Rs." + totalPrice + ".00";
-    }
-
-    // 🛠️ FIXED CRITICAL ERROR: Restored the complete local storage string payload structure parameter
     if (carts.length > 0) {
         localStorage.setItem('shopping_cart', JSON.stringify(carts));
     }
 };
 
-
-
 // =========================================================================
-// UPI PAYMENT
+// PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
 const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
+const BUSINESS_WHATSAPP = "919867731440";
+
+function unitPriceOf(p) {
+    return (p.category && p.category.trim().toUpperCase() === "GIFT BOXES")
+        ? p.price
+        : Math.floor(p.price * 0.5);
+}
 
 function getCartTotal() {
     let total = 0;
     carts.forEach(item => {
         const info = listProducts.find(p => p.id == item.product_id);
-        if (!info) return;
-        let unit = Math.floor(info.price * 0.5);
-        if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") unit = info.price;
-        total += unit * item.quantity;
+        if (info) total += unitPriceOf(info) * item.quantity;
     });
     return total;
 }
 
+// Name + address are needed for delivery in both payment modes
+function getCustomerDetails() {
+    const nameEl = document.getElementById('cx-name');
+    const addrEl = document.getElementById('cx-address');
+    const name = nameEl.value.trim();
+    const address = addrEl.value.trim();
+
+    nameEl.classList.toggle('cx-invalid', !name);
+    addrEl.classList.toggle('cx-invalid', !address);
+
+    if (!name || !address) {
+        alert("Please enter your name and delivery address.");
+        (!name ? nameEl : addrEl).focus();
+        return null;
+    }
+    return { name, address };
+}
+
+function buildOrderMessage(heading, customer, paymentLines) {
+    let message = `*${heading}*\n\n`;
+    message += `*Name:* ${customer.name}\n*Address:* ${customer.address}\n\n`;
+    let grandTotal = 0;
+    carts.forEach(cartItem => {
+        const p = listProducts.find(x => x.id == cartItem.product_id);
+        if (!p) return;
+        const unit = unitPriceOf(p);
+        const line = unit * cartItem.quantity;
+        grandTotal += line;
+        message += `*${p.title}*\n   Qty: ${cartItem.quantity} x Rs.${unit} = Rs.${line}\n\n`;
+    });
+    message += `💰 *Grand Total:* Rs.${grandTotal}\n`;
+    message += paymentLines;
+    return message;
+}
+
+function finishOrder() {
+    carts = [];
+    localStorage.removeItem('shopping_cart');
+    document.getElementById('cx-name').value = '';
+    document.getElementById('cx-address').value = '';
+    addCartToHTML();
+    body.classList.remove('activeTabCart');
+}
+
+// ---------- Cash on Delivery ----------
+function checkoutCOD() {
+    if (!carts || carts.length === 0) { alert("Your cart is empty!"); return; }
+    const customer = getCustomerDetails();
+    if (!customer) return;
+
+    const message = buildOrderMessage(
+        "New Order - Cash on Delivery",
+        customer,
+        `💵 *Payment:* Cash on Delivery (COD)\n\nPlease confirm my order.`
+    );
+    window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+    finishOrder();
+}
+
+// ---------- UPI ----------
 function buildUpiLink(amount) {
     const params = new URLSearchParams({
         pa: UPI_ID,
@@ -451,10 +493,9 @@ function buildUpiLink(amount) {
 }
 
 function openUpiModal() {
-    if (!carts || carts.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
+    if (!carts || carts.length === 0) { alert("Your cart is empty!"); return; }
+    if (!getCustomerDetails()) return;
+
     const total = getCartTotal();
     const link = buildUpiLink(total);
 
@@ -485,83 +526,23 @@ function copyUpiId() {
 }
 
 function confirmUpiPaymentOnWhatsApp() {
-    const businessPhone = "919867731440";
     const utr = document.getElementById("upiUtr").value.trim();
     if (!/^\d{12}$/.test(utr)) {
         alert("Please enter the 12-digit UPI transaction / UTR number from your payment app.");
         return;
     }
-    let message = ` *New Order - Paid via UPI* \n\n`;
-    let grandTotal = 0;
-    carts.forEach(cartItem => {
-        const p = listProducts.find(x => x.id == cartItem.product_id);
-        if (!p) return;
-        let unit = Math.floor(p.price * 0.5);
-        if (p.category && p.category.trim().toUpperCase() === "GIFT BOXES") unit = p.price;
-        const line = unit * cartItem.quantity;
-        grandTotal += line;
-        message += ` *${p.title}*\n   Qty: ${cartItem.quantity} x Rs.${unit} = Rs.${line}\n\n`;
-    });
-    message += `💰 *Grand Total:* Rs.${grandTotal}\n`;
-    message += `✅ *Paid via UPI to:* ${UPI_ID}\n`;
-    message += `🧾 *UPI Ref / UTR:* ${utr}\n\n`;
-    message += `Please verify the payment and confirm my order.`;
+    const customer = getCustomerDetails();
+    if (!customer) return;
 
-    window.open(`https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`, '_blank');
+    const message = buildOrderMessage(
+        "New Order - Paid via UPI",
+        customer,
+        `✅ *Paid via UPI to:* ${UPI_ID}\n🧾 *UPI Ref / UTR:* ${utr}\n\nPlease verify the payment and confirm my order.`
+    );
+    window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     closeUpiModal();
     document.getElementById("upiUtr").value = "";
-    carts = [];
-    localStorage.removeItem('shopping_cart');
-    addCartToHTML();
-}
-
-  function checkoutViaWhatsApp() {
-    // 1. Set your business phone number (include country code, no spaces or +)
-    const businessPhone = "919867731440"; 
-
-    // 2. Safety Check: Verify if the cart exists and has items
-    // (Replace 'cart' with the actual name of your cart array variable)
-    if (!carts || carts.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-
-    let message = ` *New Order Summary* \n\n`;
-    let grandTotal = 0;
-
-        // Loop through your cart items to build the list
-    carts.forEach(cartItem => {
-        const productDetails = listProducts.find(p => p.id == cartItem.product_id);
-        
-        if (productDetails) {
-            // 🎯 FIX: Calculate price based on category rule variations
-            let transactionalPrice = Math.floor(productDetails.price * 0.5);
-            if (productDetails.category && productDetails.category.trim().toUpperCase() === "GIFT BOXES") {
-                transactionalPrice = productDetails.price;
-            }
-
-            const itemTotal = transactionalPrice * cartItem.quantity;
-            grandTotal += itemTotal;
-
-            // Add the item line item to your text message
-            message += ` *${productDetails.title}*\n`;
-            message += `   Qty: ${cartItem.quantity} x Rs.${transactionalPrice} = Rs.${itemTotal}\n\n`;
-        }
-    });
-
-
-    // 4. Append the final bill total to the text message
-    message += `💰 *Grand Total:* Rs.${grandTotal}\n\n`;
-    message += `Please confirm my order and send payment details!`;
-
-    // 5. URL encode the message and trigger WhatsApp
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodedMessage}`;
-    
-    window.open(whatsappUrl, '_blank');
-    carts = [];
-    localStorage.removeItem('shopping_cart'); 
-    addCartToHTML();
+    finishOrder();
 }
 
 function emailSend() {
@@ -645,37 +626,6 @@ function emailSend() {
         console.error("Network Dispatch Failed:", error);
         alert("Failed to connect to email servers. Please try again.");
     });
-}
-
-// Locate the action footer buttons inside addCartToHTML and update the grid row container:
-let buttonContainer = document.querySelector('.cartTab .btn');
-if (buttonContainer) {
-    // 🛠️ RESTORED: Restored clean 3-column side-by-side button footer row layout
-    buttonContainer.style.display = 'grid';
-    buttonContainer.style.gridTemplateColumns = '1fr 1fr 1.1fr 1.3fr';
-    buttonContainer.style.height = '60px';
-    
-    buttonContainer.innerHTML = `
-        <!-- Restored clean '× Close' text button combo -->
-        <button class="close" style="font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; background-color: #ffffff; color: #0d1117; border: none; padding: 0 5px;">
-            <span style="font-size: 20px; line-height: 1; vertical-align: middle;">&times;</span> Close
-        </button>
-        <!-- 🛠️ RESTORED: Brought back your original direct 'Call Us' connection link -->
-        <a href="tel:+919867731440" class="call-btn-link" style="display: flex; align-items: center; justify-content: center; background-color: #ff9f43; color: #0d1117; text-decoration: none; font-weight: 600; font-size: 14px; border-right: 1px solid #30363d;">
-            📞 Call Us
-        </a>
-        <!-- UPI payment button -->
-        <button onclick="openUpiModal()" style="background-color: #5f259f; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; padding: 0 5px;">
-            Pay UPI
-        </button>
-        <!-- Restored high-definition WhatsApp instant checkout button -->
-        <button onclick="checkoutViaWhatsApp()" style="background-color: #25D366; color: white; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; padding: 0 5px;">
-            <svg xmlns="http://w3.org" width="15" height="15" fill="currentColor" viewBox="0 0 448 512" style="display: inline-block; vertical-align: middle; flex-shrink: 0;">
-                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-            </svg>
-            WhatsApp
-        </button>
-    `;
 }
 
 // Intelligent step-by-step validator workflow engine
