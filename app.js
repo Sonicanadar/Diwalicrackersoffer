@@ -403,7 +403,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "denniskumarnadar@okhdfcbank";
+const UPI_ID = "danniskumarnadar@okhdfcbank";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
