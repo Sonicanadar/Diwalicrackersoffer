@@ -452,7 +452,7 @@ function getCustomerDetails() {
 const ORDER_SHEET_URL = "";
 
 // Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
-const WEB3FORMS_KEY = "";
+const WEB3FORMS_KEY = "f0a9dfd9-73e7-4671-aeb4-37b44c118cfa";
 
 function generateOrderId() {
     const d = new Date();
