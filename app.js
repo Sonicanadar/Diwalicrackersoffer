@@ -1234,3 +1234,25 @@ document.addEventListener('click', (event) => {
     event.stopPropagation();
     shareProduct(shareBtn.dataset.id);
 });
+
+// =========================================================================
+// IN-APP BROWSER WARNING (Instagram, Facebook, Snapchat, TikTok, etc.)
+// These browsers often block window.open() / WhatsApp deep links.
+// =========================================================================
+(function inAppBrowserCheck() {
+    const ua = navigator.userAgent || '';
+    const isInApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Snapchat|TikTok|Pinterest|; wv\)/i.test(ua);
+    if (!isInApp) return;
+    if (sessionStorage.getItem('inAppBannerDismissed') === '1') return;
+
+    const banner = document.getElementById('inAppBanner');
+    if (!banner) return;
+    banner.classList.add('show');
+    const closeBtn = document.getElementById('inAppBannerClose');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            banner.classList.remove('show');
+            sessionStorage.setItem('inAppBannerDismissed', '1');
+        });
+    }
+})();
