@@ -403,7 +403,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "danniskumarnadar@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -425,19 +425,23 @@ function getCartTotal() {
 // Name + address are needed for delivery in both payment modes
 function getCustomerDetails() {
     const nameEl = document.getElementById('cx-name');
+    const phoneEl = document.getElementById('cx-phone');
     const addrEl = document.getElementById('cx-address');
     const name = nameEl.value.trim();
+    const phone = phoneEl.value.trim();
     const address = addrEl.value.trim();
+    const phoneOk = /^\d{10}$/.test(phone.replace(/\D/g, ''));
 
     nameEl.classList.toggle('cx-invalid', !name);
+    phoneEl.classList.toggle('cx-invalid', !phoneOk);
     addrEl.classList.toggle('cx-invalid', !address);
 
-    if (!name || !address) {
-        alert("Please enter your name and delivery address.");
-        (!name ? nameEl : addrEl).focus();
+    if (!name || !phoneOk || !address) {
+        alert(!phoneOk && name ? "Please enter a valid 10-digit phone number." : "Please enter your name, phone number and delivery address.");
+        (!name ? nameEl : (!phoneOk ? phoneEl : addrEl)).focus();
         return null;
     }
-    return { name, address };
+    return { name, phone, address };
 }
 
 // ---------------------------------------------------------------------
@@ -476,6 +480,7 @@ function buildOrderRecord(orderId, customer, payment, screenshotUrl) {
         orderId,
         time: new Date().toISOString(),
         name: customer.name,
+        phone: customer.phone,
         address: customer.address,
         payment,
         items: parts.join('\n'),
@@ -508,6 +513,7 @@ function sendOrderEmail(record) {
             'Order ID': record.orderId,
             'Date & Time': new Date(record.time).toLocaleString('en-IN'),
             'Customer Name': record.name,
+            'Phone': record.phone,
             'Address': record.address,
             'Payment': record.payment,
             'Items': record.items,
@@ -564,7 +570,7 @@ flushUnsentOrders();
 
 function buildOrderMessage(heading, customer, paymentLines, orderId) {
     let message = `*${heading}*\n🆔 *Order ID:* ${orderId}\n\n`;
-    message += `*Name:* ${customer.name}\n*Address:* ${customer.address}\n\n`;
+    message += `*Name:* ${customer.name}\n*Phone:* ${customer.phone}\n*Address:* ${customer.address}\n\n`;
     let grandTotal = 0;
     carts.forEach(cartItem => {
         const p = listProducts.find(x => x.id == cartItem.product_id);
@@ -583,6 +589,7 @@ function finishOrder() {
     carts = [];
     localStorage.removeItem('shopping_cart');
     document.getElementById('cx-name').value = '';
+    document.getElementById('cx-phone').value = '';
     document.getElementById('cx-address').value = '';
     addCartToHTML();
     // Reset the product grid so every card goes back to "Add to Cart"
@@ -1241,7 +1248,17 @@ document.addEventListener('click', (event) => {
 // =========================================================================
 (function inAppBrowserCheck() {
     const ua = navigator.userAgent || '';
-    const isInApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Snapchat|TikTok|Pinterest|; wv\)/i.test(ua);
+    // Known in-app browsers that still identify themselves (mainly Android)
+    const knownInApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Snapchat|TikTok|Pinterest|; wv\)/i.test(ua);
+    // Many iPhone in-app browsers (newer Instagram/Facebook) now hide their name.
+    // A real iPhone browser always says "Safari" + "Version/"; Chrome/Firefox/Edge on
+    // iPhone say CriOS/FxiOS/EdgiOS/OPiOS instead. Anything on iPhone matching none of
+    // these is almost certainly an embedded in-app browser.
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    const isKnownIOSBrowser = /CriOS|FxiOS|EdgiOS|OPiOS|GSA\//i.test(ua);
+    const isRealIOSSafari = /Safari\//.test(ua) && /Version\//.test(ua) && !isKnownIOSBrowser;
+    const isHiddenIOSInApp = isIOS && !isRealIOSSafari && !isKnownIOSBrowser;
+    const isInApp = knownInApp || isHiddenIOSInApp;
     if (!isInApp) return;
     if (sessionStorage.getItem('inAppBannerDismissed') === '1') return;
 
