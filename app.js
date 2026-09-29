@@ -403,7 +403,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "sonica.nadar-3@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -448,7 +448,7 @@ function getCustomerDetails() {
 const ORDER_SHEET_URL = "";
 
 // Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
-const WEB3FORMS_KEY = "f0a9dfd9-73e7-4671-aeb4-37b44c118cfa";
+const WEB3FORMS_KEY = "";
 
 function generateOrderId() {
     const d = new Date();
@@ -743,6 +743,18 @@ function resetUpiConfirmButton() {
     if (b) { b.disabled = false; b.innerText = UPI_BTN_DEFAULT_TEXT; }
 }
 
+// Small holding page shown in the WhatsApp tab while the screenshot uploads,
+// so the tab is never blank and there is nothing left for the customer to tap.
+const UPI_WAIT_PAGE = `<!doctype html><html><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Opening WhatsApp...</title>
+    <style>html,body{height:100%;margin:0;display:flex;align-items:center;justify-content:center;
+      background:#111;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;text-align:center}
+      .box{padding:24px}.spin{width:38px;height:38px;margin:0 auto 16px;border:4px solid #333;
+      border-top-color:#25D366;border-radius:50%;animation:s 0.8s linear infinite}
+      @keyframes s{to{transform:rotate(360deg)}}</style></head>
+    <body><div class="box"><div class="spin"></div>Uploading your payment screenshot...<br>Opening WhatsApp in a moment.</div></body></html>`;
+
 async function confirmUpiPaymentOnWhatsApp() {
     const input = document.getElementById('upiShot');
     const file = input.files && input.files[0];
@@ -756,7 +768,7 @@ async function confirmUpiPaymentOnWhatsApp() {
     const btn = document.querySelector('.upi-confirm');
     const btnText = btn.innerText;
 
-    // Step 2: screenshot already uploaded -> this tap (a real user tap) opens WhatsApp on your number
+    // Fallback tap: only reached if the first attempt could not open the tab automatically
     if (pendingUpi) {
         const sent = pendingUpi;
         pendingUpi = null;
@@ -769,50 +781,65 @@ async function confirmUpiPaymentOnWhatsApp() {
         return;
     }
 
-    // MAIN FLOW, step 1: upload the screenshot, then wait for one more tap to open WhatsApp
-    if (cloudinaryConfigured()) {
-        btn.disabled = true;
-        btn.innerText = 'Uploading screenshot...';
-        try {
-            const imageUrl = await uploadScreenshot(file);
-            const orderId = generateOrderId();
-            const message = buildOrderMessage(
-                "New Order - Paid via UPI",
-                customer,
-                `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`,
-                orderId
-            );
-            pendingUpi = {
-                url: `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`,
-                record: buildOrderRecord(orderId, customer, 'UPI (paid)', imageUrl)
-            };
-            btn.disabled = false;
-            btn.innerText = '✅ Screenshot uploaded - Tap to open WhatsApp';
-            return;
-        } catch (err) {
-            console.error(err);
-            alert("Could not upload the screenshot. Please check your internet and try again.");
-            btn.disabled = false;
-            btn.innerText = btnText;
-            return;
-        }
+    // BACKUP FLOW (only if Cloudinary is not set up): opens your WhatsApp number directly, text only
+    if (!cloudinaryConfigured()) {
+        const orderId = generateOrderId();
+        const message = buildOrderMessage(
+            "New Order - Paid via UPI",
+            customer,
+            `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`,
+            orderId
+        );
+        sendOrderRecord(buildOrderRecord(orderId, customer, 'UPI (paid)', ''));
+        window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+        alert("WhatsApp is opening. Please attach your payment screenshot in the chat and send it.");
+        closeUpiModal();
+        resetUpiScreenshot();
+        finishOrder();
+        showOrderToast(orderId);
+        return;
     }
 
-    // BACKUP FLOW (only if Cloudinary is not set up): opens your WhatsApp number directly, text only
-    const orderId = generateOrderId();
-    const message = buildOrderMessage(
-        "New Order - Paid via UPI",
-        customer,
-        `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`,
-        orderId
-    );
-    sendOrderRecord(buildOrderRecord(orderId, customer, 'UPI (paid)', ''));
-    window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
-    alert("WhatsApp is opening. Please attach your payment screenshot in the chat and send it.");
-    closeUpiModal();
-    resetUpiScreenshot();
-    finishOrder();
-    showOrderToast(orderId);
+    // Open the tab now, inside this tap, so the browser does not treat it as a blocked popup.
+    // It shows a small "uploading" page until the screenshot finishes, then jumps to WhatsApp.
+    const tab = window.open('', '_blank');
+    if (tab) { try { tab.document.write(UPI_WAIT_PAGE); tab.document.close(); } catch (e) {} }
+
+    btn.disabled = true;
+    btn.innerText = 'Uploading screenshot...';
+    try {
+        const imageUrl = await uploadScreenshot(file);
+        const orderId = generateOrderId();
+        const message = buildOrderMessage(
+            "New Order - Paid via UPI",
+            customer,
+            `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`,
+            orderId
+        );
+        const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+        const record = buildOrderRecord(orderId, customer, 'UPI (paid)', imageUrl);
+
+        if (tab && !tab.closed) {
+            // One tap, done: redirect the already-open tab straight to WhatsApp
+            tab.location.href = waUrl;
+            sendOrderRecord(record);
+            closeUpiModal();
+            resetUpiScreenshot();
+            finishOrder();
+            showOrderToast(orderId);
+        } else {
+            // The phone blocked the tab from opening early: ask for one more tap, this time it will work
+            pendingUpi = { url: waUrl, record };
+            btn.disabled = false;
+            btn.innerText = '✅ Screenshot uploaded - Tap to open WhatsApp';
+        }
+    } catch (err) {
+        console.error(err);
+        if (tab && !tab.closed) tab.close();
+        alert("Could not upload the screenshot. Please check your internet and try again.");
+        btn.disabled = false;
+        btn.innerText = btnText;
+    }
 }
 
 function emailSend() {
