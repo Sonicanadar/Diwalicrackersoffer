@@ -415,7 +415,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "denniskumarnadar@okhdfcbank";
+const UPI_ID = "danniskumarnadar@okhdfcbank";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -1263,13 +1263,19 @@ function renderWishlist() {
 
     items.forEach(p => {
         const unit = unitPriceOf(p);
+        const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
+        const discountPct = !isGift && p.price > unit ? Math.round(100 - (unit / p.price) * 100) : 0;
         const row = document.createElement('div');
         row.className = 'cx-item';
         row.innerHTML = `
             <img class="cx-img" src="${p.image}" alt="">
             <div class="cx-mid">
                 <div class="cx-name">${p.title}</div>
-                <div class="cx-unit">Rs.${unit} each</div>
+                <div class="cx-unit">
+                    Rs.${unit} each
+                    ${isGift ? '' : `<s>Rs.${p.price}</s>`}
+                    ${discountPct > 0 ? `<span class="wl-discount">${discountPct}% OFF</span>` : ''}
+                </div>
                 <button class="wl-add-btn" data-id="${p.id}">Add to Cart</button>
             </div>
             <div class="cx-right">
