@@ -65,6 +65,7 @@ if (form1) {
 
 
 if (iconCart) iconCart.addEventListener('click', ()=> {
+    body.classList.remove('activeTabWishlist');
     body.classList.toggle('activeTabCart')
 })
 if (closeBtn) closeBtn.addEventListener('click', ()=> {
@@ -155,6 +156,7 @@ if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") 
 
         newProduct.innerHTML = `
             <button class="share-btn" data-id="${product.id}" aria-label="Share this product" title="Share"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg></button>
+            <button class="wish-btn${isWished(product.id) ? ' active' : ''}" data-id="${product.id}" aria-label="Add to wishlist" title="Wishlist"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><path d="M12 20.25c-.3 0-.6-.1-.84-.28C8.9 18.1 3.75 14.24 3.75 9.75 3.75 7.13 5.88 5 8.5 5c1.4 0 2.73.63 3.5 1.68C12.77 5.63 14.1 5 15.5 5c2.62 0 4.75 2.13 4.75 4.75 0 4.49-5.15 8.35-7.41 10.22-.24.18-.54.28-.84.28Z"/></svg></button>
             <img src="${product.image}" alt="">
             <h2>${product.title}</h2>
             <div class="price">${mrpTagHTML}Rs.${finalDisplayPrice}</div>
@@ -189,6 +191,16 @@ document.addEventListener('click', (event) => {
 
         if (!clickedInsideCartDrawer && !clickedHeaderCartIconRing && !positionClick.closest('.upi-modal')) {
             body.classList.remove('activeTabCart');
+        }
+    }
+
+    const wishlistTabElement = document.getElementById('wishlistTab');
+    const iconWishlist = document.querySelector('.icon-wishlist');
+    if (body.classList.contains('activeTabWishlist') && wishlistTabElement && iconWishlist) {
+        const clickedInsideWishlistDrawer = wishlistTabElement.contains(positionClick);
+        const clickedWishlistIconRing = iconWishlist.contains(positionClick);
+        if (!clickedInsideWishlistDrawer && !clickedWishlistIconRing) {
+            body.classList.remove('activeTabWishlist');
         }
     }
 
@@ -403,7 +415,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "danniskumarnadar@okhdfcbank";
+const UPI_ID = "denniskumarnadar@okhdfcbank";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -1059,6 +1071,7 @@ if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "G
                 ${modalActionControlHTML}
             </div>
             <button class="share-btn share-inline" data-id="${targetProduct.id}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg> Share</button>
+            <button class="wish-btn share-inline${isWished(targetProduct.id) ? ' active' : ''}" data-id="${targetProduct.id}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><path d="M12 20.25c-.3 0-.6-.1-.84-.28C8.9 18.1 3.75 14.24 3.75 9.75 3.75 7.13 5.88 5 8.5 5c1.4 0 2.73.63 3.5 1.68C12.77 5.63 14.1 5 15.5 5c2.62 0 4.75 2.13 4.75 4.75 0 4.49-5.15 8.35-7.41 10.22-.24.18-.54.28-.84.28Z"/></svg> Wishlist</button>
         </div>
     `;
 
@@ -1198,6 +1211,113 @@ initApp();
     filterForm.appendChild(wrap);
     setLabel();
 })();
+
+// =========================================================================
+// WISHLIST
+// =========================================================================
+let wishlist = JSON.parse(localStorage.getItem('vpp_wishlist') || '[]');
+
+function isWished(id) {
+    return wishlist.includes(String(id));
+}
+
+function saveWishlist() {
+    localStorage.setItem('vpp_wishlist', JSON.stringify(wishlist));
+}
+
+function toggleWishlist(id) {
+    id = String(id);
+    const i = wishlist.indexOf(id);
+    if (i === -1) { wishlist.push(id); } else { wishlist.splice(i, 1); }
+    saveWishlist();
+    document.querySelectorAll(`.wish-btn[data-id="${id}"]`).forEach(b => b.classList.toggle('active', isWished(id)));
+    updateWishlistBadge();
+    if (body.classList.contains('activeTabWishlist')) renderWishlist();
+    return isWished(id);
+}
+
+function updateWishlistBadge() {
+    const badge = document.querySelector('.icon-wishlist span');
+    if (!badge) return;
+    if (wishlist.length > 0) { badge.innerText = wishlist.length; badge.style.display = 'flex'; }
+    else { badge.innerText = ''; badge.style.display = 'none'; }
+}
+
+function renderWishlist() {
+    const list = document.getElementById('wishlistList');
+    const countEl = document.getElementById('wl-count');
+    if (!list) return;
+    list.innerHTML = '';
+    const items = wishlist.map(id => listProducts.find(p => p.id == id)).filter(Boolean);
+    if (countEl) countEl.innerText = items.length + (items.length === 1 ? ' item' : ' items');
+
+    if (items.length === 0) {
+        list.innerHTML = `
+            <div class="cx-empty-msg">
+                <div class="cx-empty-icon">❤️</div>
+                <p>Your wishlist is empty</p>
+                <span>Tap the heart on any product to save it here</span>
+            </div>`;
+        return;
+    }
+
+    items.forEach(p => {
+        const unit = unitPriceOf(p);
+        const row = document.createElement('div');
+        row.className = 'cx-item';
+        row.innerHTML = `
+            <img class="cx-img" src="${p.image}" alt="">
+            <div class="cx-mid">
+                <div class="cx-name">${p.title}</div>
+                <div class="cx-unit">Rs.${unit} each</div>
+                <button class="wl-add-btn" data-id="${p.id}">Add to Cart</button>
+            </div>
+            <div class="cx-right">
+                <button class="cart-item-delete wl-remove-btn" data-id="${p.id}" title="Remove from wishlist">&times;</button>
+            </div>
+        `;
+        list.appendChild(row);
+    });
+}
+
+function openWishlist() {
+    renderWishlist();
+    body.classList.remove('activeTabCart');
+    body.classList.add('activeTabWishlist');
+}
+
+function closeWishlist() {
+    body.classList.remove('activeTabWishlist');
+}
+
+document.addEventListener('click', (event) => {
+    const wishBtn = event.target.closest('.wish-btn');
+    if (wishBtn) { event.stopPropagation(); toggleWishlist(wishBtn.dataset.id); return; }
+
+    const addBtn = event.target.closest('.wl-add-btn');
+    if (addBtn) {
+        event.stopPropagation();
+        const id = addBtn.dataset.id;
+        const existing = carts.findIndex(c => c.product_id == id);
+        const currentQty = existing >= 0 ? carts[existing].quantity : 0;
+        addToCart(id, currentQty + 1, existing);
+        addDataToHTML(productFilter || listProducts);
+        const t = document.createElement('div');
+        t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100002;background:#161b22;color:#fff;border:2px solid #ff9f43;border-radius:10px;padding:10px 16px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.6);';
+        t.innerText = '✅ Added to cart!';
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1800);
+        return;
+    }
+
+    const removeBtn = event.target.closest('.wl-remove-btn');
+    if (removeBtn) { event.stopPropagation(); toggleWishlist(removeBtn.dataset.id); return; }
+
+    if (event.target.closest('.icon-wishlist')) { body.classList.remove('activeTabCart'); openWishlist(); return; }
+    if (event.target.id === 'wishlistClose') { closeWishlist(); return; }
+});
+
+updateWishlistBadge();
 
 // =========================================================================
 // SHARE A PRODUCT WITH FRIENDS
