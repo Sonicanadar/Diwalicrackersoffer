@@ -301,6 +301,11 @@ document.addEventListener('click', (event) => {
                 openProductModal(idProduct);
             }
         }
+
+        // Keep the wishlist panel's own Add to Cart / quantity controls in sync
+        if (typeof renderWishlist === 'function' && body.classList.contains('activeTabWishlist')) {
+            renderWishlist();
+        }
     }
 });
 
@@ -1265,6 +1270,15 @@ function renderWishlist() {
         const unit = unitPriceOf(p);
         const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
         const discountPct = !isGift && p.price > unit ? Math.round(100 - (unit / p.price) * 100) : 0;
+        const cartIndex = carts.findIndex(c => c.product_id == p.id);
+        const inCartQty = cartIndex < 0 ? 0 : carts[cartIndex].quantity;
+        const actionHTML = inCartQty > 0
+            ? `<div class="cx-qty">
+                   <button class="minus" data-id="${p.id}">&minus;</button>
+                   <span>${inCartQty}</span>
+                   <button class="plus" data-id="${p.id}">+</button>
+               </div>`
+            : `<button class="addCart wl-add-btn-style" data-id="${p.id}">Add to Cart</button>`;
         const row = document.createElement('div');
         row.className = 'cx-item';
         row.innerHTML = `
@@ -1276,7 +1290,7 @@ function renderWishlist() {
                     ${isGift ? '' : `<s>Rs.${p.price}</s>`}
                     ${discountPct > 0 ? `<span class="wl-discount">${discountPct}% OFF</span>` : ''}
                 </div>
-                <button class="wl-add-btn" data-id="${p.id}">Add to Cart</button>
+                ${actionHTML}
             </div>
             <div class="cx-right">
                 <button class="cart-item-delete wl-remove-btn" data-id="${p.id}" title="Remove from wishlist">&times;</button>
@@ -1299,22 +1313,6 @@ function closeWishlist() {
 document.addEventListener('click', (event) => {
     const wishBtn = event.target.closest('.wish-btn');
     if (wishBtn) { event.stopPropagation(); toggleWishlist(wishBtn.dataset.id); return; }
-
-    const addBtn = event.target.closest('.wl-add-btn');
-    if (addBtn) {
-        event.stopPropagation();
-        const id = addBtn.dataset.id;
-        const existing = carts.findIndex(c => c.product_id == id);
-        const currentQty = existing >= 0 ? carts[existing].quantity : 0;
-        addToCart(id, currentQty + 1, existing);
-        addDataToHTML(productFilter || listProducts);
-        const t = document.createElement('div');
-        t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100002;background:#161b22;color:#fff;border:2px solid #ff9f43;border-radius:10px;padding:10px 16px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.6);';
-        t.innerText = '✅ Added to cart!';
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 1800);
-        return;
-    }
 
     const removeBtn = event.target.closest('.wl-remove-btn');
     if (removeBtn) { event.stopPropagation(); toggleWishlist(removeBtn.dataset.id); return; }
