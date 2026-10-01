@@ -872,65 +872,31 @@ const UPI_WAIT_PAGE = `<!doctype html><html><head><meta charset="utf-8">
 
 // ---------- Reliable WhatsApp opener ----------
 function openWhatsAppFromUserTap(url) {
-    // Prefer the WhatsApp app/deep link on Android.
-    // Fall back to WhatsApp Web/current tab if the app cannot be opened.
-    const match = String(url).match(/^https:\/\/wa\.me\/([^?]+)(\?.*)?$/i);
-
-    if (match) {
-        const phone = match[1];
-        const query = match[2] || '';
-        const appUrl = `whatsapp://send?phone=${encodeURIComponent(phone)}${query}`;
-
-        let fallbackTimer = setTimeout(() => {
-            try {
-                window.location.href = url;
-            } catch (e) {}
-        }, 1200);
-
-        try {
-            document.addEventListener('visibilitychange', function onVisible() {
-                if (document.hidden) {
-                    clearTimeout(fallbackTimer);
-                    document.removeEventListener('visibilitychange', onVisible);
-                }
-            }, { once: true });
-
-            window.location.href = appUrl;
-            return;
-        } catch (e) {
-            clearTimeout(fallbackTimer);
-        }
-    }
-
     try {
+        const parsed = new URL(url);
+        const phone = parsed.pathname.replace(/\\//g, '');
+        const text = parsed.searchParams.get('text') || '';
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone)}&text=${encodeURIComponent(text)}`;
+        window.location.href = whatsappUrl;
+    } catch (e) {
         window.location.href = url;
-    } catch (e) {}
+    }
 }
 
 async function confirmUpiPaymentOnWhatsApp() {
     const input = document.getElementById('upiShot');
     const file = input && input.files && input.files[0];
-
-    if (!file) {
-        alert("Please attach a screenshot of your UPI payment.");
-        return;
-    }
-
+    if (!file) { alert("Please attach a screenshot of your UPI payment."); return; }
     const customer = getCustomerDetails();
     if (!customer) return;
-
     const btn = document.querySelector('.upi-confirm');
     if (!btn) return;
 
-    // SECOND TAP: screenshot is uploaded and WhatsApp URL is ready.
-    // This tap is a direct user gesture, so open WhatsApp immediately.
     if (pendingUpi) {
         const sent = pendingUpi;
         pendingUpi = null;
-
         sendOrderRecord(sent.record);
         openWhatsAppFromUserTap(sent.url);
-
         closeUpiModal();
         resetUpiScreenshot();
         finishOrder();
@@ -944,69 +910,34 @@ async function confirmUpiPaymentOnWhatsApp() {
 
     try {
         let imageUrl = '';
-
-        if (cloudinaryConfigured()) {
-            imageUrl = await uploadScreenshot(file);
-        }
+        if (cloudinaryConfigured()) imageUrl = await uploadScreenshot(file);
 
         const orderId = generateOrderId();
-
         const paymentText = imageUrl
-            ? `✅ *Paid via UPI to:* ${UPI_ID}
-📸 *Payment screenshot:* ${imageUrl}
+            ? `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`
+            : `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`;
 
-Please verify the payment and confirm my order.`
-            : `✅ *Paid via UPI to:* ${UPI_ID}
-📸 I am attaching my payment screenshot in this chat.
+        const message = buildOrderMessage("New Order - Paid via UPI", customer, paymentText, orderId);
+        const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+        const record = buildOrderRecord(orderId, customer, 'UPI (paid)', imageUrl);
 
-Please verify the payment and confirm my order.`;
-
-        const message = buildOrderMessage(
-            "New Order - Paid via UPI",
-            customer,
-            paymentText,
-            orderId
-        );
-
-        const waUrl =
-            `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
-
-        const record = buildOrderRecord(
-            orderId,
-            customer,
-            'UPI (paid)',
-            imageUrl
-        );
-
-        // Keep the modal open until the customer explicitly taps WhatsApp.
-        pendingUpi = {
-            url: waUrl,
-            record: record
-        };
-
+        pendingUpi = { url: waUrl, record: record };
         btn.disabled = false;
         btn.innerText = '💬 Open WhatsApp';
 
         const note = document.getElementById('upiUploadStatus');
         if (note) {
-            note.textContent =
-                '✅ Payment screenshot uploaded. Tap "Open WhatsApp" to send your order.';
+            note.textContent = '✅ Payment screenshot uploaded. Tap "Open WhatsApp" to send your order.';
             note.style.color = '#25D366';
         }
-
     } catch (err) {
         console.error(err);
         pendingUpi = null;
         btn.disabled = false;
         btn.innerText = originalText;
-
-        alert(
-            "Could not upload the payment screenshot. " +
-            "Please check your internet connection and try again."
-        );
+        alert("Could not upload the payment screenshot. Please check your internet connection and try again.");
     }
 }
-
 
 function emailSend() {
     let totalPrice = 0;
