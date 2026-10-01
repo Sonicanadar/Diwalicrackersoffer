@@ -574,6 +574,82 @@ function flushUnsentOrders() {
     }));
 }
 
+// =========================================================================
+// NEXT YEAR'S DIWALI SALE - WHATSAPP OPT-IN
+// Uses the same Google Sheet (new "Subscribers" tab) and email backup as orders.
+// =========================================================================
+function subscribeForNextYear() {
+    const nameEl = document.getElementById('notify-name');
+    const phoneEl = document.getElementById('notify-phone');
+    const name = nameEl.value.trim();
+    const phone = phoneEl.value.trim();
+    const phoneOk = /^\d{10}$/.test(phone.replace(/\D/g, ''));
+
+    nameEl.classList.toggle('cx-invalid', !name);
+    phoneEl.classList.toggle('cx-invalid', !phoneOk);
+    if (!name || !phoneOk) {
+        alert(!phoneOk && name ? "Please enter a valid 10-digit WhatsApp number." : "Please enter your name and WhatsApp number.");
+        (!name ? nameEl : phoneEl).focus();
+        return;
+    }
+
+    const record = { kind: 'subscriber', name, phone, time: new Date().toISOString() };
+
+    if (WEB3FORMS_KEY) {
+        fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            keepalive: true,
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                access_key: WEB3FORMS_KEY,
+                subject: `New Diwali sale subscriber: ${name}`,
+                from_name: 'Vav Pyro Park Website',
+                'Name': name,
+                'WhatsApp Number': phone,
+                'Date': new Date(record.time).toLocaleString('en-IN')
+            })
+        }).catch(() => {});
+    }
+
+    if (ORDER_SHEET_URL) {
+        postOrderRecord(record).catch(() => {
+            try {
+                const q = JSON.parse(localStorage.getItem('vpp_unsent_subscribers') || '[]');
+                q.push(record);
+                localStorage.setItem('vpp_unsent_subscribers', JSON.stringify(q));
+            } catch (e) { /* ignore */ }
+        });
+    }
+
+    localStorage.setItem('vpp_subscribed', '1');
+    document.getElementById('notifyCard').style.display = 'none';
+    document.getElementById('notifyThanks').style.display = 'block';
+}
+
+function flushUnsentSubscribers() {
+    if (!ORDER_SHEET_URL) return;
+    let q = [];
+    try { q = JSON.parse(localStorage.getItem('vpp_unsent_subscribers') || '[]'); } catch (e) { return; }
+    if (!q.length) return;
+    localStorage.removeItem('vpp_unsent_subscribers');
+    q.forEach(rec => postOrderRecord(rec).catch(() => {
+        const again = JSON.parse(localStorage.getItem('vpp_unsent_subscribers') || '[]');
+        again.push(rec);
+        localStorage.setItem('vpp_unsent_subscribers', JSON.stringify(again));
+    }));
+}
+flushUnsentSubscribers();
+
+// If this device already subscribed, show the thank-you state straight away
+if (localStorage.getItem('vpp_subscribed') === '1') {
+    document.addEventListener('DOMContentLoaded', () => {
+        const card = document.getElementById('notifyCard');
+        const thanks = document.getElementById('notifyThanks');
+        if (card) card.style.display = 'none';
+        if (thanks) thanks.style.display = 'block';
+    });
+}
+
 function showOrderToast(orderId) {
     const t = document.createElement('div');
     t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100002;max-width:92vw;background:#161b22;color:#fff;border:2px solid #ff9f43;border-radius:12px;padding:14px 18px;text-align:center;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.6);';
