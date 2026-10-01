@@ -544,7 +544,14 @@ function sendOrderRecord(record) {
     // Customer's own device keeps a short history of their order IDs
     try {
         const hist = JSON.parse(localStorage.getItem('vpp_my_orders') || '[]');
-        hist.unshift({ id: record.orderId, time: record.time, total: record.total, payment: record.payment });
+        hist.unshift({
+            id: record.orderId,
+            time: record.time,
+            total: record.total,
+            payment: record.payment,
+            items: record.items,
+            status: record.status || 'New'
+        });
         localStorage.setItem('vpp_my_orders', JSON.stringify(hist.slice(0, 50)));
     } catch (e) { /* ignore */ }
 
@@ -870,33 +877,264 @@ const UPI_WAIT_PAGE = `<!doctype html><html><head><meta charset="utf-8">
       @keyframes s{to{transform:rotate(360deg)}}</style></head>
     <body><div class="box"><div class="spin"></div>Uploading your payment screenshot...<br>Opening WhatsApp in a moment.</div></body></html>`;
 
+
+// =========================================================================
+// CUSTOMER ORDER HISTORY
+// =========================================================================
+function getMyOrderHistory() {
+    try {
+        const history = JSON.parse(localStorage.getItem('vpp_my_orders') || '[]');
+        return Array.isArray(history) ? history : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function escapeOrderHistoryText(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, ch => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
+    }[ch]));
+}
+
+function orderHistoryDate(value) {
+    if (!value) return '';
+    const d = new Date(value);
+    if (isNaN(d)) return String(value);
+    return new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    }).format(d) + ' IST';
+}
+
+function ensureOrderHistoryStyles() {
+    if (document.getElementById('vpp-order-history-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'vpp-order-history-styles';
+    style.textContent = `
+        .vpp-history-overlay {
+            position: fixed; inset: 0; z-index: 100001;
+            background: rgba(0,0,0,.72);
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px;
+        }
+        .vpp-history-overlay.hidden { display:none; }
+        .vpp-history-panel {
+            width: min(560px, 100%);
+            max-height: 90vh;
+            overflow: hidden;
+            background: #161b22;
+            color: #f0f6fc;
+            border: 1px solid #30363d;
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.55);
+            display: flex; flex-direction: column;
+        }
+        .vpp-history-head {
+            display:flex; align-items:center; justify-content:space-between;
+            gap:12px; padding:16px 18px; border-bottom:1px solid #30363d;
+        }
+        .vpp-history-head h2 { margin:0; font-size:20px; }
+        .vpp-history-head p { margin:4px 0 0; color:#8b949e; font-size:12px; }
+        .vpp-history-close {
+            width:38px; height:38px; border:1px solid #30363d;
+            border-radius:50%; background:#21262d; color:#f0f6fc;
+            font-size:22px; cursor:pointer;
+        }
+        .vpp-history-list {
+            overflow-y:auto; padding:14px;
+            -webkit-overflow-scrolling:touch;
+        }
+        .vpp-history-empty {
+            text-align:center; padding:45px 18px; color:#8b949e;
+        }
+        .vpp-history-empty .icon { font-size:42px; margin-bottom:10px; }
+        .vpp-history-card {
+            background:#0d1117; border:1px solid #30363d;
+            border-radius:14px; padding:14px; margin-bottom:12px;
+        }
+        .vpp-history-top {
+            display:flex; justify-content:space-between;
+            gap:10px; align-items:flex-start;
+        }
+        .vpp-history-id { font-weight:800; color:#ff9f43; font-size:15px; }
+        .vpp-history-date { color:#8b949e; font-size:11px; margin-top:4px; }
+        .vpp-history-status {
+            border-radius:999px; padding:5px 9px; font-size:11px;
+            font-weight:800; background:#30363d; color:#f0f6fc;
+            white-space:nowrap;
+        }
+        .vpp-history-items {
+            margin:12px 0 0; padding:10px 0;
+            border-top:1px solid #21262d; border-bottom:1px solid #21262d;
+            color:#d0d7de; font-size:13px; white-space:pre-line;
+        }
+        .vpp-history-bottom {
+            display:flex; justify-content:space-between;
+            gap:10px; margin-top:10px; font-size:12px; color:#8b949e;
+        }
+        .vpp-history-total { color:#fff; font-size:15px; font-weight:800; }
+        @media(max-width:480px) {
+            .vpp-history-overlay { padding:8px; }
+            .vpp-history-panel { max-height:94vh; border-radius:15px; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function renderMyOrderHistory() {
+    const list = document.getElementById('vpp-order-history-list');
+    if (!list) return;
+
+    const history = getMyOrderHistory();
+
+    if (!history.length) {
+        list.innerHTML = `
+            <div class="vpp-history-empty">
+                <div class="icon">🧾</div>
+                <div>No orders yet</div>
+                <small>Your completed orders will appear here.</small>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = history.map(order => `
+        <div class="vpp-history-card">
+            <div class="vpp-history-top">
+                <div>
+                    <div class="vpp-history-id">${escapeOrderHistoryText(order.id || 'Order')}</div>
+                    <div class="vpp-history-date">${escapeOrderHistoryText(orderHistoryDate(order.time))}</div>
+                </div>
+                <span class="vpp-history-status">${escapeOrderHistoryText(order.status || 'New')}</span>
+            </div>
+            <div class="vpp-history-items">${escapeOrderHistoryText(order.items || 'Order details unavailable')}</div>
+            <div class="vpp-history-bottom">
+                <span>${escapeOrderHistoryText(order.payment || '')}</span>
+                <span class="vpp-history-total">Rs.${Number(order.total || 0).toFixed(2)}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openOrderHistory() {
+    ensureOrderHistoryStyles();
+
+    let overlay = document.getElementById('vpp-order-history-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'vpp-order-history-overlay';
+        overlay.className = 'vpp-history-overlay hidden';
+        overlay.innerHTML = `
+            <div class="vpp-history-panel" role="dialog" aria-modal="true">
+                <div class="vpp-history-head">
+                    <div>
+                        <h2>🧾 Order History</h2>
+                        <p>Your orders saved on this device</p>
+                    </div>
+                    <button type="button" class="vpp-history-close"
+                        aria-label="Close" onclick="closeOrderHistory()">×</button>
+                </div>
+                <div id="vpp-order-history-list" class="vpp-history-list"></div>
+            </div>`;
+
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) closeOrderHistory();
+        });
+
+        document.body.appendChild(overlay);
+    }
+
+    renderMyOrderHistory();
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if (typeof closeMobileNav === 'function') closeMobileNav();
+}
+
+function closeOrderHistory() {
+    const overlay = document.getElementById('vpp-order-history-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+window.openOrderHistory = openOrderHistory;
+window.closeOrderHistory = closeOrderHistory;
+
+// Works even if the link is inserted by the page header.
+document.addEventListener('click', function(event) {
+    const link = event.target.closest('#mobileOrderHistoryLink');
+    if (!link) return;
+    event.preventDefault();
+    openOrderHistory();
+});
+
 // ---------- Reliable WhatsApp opener ----------
 function openWhatsAppFromUserTap(url) {
-    try {
-        const parsed = new URL(url);
-        const phone = parsed.pathname.replace(/\\//g, '');
-        const text = parsed.searchParams.get('text') || '';
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(phone)}&text=${encodeURIComponent(text)}`;
-        window.location.href = whatsappUrl;
-    } catch (e) {
-        window.location.href = url;
+    // Prefer the WhatsApp app/deep link on Android.
+    // Fall back to WhatsApp Web/current tab if the app cannot be opened.
+    const match = String(url).match(/^https:\/\/wa\.me\/([^?]+)(\?.*)?$/i);
+
+    if (match) {
+        const phone = match[1];
+        const query = match[2] || '';
+        const appUrl = `whatsapp://send?phone=${encodeURIComponent(phone)}${query}`;
+
+        let fallbackTimer = setTimeout(() => {
+            try {
+                window.location.href = url;
+            } catch (e) {}
+        }, 1200);
+
+        try {
+            document.addEventListener('visibilitychange', function onVisible() {
+                if (document.hidden) {
+                    clearTimeout(fallbackTimer);
+                    document.removeEventListener('visibilitychange', onVisible);
+                }
+            }, { once: true });
+
+            window.location.href = appUrl;
+            return;
+        } catch (e) {
+            clearTimeout(fallbackTimer);
+        }
     }
+
+    try {
+        window.location.href = url;
+    } catch (e) {}
 }
 
 async function confirmUpiPaymentOnWhatsApp() {
     const input = document.getElementById('upiShot');
     const file = input && input.files && input.files[0];
-    if (!file) { alert("Please attach a screenshot of your UPI payment."); return; }
+
+    if (!file) {
+        alert("Please attach a screenshot of your UPI payment.");
+        return;
+    }
+
     const customer = getCustomerDetails();
     if (!customer) return;
+
     const btn = document.querySelector('.upi-confirm');
     if (!btn) return;
 
+    // SECOND TAP: screenshot is uploaded and WhatsApp URL is ready.
+    // This tap is a direct user gesture, so open WhatsApp immediately.
     if (pendingUpi) {
         const sent = pendingUpi;
         pendingUpi = null;
+
         sendOrderRecord(sent.record);
         openWhatsAppFromUserTap(sent.url);
+
         closeUpiModal();
         resetUpiScreenshot();
         finishOrder();
@@ -910,34 +1148,69 @@ async function confirmUpiPaymentOnWhatsApp() {
 
     try {
         let imageUrl = '';
-        if (cloudinaryConfigured()) imageUrl = await uploadScreenshot(file);
+
+        if (cloudinaryConfigured()) {
+            imageUrl = await uploadScreenshot(file);
+        }
 
         const orderId = generateOrderId();
+
         const paymentText = imageUrl
-            ? `✅ *Paid via UPI to:* ${UPI_ID}\n📸 *Payment screenshot:* ${imageUrl}\n\nPlease verify the payment and confirm my order.`
-            : `✅ *Paid via UPI to:* ${UPI_ID}\n📸 I am attaching my payment screenshot in this chat.\n\nPlease verify the payment and confirm my order.`;
+            ? `✅ *Paid via UPI to:* ${UPI_ID}
+📸 *Payment screenshot:* ${imageUrl}
 
-        const message = buildOrderMessage("New Order - Paid via UPI", customer, paymentText, orderId);
-        const waUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
-        const record = buildOrderRecord(orderId, customer, 'UPI (paid)', imageUrl);
+Please verify the payment and confirm my order.`
+            : `✅ *Paid via UPI to:* ${UPI_ID}
+📸 I am attaching my payment screenshot in this chat.
 
-        pendingUpi = { url: waUrl, record: record };
+Please verify the payment and confirm my order.`;
+
+        const message = buildOrderMessage(
+            "New Order - Paid via UPI",
+            customer,
+            paymentText,
+            orderId
+        );
+
+        const waUrl =
+            `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+        const record = buildOrderRecord(
+            orderId,
+            customer,
+            'UPI (paid)',
+            imageUrl
+        );
+
+        // Keep the modal open until the customer explicitly taps WhatsApp.
+        pendingUpi = {
+            url: waUrl,
+            record: record
+        };
+
         btn.disabled = false;
         btn.innerText = '💬 Open WhatsApp';
 
         const note = document.getElementById('upiUploadStatus');
         if (note) {
-            note.textContent = '✅ Payment screenshot uploaded. Tap "Open WhatsApp" to send your order.';
+            note.textContent =
+                '✅ Payment screenshot uploaded. Tap "Open WhatsApp" to send your order.';
             note.style.color = '#25D366';
         }
+
     } catch (err) {
         console.error(err);
         pendingUpi = null;
         btn.disabled = false;
         btn.innerText = originalText;
-        alert("Could not upload the payment screenshot. Please check your internet connection and try again.");
+
+        alert(
+            "Could not upload the payment screenshot. " +
+            "Please check your internet connection and try again."
+        );
     }
 }
+
 
 function emailSend() {
     let totalPrice = 0;
