@@ -578,6 +578,29 @@ function flushUnsentOrders() {
 // NEXT YEAR'S DIWALI SALE - WHATSAPP OPT-IN
 // Uses the same Google Sheet (new "Subscribers" tab) and email backup as orders.
 // =========================================================================
+function openNotifyModal() {
+    if (localStorage.getItem('vpp_subscribed') === '1') {
+        showNotifyToast("✅ You're already on the list for next year's sale!");
+        return;
+    }
+    const modal = document.getElementById('notifyModal');
+    modal.classList.add('active');
+    closeMobileNav();
+}
+
+function closeNotifyModal() {
+    document.getElementById('notifyModal').classList.remove('active');
+}
+
+function showNotifyToast(message) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100002;max-width:92vw;background:#161b22;color:#fff;border:2px solid #ff9f43;border-radius:12px;padding:14px 18px;text-align:center;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.6);';
+    t.innerText = message;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 6000);
+    t.addEventListener('click', () => t.remove());
+}
+
 function subscribeForNextYear() {
     const nameEl = document.getElementById('notify-name');
     const phoneEl = document.getElementById('notify-phone');
@@ -622,8 +645,10 @@ function subscribeForNextYear() {
     }
 
     localStorage.setItem('vpp_subscribed', '1');
-    document.getElementById('notifyCard').style.display = 'none';
-    document.getElementById('notifyThanks').style.display = 'block';
+    nameEl.value = '';
+    phoneEl.value = '';
+    closeNotifyModal();
+    showNotifyToast("🎉 Congrats! You're on the list for next year's Diwali sale.");
 }
 
 function flushUnsentSubscribers() {
@@ -639,16 +664,6 @@ function flushUnsentSubscribers() {
     }));
 }
 flushUnsentSubscribers();
-
-// If this device already subscribed, show the thank-you state straight away
-if (localStorage.getItem('vpp_subscribed') === '1') {
-    document.addEventListener('DOMContentLoaded', () => {
-        const card = document.getElementById('notifyCard');
-        const thanks = document.getElementById('notifyThanks');
-        if (card) card.style.display = 'none';
-        if (thanks) thanks.style.display = 'block';
-    });
-}
 
 function showOrderToast(orderId) {
     const t = document.createElement('div');
@@ -1473,3 +1488,30 @@ document.addEventListener('click', (event) => {
         });
     }
 })();
+// =========================================================================
+// MOBILE HAMBURGER MENU
+// =========================================================================
+function closeMobileNav() {
+    document.getElementById('hamburgerBtn')?.classList.remove('active');
+    document.getElementById('mobileNav')?.classList.remove('open');
+}
+
+document.getElementById('hamburgerBtn')?.addEventListener('click', () => {
+    document.getElementById('hamburgerBtn').classList.toggle('active');
+    document.getElementById('mobileNav').classList.toggle('open');
+});
+
+document.getElementById('mobileNotifyLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openNotifyModal();
+});
+
+document.addEventListener('click', (e) => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburgerBtn');
+    if (!nav || !btn) return;
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+        closeMobileNav();
+    }
+});
+
