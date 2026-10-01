@@ -420,7 +420,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "yourname@upi";
+const UPI_ID = "danniskumarnadar@okhdfcbank";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -466,7 +466,7 @@ function getCustomerDetails() {
 // Setup: paste the Google Apps Script web-app URL between the quotes below.
 // Leave it empty ("") to skip saving orders to a sheet (WhatsApp still works).
 // ---------------------------------------------------------------------
-const ORDER_SHEET_URL = "danniskumarnadar@okhdfcbank";
+const ORDER_SHEET_URL = "";
 
 // Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
 const WEB3FORMS_KEY = "f0a9dfd9-73e7-4671-aeb4-37b44c118cfa";
