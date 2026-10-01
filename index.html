@@ -24,6 +24,16 @@
             <a href="about.html" >About Us</a>
             <a href="safetyguide.html">Safety Guide</a>
         </nav>
+            <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="mobile-nav" id="mobileNav">
+                <a href="home.html">🏠 Home</a>
+                <a href="index.html#shop">🛍️ Shop</a>
+                <a href="about.html">ℹ️ About Us</a>
+                <a href="safetyguide.html">🛡️ Safety Guide</a>
+                <a href="#" id="mobileNotifyLink">🔔 Next Year's Sale</a>
+            </nav>
             <span><p><img src="/Diwali_images/location_icon.jpg" class="location_img">Sivakasi</p></span>
         </div>
     </div>
@@ -85,25 +95,6 @@
        <!-- <a href="#shop" class="hero-cta-btn">View Collection</a>-->
     </div>
 </section>
-
-    <!-- Next year's Diwali sale opt-in -->
-    <section class="notify-section" id="notifySection">
-        <div class="notify-card" id="notifyCard">
-            <div class="notify-icon">🪔</div>
-            <h3>Don't Miss Next Diwali's Sale!</h3>
-            <p>Leave your WhatsApp number and we'll message you first when next year's Diwali offers go live.</p>
-            <div class="notify-fields">
-                <input id="notify-name" type="text" placeholder="Your name" autocomplete="name">
-                <input id="notify-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit WhatsApp number" autocomplete="tel">
-            </div>
-            <button class="notify-btn" onclick="subscribeForNextYear()">🔔 Notify Me Next Year</button>
-        </div>
-        <div class="notify-card notify-thanks" id="notifyThanks" style="display:none;">
-            <div class="notify-icon">🎉</div>
-            <h3>You're on the list!</h3>
-            <p>We'll reach out on WhatsApp before next Diwali's sale begins.</p>
-        </div>
-    </section>
 
 
         <form id="my-form" class="filter">
@@ -242,6 +233,21 @@
                 </div>
                 <button type="submit" id="hidden-submit-trigger" style="display: none;"></button>
             </form>
+        </div>
+    </div>
+
+    <!-- NEXT YEAR'S DIWALI SALE OPT-IN MODAL -->
+    <div id="notifyModal" class="upi-modal">
+        <div class="upi-box">
+            <button class="upi-close" onclick="closeNotifyModal()">&times;</button>
+            <div class="notify-icon">🪔</div>
+            <h2>Don't Miss Next Diwali's Sale!</h2>
+            <p class="upi-note">Leave your WhatsApp number and we'll message you first when next year's Diwali offers go live.</p>
+            <div class="notify-fields">
+                <input id="notify-name" type="text" placeholder="Your name" autocomplete="name">
+                <input id="notify-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit WhatsApp number" autocomplete="tel">
+            </div>
+            <button class="notify-btn" onclick="subscribeForNextYear()">🔔 Notify Me Next Year</button>
         </div>
     </div>
 

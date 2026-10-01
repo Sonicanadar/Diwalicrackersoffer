@@ -1764,16 +1764,29 @@ body.activeTabWishlist .wishlistTab{right:0;}
 .wishlistTab .cx-unit s{color:#6e7681;font-size:11.5px;}
 .wl-discount{background:rgba(63,185,80,.15);color:#3fb950;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;}
 
-/* ===== Next year's Diwali sale opt-in ===== */
-.notify-section{padding:30px 16px;display:flex;justify-content:center;}
-.notify-card{max-width:420px;width:100%;background:linear-gradient(135deg,#1a1025,#161b22);border:1px solid #ff9f43;border-radius:16px;padding:26px 22px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4);}
+/* ===== Next year's Diwali sale opt-in (modal, opened from the hamburger menu) ===== */
 .notify-icon{font-size:36px;margin-bottom:6px;}
-.notify-card h3{margin:4px 0 8px;color:#ff9f43;font-size:19px;}
-.notify-card p{margin:0 0 16px;color:#b7bfc9;font-size:13.5px;line-height:1.5;}
-.notify-fields{display:grid;gap:8px;margin-bottom:14px;}
+.upi-box .notify-fields{display:grid;gap:8px;margin:16px 0;}
 .notify-fields input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#fff;font-size:14px;font-family:inherit;outline:none;}
 .notify-fields input:focus{border-color:#ff9f43;}
 .notify-fields input.cx-invalid{border-color:#ea4335;}
 .notify-btn{width:100%;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:800;color:#0d1117;background:linear-gradient(135deg,#ffcb5a,#ff9f43);cursor:pointer;}
 .notify-btn:hover{filter:brightness(1.07);}
-.notify-thanks h3{color:#3fb950;}
+
+/* ===== Hamburger menu + mobile nav panel ===== */
+.hamburger-btn{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;background:#21262d;border:1px solid #30363d;border-radius:8px;cursor:pointer;margin-left:auto;padding:0;}
+.hamburger-btn span{display:block;width:18px;height:2px;background:#f0f6fc;margin:0 auto;transition:all .25s ease;}
+.hamburger-btn.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger-btn.active span:nth-child(2){opacity:0;}
+.hamburger-btn.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-nav{position:fixed;top:0;right:-280px;width:260px;height:100%;background:#0d1117;border-left:1px solid #30363d;box-shadow:-10px 0 30px rgba(0,0,0,.5);z-index:100000;display:flex;flex-direction:column;padding:70px 20px 20px;transition:right .3s ease;}
+.mobile-nav.open{right:0;}
+.mobile-nav a{color:#e6edf3;text-decoration:none;font-size:15px;font-weight:600;padding:14px 6px;border-bottom:1px solid #21262d;}
+.mobile-nav a:hover{color:#ff9f43;}
+#mobileNotifyLink{color:#ff9f43;}
+
+@media (max-width: 760px) {
+    .nav-links{ display:none; }
+    .hamburger-btn{ display:flex; }
+}
