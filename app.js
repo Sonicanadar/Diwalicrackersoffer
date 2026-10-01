@@ -420,7 +420,7 @@ const addCartToHTML = () => {
 // PAYMENT: UPI + CASH ON DELIVERY (both confirm through WhatsApp)
 // =========================================================================
 // ⚠️ REPLACE with your real UPI ID (VPA) and the name shown to customers
-const UPI_ID = "danniskumarnadar@okhdfcbank";
+const UPI_ID = "yourname@upi";
 const UPI_PAYEE_NAME = "Vav Pyro Park";
 const BUSINESS_WHATSAPP = "919867731440";
 
@@ -466,7 +466,7 @@ function getCustomerDetails() {
 // Setup: paste the Google Apps Script web-app URL between the quotes below.
 // Leave it empty ("") to skip saving orders to a sheet (WhatsApp still works).
 // ---------------------------------------------------------------------
-const ORDER_SHEET_URL = "";
+const ORDER_SHEET_URL = "danniskumarnadar@okhdfcbank";
 
 // Email backup (Web3Forms): paste your access key between the quotes. Leave "" to skip.
 const WEB3FORMS_KEY = "f0a9dfd9-73e7-4671-aeb4-37b44c118cfa";
@@ -726,7 +726,7 @@ function checkoutCOD() {
         orderId
     );
     sendOrderRecord(buildOrderRecord(orderId, customer, 'Cash on Delivery', ''));
-    window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=${BUSINESS_WHATSAPP}&text=${encodeURIComponent(message)}`, '_blank');
     finishOrder();
     showOrderToast(orderId);
 }
@@ -1173,7 +1173,7 @@ Please verify the payment and confirm my order.`;
         );
 
         const waUrl =
-            `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`;
+            `https://api.whatsapp.com/send?phone=${BUSINESS_WHATSAPP}&text=${encodeURIComponent(message)}`;
 
         const record = buildOrderRecord(
             orderId,
@@ -1702,7 +1702,7 @@ async function shareProduct(id) {
     }
 
     // Desktop fallback: WhatsApp share link
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 document.addEventListener('click', (event) => {
