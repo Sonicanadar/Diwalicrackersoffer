@@ -18,6 +18,15 @@
             <a href="safetyguide.html">Safety Guide</a>
            
         </nav>
+            <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+                <a href="home.html">🏠 Home</a>
+                <a href="index.html#shop">🛍️ Shop</a>
+                <a href="about.html">ℹ️ About Us</a>
+                <a href="safetyguide.html">🛡️ Safety Guide</a>
+            </nav>
         <!-- Shopping Cart Trigger Icon -->
         <div class="cart-icon-container" onclick="toggleCart()">
             <span class="cart-emoji">🛒</span>
@@ -37,117 +46,47 @@
         </div>
     </section>
 
-    <!-- 3. PRODUCT CATALOG SECTION -->
-    <main class="products-section" id="shop">
-        <h2>Our Featured Collection</h2>
-        <p class="subtitle">Certified low-emission, premium green cracker options</p>
-        
-        <div class="product-grid">
-            <!-- Product Card 1 -->
-            <div class="product-card">
-                <span class="tag green-tag">Eco-Friendly</span>
-                <div class="product-img-placeholder">🎇</div>
-                <h3>Premium Pack 42 Items</h3>
-                <p>Rs. 830</p>
-               <button class="btn-add" onclick="addToCart('Premium Pack 42 Items')">Add to Cart</button>
-            </div>
-
-            <!-- Product Card 2 -->
-            <div class="product-card">
-                <span class="tag">Family Pack</span>
-                <div class="product-img-placeholder">✨</div>
-                <h3>Diwali Special pack 50 Items</h3>
-                <p>Rs. 1000</p>
-                <button class="btn-add" onclick="addToCart('Diwali Special pack 50 Items')">Add to Cart</button> 
-            </div>
-
-            <!-- Product Card 3 -->
-            <div class="product-card">
-                <span class="tag premium-tag">Premium</span>
-                <div class="product-img-placeholder">🚀</div>
-                <h3>V.I.P Pack 35 Items</h3>
-                <p>Rs. 530</p>
-                <button class="btn-add" onclick="addToCart('V.I.P Pack 35 Items')">Add to Cart</button> 
-            </div>
-        </div>
-    </main>
-
-    <!-- 4. SLIDE-OUT SHOPPING CART DRAWER -->
-    <div class="cart-drawer" id="cart-container">
-        <div class="cart-header">
-            <h3>Your Shopping Cart</h3>
-            <button class="btn-close" onclick="toggleCart()">✕</button>
-        </div>
-        
-        <!-- Target container for Javascript items generation -->
-        <div class="cart-items" id="cart-items-list">
-            <p class="empty-msg">Your cart is currently empty.</p>
-        </div>
-        
-        <div class="cart-footer">
-            <!-- Integrated WhatsApp trigger button -->
-            <button class="whatsapp-btn" onclick="checkoutViaWhatsApp()">Order via WhatsApp 💬</button>
-        </div>
-    </div>
-
-    <!-- 5. HOMEPAGE FUNCTIONALITY JAVASCRIPT -->
-    <script>
-        let cart = [];
-
-        // Smoothly opens or closes the side cart panel drawer layout
-        function toggleCart() {
-            const cartDrawer = document.getElementById('cart-container');
-            cartDrawer.classList.toggle('active');
+    <script id="static-hamburger-script">
+    (function () {
+        const btn = document.getElementById('hamburgerBtn');
+        const nav = document.getElementById('mobileNav');
+        if (!btn || !nav) return;
+    
+        function closeMenu() {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+            nav.classList.remove('open');
+            nav.setAttribute('aria-hidden', 'true');
         }
-
-        // Handles adding items to state tracking array
-        function addToCart(productName) {
-            cart.push(productName);
-            document.getElementById('cart-count').innerText = cart.length;
-            updateCartUI();
-            
-            // Proactive UX step: automatically fly open cart window upon injection
-            document.getElementById('cart-container').classList.add('active');
+    
+        function openMenu() {
+            btn.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+            nav.classList.add('open');
+            nav.setAttribute('aria-hidden', 'false');
         }
-
-        // Repopulates raw HTML string elements array inside sidebar view area
-        function updateCartUI() {
-            const list = document.getElementById('cart-items-list');
-            if (cart.length === 0) {
-                list.innerHTML = '<p class="empty-msg">Your cart is currently empty.</p>';
-                return;
+    
+        btn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            nav.classList.contains('open') ? closeMenu() : openMenu();
+        });
+    
+        nav.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeMenu);
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (nav.classList.contains('open') &&
+                !nav.contains(event.target) &&
+                !btn.contains(event.target)) {
+                closeMenu();
             }
-            list.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <span>📦 ${item}</span>
-                </div>
-            `).join('');
-        }
-
-        // WhatsApp Checkout Engine logic integration
-        function checkoutViaWhatsApp() {
-            if (cart.length === 0) {
-                alert("Please add items to your cart first before trying to check out!");
-                return;
-            }
-
-            // ⚡ REQUIREMENT FULFILLED: Instantly close cart window elements first 
-            document.getElementById('cart-container').classList.remove('active');
-
-            // Constructing WhatsApp outbound URI strings parameters
-            const phoneNumber = "919867731440"; // Replace with your company phone number string
-            const itemsList = cart.join(", ");
-            const message = encodeURIComponent(`Hello! I want to place an order for these crackers: ${itemsList}`);
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-
-            // Resetting runtime application states cleanly for post checkout experience
-            cart = [];
-            document.getElementById('cart-count').innerText = 0;
-            updateCartUI();
-
-            // Fire redirection route request over clean parallel viewport instance tab
-            window.open(whatsappUrl, '_blank');
-        }
+        });
+    
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeMenu();
+        });
+    })();
     </script>
 </body>
 </html>

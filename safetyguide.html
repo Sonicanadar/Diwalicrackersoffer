@@ -15,8 +15,17 @@
             <a href="home.html">Home</a>
             <a href="index.html#shop">Shop</a>
             <a href="about.html">About Us</a>
-            <a href="safety.html" class="active-link">Safety Guide</a>
+            <a href="safetyguide.html" class="active-link">Safety Guide</a>
         </nav>
+            <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+                <a href="home.html">🏠 Home</a>
+                <a href="index.html#shop">🛍️ Shop</a>
+                <a href="about.html">ℹ️ About Us</a>
+                <a href="safetyguide.html">🛡️ Safety Guide</a>
+            </nav>
     </header>
 
     <!-- SAFETY HERO SECTION -->
@@ -75,5 +84,48 @@
 
     </main>
 
+
+    <script id="static-hamburger-script">
+    (function () {
+        const btn = document.getElementById('hamburgerBtn');
+        const nav = document.getElementById('mobileNav');
+        if (!btn || !nav) return;
+    
+        function closeMenu() {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-expanded', 'false');
+            nav.classList.remove('open');
+            nav.setAttribute('aria-hidden', 'true');
+        }
+    
+        function openMenu() {
+            btn.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+            nav.classList.add('open');
+            nav.setAttribute('aria-hidden', 'false');
+        }
+    
+        btn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            nav.classList.contains('open') ? closeMenu() : openMenu();
+        });
+    
+        nav.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeMenu);
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (nav.classList.contains('open') &&
+                !nav.contains(event.target) &&
+                !btn.contains(event.target)) {
+                closeMenu();
+            }
+        });
+    
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeMenu();
+        });
+    })();
+    </script>
 </body>
 </html>
