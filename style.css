@@ -1763,3 +1763,17 @@ body.activeTabWishlist .wishlistTab{right:0;}
 .wishlistTab .cx-unit{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
 .wishlistTab .cx-unit s{color:#6e7681;font-size:11.5px;}
 .wl-discount{background:rgba(63,185,80,.15);color:#3fb950;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;}
+
+/* ===== Next year's Diwali sale opt-in ===== */
+.notify-section{padding:30px 16px;display:flex;justify-content:center;}
+.notify-card{max-width:420px;width:100%;background:linear-gradient(135deg,#1a1025,#161b22);border:1px solid #ff9f43;border-radius:16px;padding:26px 22px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4);}
+.notify-icon{font-size:36px;margin-bottom:6px;}
+.notify-card h3{margin:4px 0 8px;color:#ff9f43;font-size:19px;}
+.notify-card p{margin:0 0 16px;color:#b7bfc9;font-size:13.5px;line-height:1.5;}
+.notify-fields{display:grid;gap:8px;margin-bottom:14px;}
+.notify-fields input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#fff;font-size:14px;font-family:inherit;outline:none;}
+.notify-fields input:focus{border-color:#ff9f43;}
+.notify-fields input.cx-invalid{border-color:#ea4335;}
+.notify-btn{width:100%;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:800;color:#0d1117;background:linear-gradient(135deg,#ffcb5a,#ff9f43);cursor:pointer;}
+.notify-btn:hover{filter:brightness(1.07);}
+.notify-thanks h3{color:#3fb950;}
