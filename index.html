@@ -38,12 +38,7 @@
             <span><p><img src="/Diwali_images/location_icon.jpg" class="location_img">Sivakasi</p></span>
         </div>
     </div>
-    <!-- 🛠️ HIGH-CONTRAST TOP PROMOTIONAL BANNER STRIP -->
-<div class="container_title_free" style="width: 100%; background: linear-gradient(90deg, #1b1510 0%, #bd4b00 50%, #1b1510 100%); border-bottom: 2px solid #ff9f43; padding: 12px 20px; text-align: center; display: flex; justify-content: center; align-items: center; z-index: 1001;">
-    <p style="margin: 0; font-family: sans-serif; font-size: 14px; font-weight: 600; color: #f0f6fc; letter-spacing: 0.5px; line-height: 1.4;">
-        💥 <span style="color: #ff9f43; font-weight: 700;">GRAND FESTIVE SALE:</span> Get <b style="color: #0d1117; background-color: #ff9f43; padding: 2px 8px; border-radius: 4px; font-weight: 700; margin: 0 4px;">FLAT 80% OFF</b> on Premium Crackers! + <span style="color: #25D366; font-weight: 700;">FREE SHIPPING</span> on orders above <b>Rs.999</b>! 🚚 <span style="font-size: 11px; color: #8b949e; margin-left: 6px;">(Excludes Gift Boxes)</span>
-    </p>
-</div>
+    
 
          <div class="container">
         <!-- =========================================================================
@@ -61,12 +56,7 @@
         </p>
     </div>
 
-    <!-- 💥 Middle: Displaying ONLY the high-contrast 80% discount badge -->
-    <div class="header-festive-banner-middle" style="flex-grow: 1; text-align: center; padding: 0 10px;">
-        <b style="color: #0d1117; background-color: #ff9f43; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-family: 'Segoe UI', sans-serif; font-size: 15px; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); text-transform: uppercase; user-select: none;">
-            FLAT 80% OFF
-        </b>
-    </div>
+    
 
     <!-- ❤️ Wishlist Badge -->
     <div class="icon-wishlist" style="position: relative; cursor: pointer; background-color: #21262d; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0;">
@@ -87,7 +77,46 @@
 </header>
 
 
-        <!-- HERO TEXT SECTION -->
+        <!-- ============ DIWALI FESTIVAL BANNER ============ -->
+<style>
+.fx-banner{position:relative;overflow:hidden;box-sizing:border-box;margin:14px 0;padding:22px 16px 20px;text-align:center;border-radius:14px;border:1px solid rgba(255,159,67,.4);background:radial-gradient(ellipse at 50% -10%,rgba(189,75,0,.55) 0%,rgba(42,18,4,.9) 55%,#0d1117 100%);box-shadow:inset 0 0 0 4px rgba(13,17,23,.6),inset 0 0 0 5px rgba(255,159,67,.18),0 6px 22px rgba(0,0,0,.35)}
+.fx-orn{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+.fx-orn i{display:block;height:1px;width:22%;max-width:110px;background:linear-gradient(90deg,transparent,rgba(255,159,67,.8))}
+.fx-orn i:last-child{background:linear-gradient(270deg,transparent,rgba(255,159,67,.8))}
+.fx-orn svg{width:34px;height:26px;filter:drop-shadow(0 0 6px rgba(255,159,67,.7));animation:fxFlicker 2.6s ease-in-out infinite}
+.fx-eyebrow{margin:0;font:600 11px 'Segoe UI',sans-serif;letter-spacing:4px;text-transform:uppercase;color:#d9a566}
+.fx-title{margin:6px 0 4px;font:700 clamp(30px,8vw,46px)/1.1 Georgia,'Times New Roman',serif;letter-spacing:.5px;background:linear-gradient(180deg,#fff1cf 0%,#ffc56b 55%,#e8892a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fx-sub{margin:0;font:italic 14px Georgia,serif;color:#e9d9c3;opacity:.9}
+.fx-deal{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;padding:6px 22px;border-radius:14px;background:linear-gradient(135deg,#b32d00,#ff6a00 45%,#ffb347);box-shadow:0 0 0 2px #ffd28a,0 0 26px rgba(255,120,0,.75);overflow:hidden;animation:fxPop 1.6s ease-in-out infinite}
+.fx-deal::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:fxShine 2.8s ease-in-out infinite}
+.fx-flat,.fx-off{display:flex;flex-direction:column;font:800 13px 'Segoe UI',sans-serif;letter-spacing:3px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.fx-pct{font:900 clamp(54px,17vw,78px)/1 'Segoe UI',Arial,sans-serif;color:#fff;text-shadow:0 3px 0 #8a2300,0 0 18px rgba(255,255,255,.55)}
+.fx-pct small{font-size:.5em;margin-left:2px}
+.fx-ship{margin:12px 0 0;font:600 12px 'Segoe UI',sans-serif;letter-spacing:.8px;color:#ffc56b}
+@keyframes fxPop{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes fxShine{0%{left:-60%}60%,100%{left:130%}}
+.fx-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffd28a;box-shadow:0 0 8px 2px rgba(255,190,90,.8);opacity:0;animation:fxTwinkle 3s ease-in-out infinite}
+.fx-spark:nth-of-type(1){top:16%;left:9%}
+.fx-spark:nth-of-type(2){top:58%;left:5%;animation-delay:1s}
+.fx-spark:nth-of-type(3){top:22%;right:8%;animation-delay:.5s}
+.fx-spark:nth-of-type(4){top:66%;right:11%;animation-delay:1.8s}
+@keyframes fxTwinkle{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:1;transform:scale(1)}}
+@keyframes fxFlicker{0%,100%{opacity:1}50%{opacity:.82}}
+@media(prefers-reduced-motion:reduce){.fx-orn svg,.fx-spark,.fx-deal,.fx-deal::after{animation:none}.fx-spark{opacity:.7}}
+</style>
+<section class="fx-banner">
+    <span class="fx-spark"></span><span class="fx-spark"></span><span class="fx-spark"></span><span class="fx-spark"></span>
+    <div class="fx-orn"><i></i>
+        <svg viewBox="0 0 40 28" aria-hidden="true"><path d="M20 1C24 6 25 9 20 14 15 9 16 6 20 1Z" fill="#ffd28a"/><path d="M5 16H35C35 23 28 27 20 27 12 27 5 23 5 16Z" fill="#ff9f43"/></svg>
+    <i></i></div>
+    <p class="fx-eyebrow">Vav Pyro Park · Sivakasi</p>
+    <h2 class="fx-title">Happy Diwali</h2>
+    <p class="fx-sub">Wishing you a bright, happy and safe celebration</p>
+    <div class="fx-deal"><span class="fx-flat">FLAT</span><span class="fx-pct">80<small>%</small></span><span class="fx-off">OFF</span></div>
+    <p class="fx-ship">on all crackers &nbsp;·&nbsp; Free shipping above Rs.999</p>
+</section>
+
+<!-- HERO TEXT SECTION -->
 <section class="celebration-hero">
     <div class="hero-text-container">
         <h1>Light Up Your Celebrations Safely</h1>
