@@ -146,9 +146,11 @@ function addDataToHTML(productFilter){
         // 🎯 FIX: Remove discount specifically for the GIFT BOXES category
 let finalDisplayPrice = Math.floor(product.price * 0.2);
 let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
+let offBadgeHTML = `<div><span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);">80% OFF</span></div>`;
 
 if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
     finalDisplayPrice = product.price; // Sell at full price
+    offBadgeHTML = '';
     // 🛠️ CHANGED: Show a clean, bright badge stating "No Discount" for Gift Boxes
     mrpTagHTML = `<span style="font-size: 0.75rem; color: #ff9f43; background-color: rgba(255, 159, 67, 0.15); padding: 2px 6px; border-radius: 4px; margin-right: 6px; font-weight: 600; text-decoration: none !important;">No Discount</span>`;
 }
@@ -160,6 +162,7 @@ if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") 
             <img src="${product.image}" alt="">
             <h2>${product.title}</h2>
             <div class="price">${mrpTagHTML}Rs.${finalDisplayPrice}</div>
+            ${offBadgeHTML}
             <div class="action-container" data-id="${product.id}">
                 ${actionControlHTML}
             </div>
@@ -1395,6 +1398,7 @@ let modalMrpTagHTML = `
     <span style="font-size: 0.95rem; text-decoration: line-through; color: #b3b9c1; margin-left: 8px; font-weight: 500; opacity: 0.85;">
         MRP. ${targetProduct.price}
     </span>
+    <span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);margin-top:0;margin-left:8px;">80% OFF</span>
 `;
 
 // Remove discount tracking layout variables strictly for the GIFT BOXES category
