@@ -108,7 +108,7 @@ let totalQuantity = 0 ;
 //             newProduct.innerHTML =  `
 //                 <img src="${product.image}" alt="">
 //                 <h2>${product.title}</h2>
-//                 <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price*0.5))}</div>
+//                 <div class="price"><span>MRP. ${product.price} </span>Our Price.${Math.floor((product.price* 0.2))}</div>
 //                  <button class="addCart" data-id="${product.id}">Add to Cart</button>
 //                 `;
 //                 listProductHTML.appendChild(newProduct); 
@@ -144,7 +144,7 @@ function addDataToHTML(productFilter){
         }
 
         // 🎯 FIX: Remove discount specifically for the GIFT BOXES category
-let finalDisplayPrice = Math.floor(product.price * 0.5);
+let finalDisplayPrice = Math.floor(product.price * 0.2);
 let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
 
 if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
@@ -350,7 +350,7 @@ const addCartToHTML = () => {
         if (!info) return;
 
         const isGift = info.category && info.category.trim().toUpperCase() === "GIFT BOXES";
-        const unit = isGift ? info.price : Math.floor(info.price * 0.5);
+        const unit = isGift ? info.price : Math.floor(info.price * 0.2);
         const lineMrp = info.price * item.quantity;
         const linePay = unit * item.quantity;
 
@@ -427,7 +427,7 @@ const BUSINESS_WHATSAPP = "919867731440";
 function unitPriceOf(p) {
     return (p.category && p.category.trim().toUpperCase() === "GIFT BOXES")
         ? p.price
-        : Math.floor(p.price * 0.5);
+        : Math.floor(p.price * 0.2);
 }
 
 function getCartTotal() {
@@ -1226,7 +1226,7 @@ function emailSend() {
         let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
         let info = listProducts[positionProduct];
         if (info) {
-            let itemUnitPrice = Math.floor(info.price * 0.5);
+            let itemUnitPrice = Math.floor(info.price * 0.2);
             if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
                 itemUnitPrice = info.price;
             }
@@ -1389,7 +1389,7 @@ function openProductModal(productId) {
     // =========================================================================
     // 🛠️ CHANGED: Set up the bright pricing structure layout matching the cart specs
     // =========================================================================
-    let modalDisplayPrice = Math.floor(targetProduct.price * 0.5);
+    let modalDisplayPrice = Math.floor(targetProduct.price * 0.2);
 
 let modalMrpTagHTML = `
     <span style="font-size: 0.95rem; text-decoration: line-through; color: #b3b9c1; margin-left: 8px; font-weight: 500; opacity: 0.85;">
@@ -1440,7 +1440,7 @@ if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "G
             relatedCard.dataset.id = item.id; 
             
             // Apply category specific base calculations for related items strip prices
-let relatedDisplayPrice = Math.floor(item.price * 0.5);
+let relatedDisplayPrice = Math.floor(item.price * 0.2);
 let relatedMrpHTML = `<span style="font-size: 0.75rem; text-decoration: line-through; color: #b3b9c1; margin-left: 4px; font-weight: 400; opacity: 0.8;">Rs.${item.price}</span>`;
 
 if (item.category && item.category.trim().toUpperCase() === "GIFT BOXES") {
@@ -1679,7 +1679,7 @@ async function shareProduct(id) {
     const price = unitPriceOf(p);
     const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
     const link = `${window.location.origin}${window.location.pathname}?p=${p.id}`;
-    const priceLine = isGift ? `Rs.${price}` : `Rs.${price} (MRP Rs.${p.price} - 50% OFF)`;
+    const priceLine = isGift ? `Rs.${price}` : `Rs.${price} (MRP Rs.${p.price} - 80% OFF)`;
     const text = `🎆 ${p.title}\n💰 ${priceLine}\nDiwali crackers at Vav Pyro Park\n\n${link}`;
 
     if (navigator.share) {
