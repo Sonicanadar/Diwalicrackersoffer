@@ -367,7 +367,7 @@ const addCartToHTML = () => {
             <img class="cx-img" src="${info.image}" alt="">
             <div class="cx-mid">
                 <div class="cx-name">${info.title}</div>
-                <div class="cx-unit">Rs.${unit} each${isGift ? ' · No discount' : ` <s style="opacity:.7;margin-left:4px;">MRP Rs.${info.price}</s> <span style="display:inline-block;background:#e10000;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;margin-left:4px;">${Math.round(100 - (unit / info.price) * 100)}% OFF</span>`}</div>
+                <div class="cx-unit">${isGift ? `Rs.${unit} each · No discount` : `<s style="opacity:.7;margin-right:4px;">MRP Rs.${info.price}</s> Rs.${unit} each <span style="display:inline-block;background:#e10000;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;margin-left:4px;">${Math.round(100 - (unit / info.price) * 100)}% OFF</span>`}</div>
                 <div class="cx-qty">
                     <button class="minus" data-id="${info.id}">&minus;</button>
                     <span>${item.quantity}</span>
