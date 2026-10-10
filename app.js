@@ -1775,3 +1775,63 @@ document.addEventListener('click', (e) => {
 });
 
 
+
+
+// =========================================================================
+// BACK BUTTON: close the cart / popups instead of leaving the website
+// Each time a drawer or popup opens, one history entry is added. Pressing
+// the phone's Back button then closes the top-most one rather than going
+// to the previous page.
+// =========================================================================
+(function backButtonCloseOverlays() {
+    const el = (id) => document.getElementById(id);
+    // Listed top-most first, so Back closes the one on top
+    const overlays = [
+        { open: () => !!el('upiModal') && el('upiModal').classList.contains('active'), close: () => closeUpiModal() },
+        { open: () => !!el('notifyModal') && el('notifyModal').classList.contains('active'), close: () => closeNotifyModal() },
+        { open: () => { const o = el('vpp-order-history-overlay'); return !!o && !o.classList.contains('hidden'); }, close: () => closeOrderHistory() },
+        { open: () => !!el('productModal') && el('productModal').classList.contains('active'), close: () => closeProductModal() },
+        { open: () => document.body.classList.contains('activeTabWishlist'), close: () => closeWishlist() },
+        { open: () => document.body.classList.contains('activeTabCart'), close: () => document.body.classList.remove('activeTabCart') },
+        { open: () => !!el('mobileNav') && el('mobileNav').classList.contains('open'), close: () => closeMobileNav() }
+    ];
+    const anyOpen = () => overlays.some(o => o.open());
+
+    let pushed = false;     // true while our extra history entry exists
+    let ignorePop = false;  // true while we remove that entry ourselves
+    let queued = false;
+
+    function sync() {
+        queued = false;
+        const open = anyOpen();
+        if (open && !pushed) {
+            history.pushState({ vppOverlay: true }, '');
+            pushed = true;
+        } else if (!open && pushed) {
+            // Closed with the X / tap outside: drop our history entry quietly
+            pushed = false;
+            ignorePop = true;
+            setTimeout(() => { ignorePop = false; }, 600);
+            history.back();
+        }
+    }
+
+    window.addEventListener('popstate', () => {
+        if (ignorePop) { ignorePop = false; return; }
+        if (!pushed) return;
+        pushed = false;                       // Back already removed our entry
+        const top = overlays.find(o => o.open());
+        if (top) top.close();
+        sync();                               // another popup still open? add a fresh entry
+    });
+
+    const schedule = () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(sync);
+    };
+    new MutationObserver(schedule).observe(document.body, {
+        attributes: true, attributeFilter: ['class'], subtree: true, childList: true
+    });
+    schedule();
+})();
