@@ -1,3 +1,7 @@
+// Single place to change the sale discount
+const DISCOUNT_PERCENT = 90;
+const discountedPrice = (mrp) => Math.floor(mrp * (100 - DISCOUNT_PERCENT) / 100);
+
 let listProductHTML = document.querySelector('.listProduct');
 let iconCart = document.querySelector('.icon-cart');
 let closeBtn = document.querySelector('.close');
@@ -144,9 +148,9 @@ function addDataToHTML(productFilter){
         }
 
         // 🎯 FIX: Remove discount specifically for the GIFT BOXES category
-let finalDisplayPrice = Math.floor(product.price * 0.2);
+let finalDisplayPrice = discountedPrice(product.price);
 let mrpTagHTML = `<span>MRP. ${product.price} </span>`;
-let offBadgeHTML = `<div><span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);">80% OFF</span></div>`;
+let offBadgeHTML = `<div><span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);">${DISCOUNT_PERCENT}% OFF</span></div>`;
 
 if (product.category && product.category.trim().toUpperCase() === "GIFT BOXES") {
     finalDisplayPrice = product.price; // Sell at full price
@@ -353,7 +357,7 @@ const addCartToHTML = () => {
         if (!info) return;
 
         const isGift = info.category && info.category.trim().toUpperCase() === "GIFT BOXES";
-        const unit = isGift ? info.price : Math.floor(info.price * 0.2);
+        const unit = isGift ? info.price : discountedPrice(info.price);
         const lineMrp = info.price * item.quantity;
         const linePay = unit * item.quantity;
 
@@ -367,7 +371,7 @@ const addCartToHTML = () => {
             <img class="cx-img" src="${info.image}" alt="">
             <div class="cx-mid">
                 <div class="cx-name">${info.title}</div>
-                <div class="cx-unit">${isGift ? `Rs.${unit} each · No discount` : `<s style="opacity:.7;margin-right:4px;">MRP Rs.${info.price}</s> Rs.${unit} each <span style="display:inline-block;background:#e10000;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;margin-left:4px;">${Math.round(100 - (unit / info.price) * 100)}% OFF</span>`}</div>
+                <div class="cx-unit">${isGift ? `Rs.${unit} each · No discount` : `<s style="opacity:.7;margin-right:4px;">MRP Rs.${info.price}</s> Rs.${unit} each <span style="display:inline-block;background:#e10000;color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;margin-left:4px;">${DISCOUNT_PERCENT}% OFF</span>`}</div>
                 <div class="cx-qty">
                     <button class="minus" data-id="${info.id}">&minus;</button>
                     <span>${item.quantity}</span>
@@ -430,7 +434,7 @@ const BUSINESS_WHATSAPP = "919867731440";
 function unitPriceOf(p) {
     return (p.category && p.category.trim().toUpperCase() === "GIFT BOXES")
         ? p.price
-        : Math.floor(p.price * 0.2);
+        : discountedPrice(p.price);
 }
 
 function getCartTotal() {
@@ -1229,7 +1233,7 @@ function emailSend() {
         let positionProduct = listProducts.findIndex((value) => value.id == item.product_id);
         let info = listProducts[positionProduct];
         if (info) {
-            let itemUnitPrice = Math.floor(info.price * 0.2);
+            let itemUnitPrice = discountedPrice(info.price);
             if (info.category && info.category.trim().toUpperCase() === "GIFT BOXES") {
                 itemUnitPrice = info.price;
             }
@@ -1392,13 +1396,13 @@ function openProductModal(productId) {
     // =========================================================================
     // 🛠️ CHANGED: Set up the bright pricing structure layout matching the cart specs
     // =========================================================================
-    let modalDisplayPrice = Math.floor(targetProduct.price * 0.2);
+    let modalDisplayPrice = discountedPrice(targetProduct.price);
 
 let modalMrpTagHTML = `
     <span style="font-size: 0.95rem; text-decoration: line-through; color: #b3b9c1; margin-left: 8px; font-weight: 500; opacity: 0.85;">
         MRP. ${targetProduct.price}
     </span>
-    <span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);margin-top:0;margin-left:8px;">80% OFF</span>
+    <span style="display:inline-block;background:#e10000;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-top:6px;box-shadow:0 0 8px rgba(255,0,0,.55);margin-top:0;margin-left:8px;">${DISCOUNT_PERCENT}% OFF</span>
 `;
 
 // Remove discount tracking layout variables strictly for the GIFT BOXES category
@@ -1444,7 +1448,7 @@ if (targetProduct.category && targetProduct.category.trim().toUpperCase() === "G
             relatedCard.dataset.id = item.id; 
             
             // Apply category specific base calculations for related items strip prices
-let relatedDisplayPrice = Math.floor(item.price * 0.2);
+let relatedDisplayPrice = discountedPrice(item.price);
 let relatedMrpHTML = `<span style="font-size: 0.75rem; text-decoration: line-through; color: #b3b9c1; margin-left: 4px; font-weight: 400; opacity: 0.8;">Rs.${item.price}</span>`;
 
 if (item.category && item.category.trim().toUpperCase() === "GIFT BOXES") {
@@ -1619,7 +1623,7 @@ function renderWishlist() {
     items.forEach(p => {
         const unit = unitPriceOf(p);
         const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
-        const discountPct = !isGift && p.price > unit ? Math.round(100 - (unit / p.price) * 100) : 0;
+        const discountPct = !isGift && p.price > unit ? DISCOUNT_PERCENT : 0;
         const cartIndex = carts.findIndex(c => c.product_id == p.id);
         const inCartQty = cartIndex < 0 ? 0 : carts[cartIndex].quantity;
         const actionHTML = inCartQty > 0
@@ -1683,7 +1687,7 @@ async function shareProduct(id) {
     const price = unitPriceOf(p);
     const isGift = p.category && p.category.trim().toUpperCase() === "GIFT BOXES";
     const link = `${window.location.origin}${window.location.pathname}?p=${p.id}`;
-    const priceLine = isGift ? `Rs.${price}` : `Rs.${price} (MRP Rs.${p.price} - 80% OFF)`;
+    const priceLine = isGift ? `Rs.${price}` : `Rs.${price} (MRP Rs.${p.price} - ${DISCOUNT_PERCENT}% OFF)`;
     const text = `🎆 ${p.title}\n💰 ${priceLine}\nDiwali crackers at Vav Pyro Park\n\n${link}`;
 
     if (navigator.share) {
