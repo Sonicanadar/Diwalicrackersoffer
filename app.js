@@ -1,5 +1,5 @@
 // Single place to change the sale discount
-const DISCOUNT_PERCENT = 20;
+const DISCOUNT_PERCENT = 90;
 const discountedPrice = (mrp) => Math.floor(mrp * (100 - DISCOUNT_PERCENT) / 100);
 
 let listProductHTML = document.querySelector('.listProduct');
