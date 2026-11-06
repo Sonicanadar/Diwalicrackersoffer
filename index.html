@@ -1,332 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VAV Pyropark</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Brush Co. – Handmade Painting Kits</title>
+<style>
+  :root {
+    --paper: #f7f3ee;
+    --ink: #2b2a33;
+    --teal: #1f6f78;
+    --plum: #7a3b69;
+    --sun: #f2b134;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, "Times New Roman", serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+  a { color: inherit; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 18px 6vw; }
+  .logo { font-weight: bold; font-size: 1.3rem; text-decoration: none; }
+  nav a { margin-left: 20px; text-decoration: none; font-family: Arial, sans-serif; font-size: .95rem; }
+  .hero { padding: 60px 6vw 70px; display: grid; gap: 30px; grid-template-columns: 1.1fr .9fr; align-items: center; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.1; margin-bottom: 16px; }
+  .hero p { max-width: 46ch; margin-bottom: 24px; font-size: 1.1rem; }
+  .btn { display: inline-block; background: var(--teal); color: #fff; padding: 12px 26px; border-radius: 999px; text-decoration: none; font-family: Arial, sans-serif; border: 0; cursor: pointer; font-size: 1rem; }
+  .btn:hover, .btn:focus-visible { background: var(--plum); }
+  .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .swatches span { aspect-ratio: 1; border-radius: 50% 50% 50% 12%; }
+  section { padding: 50px 6vw; }
+  h2 { font-size: 2rem; margin-bottom: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .card { background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid #e6dfd5; display: flex; flex-direction: column; }
+  .thumb { height: 170px; }
+  .card .body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card h3 { font-size: 1.2rem; }
+  .card p { font-size: .95rem; flex: 1; }
+  .price { font-family: Arial, sans-serif; font-weight: bold; color: var(--plum); }
+  .about { background: var(--ink); color: var(--paper); }
+  .about p { max-width: 60ch; }
+  form { display: grid; gap: 12px; max-width: 420px; font-family: Arial, sans-serif; }
+  input, textarea { padding: 12px; border: 1px solid #cfc6b8; border-radius: 8px; font: inherit; }
+  footer { text-align: center; padding: 30px; font-family: Arial, sans-serif; font-size: .9rem; }
+  #cart { position: fixed; right: 16px; bottom: 16px; background: var(--sun); padding: 10px 18px; border-radius: 999px; font-family: Arial, sans-serif; font-weight: bold; }
+  @media (max-width: 700px) { .hero { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
-    <div id="inAppBanner" class="inapp-banner">
-        <span>⚠️ You're in an in-app browser (Instagram/Facebook/etc). WhatsApp checkout may not open here. Tap <b>⋮</b> or <b>Share</b> above and choose <b>"Open in Chrome/Safari"</b>.</span>
-        <button type="button" id="inAppBannerClose" aria-label="Dismiss">&times;</button>
-    </div>
 
-
-    <div class="container_title">    
-        <div class="title1">
-            <img src="Diwali_images/VAV-LOGO.png" alt="">
-           <div class="logo">✨ VAVPYROPARK</div>
-            <nav class="nav-links">
-            <a href="home.html">Home</a>
-            <a href="index.html#shop">Shop</a>
-            <a href="about.html" >About Us</a>
-            <a href="safetyguide.html">Safety Guide</a>
-        </nav>
-            <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-                <span></span><span></span><span></span>
-            </button>
-            <nav class="mobile-nav" id="mobileNav">
-                <a href="home.html">🏠 Home</a>
-                <a href="index.html#shop">🛍️ Shop</a>
-                <a href="about.html">ℹ️ About Us</a>
-                <a href="safetyguide.html">🛡️ Safety Guide</a>
-                <a href="#" id="mobileOrderHistoryLink">🧾 Order History</a>
-                <a href="#" id="mobileNotifyLink">🔔 Next Year's Sale</a>
-            </nav>
-            <span><p><img src="/Diwali_images/location_icon.jpg" class="location_img">Sivakasi</p></span>
-        </div>
-    </div>
-    
-
-         <div class="container">
-        <!-- =========================================================================
-   🛠️ FIXED: Premium Integrated Header Layout with Festive Discount Banner
-   ========================================================================= -->
-<!-- =========================================================================
-   🛠️ FIXED: Clean Blue Header with Only the Flat 89% Off Badge Displayed
-   ========================================================================= -->
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background-color: blue; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 1000; flex-wrap: nowrap; gap: 10px;">
-    
-    <!-- 📞 Left Side: Phone / Ordering Details -->
-    <div class="title" style="margin: 0; padding: 0; flex: 1 1 auto; min-width: 0;">
-        <p style="font-size: 13px; line-height: 1.3; font-weight: 700; color: #ff9f43; letter-spacing: 0.3px; margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-wrap: wrap; align-items: center; column-gap: 5px;">
-            To ORDER WhatsApp: <span style="color: #25D366;">+91 9867731440</span>
-        </p>
-    </div>
-
-    
-
-    <!-- ❤️ Wishlist Badge -->
-    <div class="icon-wishlist" style="position: relative; cursor: pointer; background-color: #21262d; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #f0f6fc; width: 22px; height: 22px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c-.3 0-.6-.1-.84-.28C8.9 18.1 3.75 14.24 3.75 9.75 3.75 7.13 5.88 5 8.5 5c1.4 0 2.73.63 3.5 1.68C12.77 5.63 14.1 5 15.5 5c2.62 0 4.75 2.13 4.75 4.75 0 4.49-5.15 8.35-7.41 10.22-.24.18-.54.28-.84.28Z"/>
-        </svg>
-        <span style="display: none; width: 20px; height: 20px; background-color: #ff9f43; justify-content: center; align-items: center; color: #0d1117; border-radius: 50%; position: absolute; top: -5px; right: -5px; font-size: 11px; font-weight: 700;">0</span>
-    </div>
-
-    <!-- 🛒 Right Side: Interactive Shopping Basket Badge -->
-    <div class="icon-cart" style="position: relative; cursor: pointer; background-color: #21262d; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex-shrink: 0;">
-        <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="color: #f0f6fc; width: 22px; height: 22px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.116 60.116 0 0 0-20.706 0l1.243 4.659ZM7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-        </svg>
-        <span style="display: none; width: 20px; height: 20px; background-color: red; justify-content: center; align-items: center; color: #fff; border-radius: 50%; position: absolute; top: -5px; right: -5px; font-size: 11px; font-weight: 700;">0</span>
-    </div>
-
+<header>
+  <a class="logo" href="#">Little Brush Co.</a>
+  <nav><a href="#kits">Kits</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
 </header>
 
-
-        <!-- ============ DIWALI FESTIVAL BANNER ============ -->
-<style>
-.fx-banner{position:relative;overflow:hidden;box-sizing:border-box;margin:14px 0;padding:22px 16px 20px;text-align:center;border-radius:14px;border:1px solid rgba(255,159,67,.4);background:radial-gradient(ellipse at 50% -10%,rgba(189,75,0,.55) 0%,rgba(42,18,4,.9) 55%,#0d1117 100%);box-shadow:inset 0 0 0 4px rgba(13,17,23,.6),inset 0 0 0 5px rgba(255,159,67,.18),0 6px 22px rgba(0,0,0,.35)}
-.fx-orn{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
-.fx-orn i{display:block;height:1px;width:22%;max-width:110px;background:linear-gradient(90deg,transparent,rgba(255,159,67,.8))}
-.fx-orn i:last-child{background:linear-gradient(270deg,transparent,rgba(255,159,67,.8))}
-.fx-orn svg{width:34px;height:26px;filter:drop-shadow(0 0 6px rgba(255,159,67,.7));animation:fxFlicker 2.6s ease-in-out infinite}
-.fx-eyebrow{margin:0;font:600 11px 'Segoe UI',sans-serif;letter-spacing:4px;text-transform:uppercase;color:#d9a566}
-.fx-title{margin:6px 0 4px;font:700 clamp(30px,8vw,46px)/1.1 Georgia,'Times New Roman',serif;letter-spacing:.5px;background:linear-gradient(180deg,#fff1cf 0%,#ffc56b 55%,#e8892a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.fx-sub{margin:0;font:italic 14px Georgia,serif;color:#e9d9c3;opacity:.9}
-.fx-deal{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;padding:6px 22px;border-radius:14px;background:linear-gradient(135deg,#8f0000,#e10000 50%,#ff3b30);box-shadow:0 0 0 2px #ffd28a,0 0 26px rgba(255,0,0,.75);overflow:hidden;animation:fxPop 1.6s ease-in-out infinite}
-.fx-deal::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:fxShine 2.8s ease-in-out infinite}
-.fx-flat,.fx-off{display:flex;flex-direction:column;font:800 13px 'Segoe UI',sans-serif;letter-spacing:3px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
-.fx-pct{font:900 clamp(54px,17vw,78px)/1 'Segoe UI',Arial,sans-serif;color:#fff;text-shadow:0 3px 0 #5a0000,0 0 18px rgba(255,255,255,.55)}
-.fx-pct small{font-size:.5em;margin-left:2px}
-.fx-valid{margin:12px 0 0;font:700 13px 'Segoe UI',sans-serif;letter-spacing:.6px;color:#fff;text-transform:uppercase}.fx-valid b{color:#0d1117;background:#ffd28a;padding:2px 8px;border-radius:4px;margin-left:2px}
-.fx-ship{margin:8px 0 0;font:600 12px 'Segoe UI',sans-serif;letter-spacing:.8px;color:#ffc56b}
-@keyframes fxPop{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@keyframes fxShine{0%{left:-60%}60%,100%{left:130%}}
-.fx-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffd28a;box-shadow:0 0 8px 2px rgba(255,190,90,.8);opacity:0;animation:fxTwinkle 3s ease-in-out infinite}
-.fx-spark:nth-of-type(1){top:16%;left:9%}
-.fx-spark:nth-of-type(2){top:58%;left:5%;animation-delay:1s}
-.fx-spark:nth-of-type(3){top:22%;right:8%;animation-delay:.5s}
-.fx-spark:nth-of-type(4){top:66%;right:11%;animation-delay:1.8s}
-@keyframes fxTwinkle{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:1;transform:scale(1)}}
-@keyframes fxFlicker{0%,100%{opacity:1}50%{opacity:.82}}
-@media(prefers-reduced-motion:reduce){.fx-orn svg,.fx-spark,.fx-deal,.fx-deal::after{animation:none}.fx-spark{opacity:.7}}
-</style>
-<section class="fx-banner">
-    <span class="fx-spark"></span><span class="fx-spark"></span><span class="fx-spark"></span><span class="fx-spark"></span>
-    <div class="fx-orn"><i></i>
-        <svg viewBox="0 0 40 28" aria-hidden="true"><path d="M20 1C24 6 25 9 20 14 15 9 16 6 20 1Z" fill="#ffd28a"/><path d="M5 16H35C35 23 28 27 20 27 12 27 5 23 5 16Z" fill="#ff9f43"/></svg>
-    <i></i></div>
-    <p class="fx-eyebrow">Vav Pyro Park · Sivakasi</p>
-    <h2 class="fx-title">Happy Diwali</h2>
-    <p class="fx-sub">Wishing you a bright, happy and safe celebration</p>
-    <div class="fx-deal"><span class="fx-flat">FLAT</span><span class="fx-pct">89<small>%</small></span><span class="fx-off">OFF</span></div>
-</section>
-
-<!-- HERO TEXT SECTION -->
-<section class="celebration-hero">
-    <div class="hero-text-container">
-        <h1>Light Up Your Celebrations Safely</h1>
-        <p>Premium quality, eco-friendly crackers delivered straight to your licensed location.</p>
-        <!-- Optional Button to drive actions -->
-       <!-- <a href="#shop" class="hero-cta-btn">View Collection</a>-->
-    </div>
-</section>
-
-
-        <form id="my-form" class="filter">
-        <select name="category">
-            <option value="All" selected>All Products</option>
-            <option value="ONE SOUND CRACKERS">ONE SOUND CRACKERS</option>
-            <option value="FLOWER POTS">FLOWER POTS</option>
-            <option value="GROUND CHAKKAR">GROUND CHAKKAR</option>
-            <option value="TWINKLING STARS & PENCILS">TWINKLING STARS & PENCILS</option>
-            <option value="ROCKETS">ROCKETS</option>
-            <option value="BOMBS">BOMBS</option>
-            <option value="BIJILI CRACKERS">BIJILI CRACKERS</option>
-            <option value="FOUNTAIN & VARIETIES">FOUNTAIN & VARIETIES</option>
-            <option value="SKY SPECTACULARS">SKY SPECTACULARS</option>
-            <option value="SILVER">SILVER</option>
-            <option value="GOLD">GOLD</option>
-            <option value="LUMINOUS SPECTACLES">LUMINOUS SPECTACLES</option>
-            <option value="COLOUR MATCHES">COLOUR MATCHES</option>
-            <option value="SPARKLERS">SPARKLERS</option>
-            <option value="GIFT BOXES">GIFT BOXES</option>
-        </select>
-    </form>
-        <!-- <form id="search">
-            <div class="search">
-                <span class="search-icon material-symbols-outlined" >Search</span>
-                <input class="search-input" type="search" id="search" placeholder="Search" onkeyup="search()">
-            </div>
-        </form> -->
-        <div class="listProduct">
-           
-        </div>
-    </div>
-    
-
-
-    
-    <div class="wishlistTab" id="wishlistTab">
-        <div class="cx-head">
-            <div>
-                <h3>❤️ Your Wishlist</h3>
-                <small id="wl-count">0 items</small>
-            </div>
-            <button type="button" class="close cx-x" id="wishlistClose" aria-label="Close wishlist">&times;</button>
-        </div>
-        <div class="wishlistItems" id="wishlistList"></div>
-    </div>
-
-    <div class="cartTab cx-empty">
-        <div class="cx-head">
-            <div>
-                <h3>🛒 Your Cart</h3>
-                <small id="cx-count">0 items</small>
-            </div>
-            <button class="close cx-x" aria-label="Close cart">&times;</button>
-        </div>
-
-        <div class="listCart" id="listCart"></div>
-
-        <div class="cx-foot">
-            <div class="cx-fields">
-                <input id="cx-name" type="text" placeholder="Your name" autocomplete="name">
-                <input id="cx-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit phone number" autocomplete="tel">
-                <textarea id="cx-address" rows="2" placeholder="Full delivery address with pincode" autocomplete="street-address"></textarea>
-            </div>
-
-            <div class="cx-row"><span>Total MRP</span><b id="cx-mrp">Rs.0</b></div>
-            <div class="cx-row save" id="cx-save-row"><span>You save</span><b id="cx-save">Rs.0</b></div>
-            <div class="cx-row total"><span>Total to pay</span><b id="cx-total">Rs.0</b></div>
-
-            <div class="cx-actions">
-                <button class="cx-btn upi" onclick="openUpiModal()">Pay via UPI<small>GPay, PhonePe, Paytm, any UPI app</small></button>
-                <button class="cx-btn cod" onclick="checkoutCOD()">Cash on Delivery<small>Confirm your order on WhatsApp</small></button>
-            </div>
-        </div>
-    </div>
-    <div class="container_popup">
-        <!-- <button type="submit" class="btn" onclick="openPopup()">Submit</button> -->
-        <div class="popup" id="popup">
-            <section class="contact">
-                <h2>Contact Details!</h2>
-        
-                <form action="#">
-                    <div class="input-box">
-                        <div class="input-field field">
-                            <input type="text" placeholder="Full Name" id="name" class="item" autocomplete="off">
-                            <div class="error-txt"> Full Name can't be blank</div>
-                        </div>
-                        <div class="input-field field">
-                            <input type="text" placeholder="Email Address" id="email" class="item" autocomplete="off">
-                            <div class="error-txt"> Email can't be blank</div>
-                        </div>
-                    </div>
-                    <div class="input-box">
-                        <div class="input-field field">
-                            <input type="text" placeholder="Phone Number" id="phone" class="item" autocomplete="off">
-                            <div class="error-txt"> Phone Number can't be blank</div>
-                        </div>
-                        <div class="input-field field">
-                            <input type="text" placeholder="Pincode" id="pincode" class="item" autocomplete="off">
-                            <div class="error-txt"> Pincode can't be blank</div>
-                        </div>
-                    </div>
-                    <div class="textarea-field field">
-                        <textarea name="" id="address" cols="30" rows="10" placeholder="Shipping Address" Class="item" autocomplete="off"></textarea>
-                        <div class="error-txt"> Address can't be blank</div>
-                    </div>
-                    <button type="submit" class="send" onclick="closePopup(),openPopup2()">Send Message</button>
-                </form>
-            </section>
-        </div>
-    </div>
-    <div class="container_popup2">
-        <div class="popup2" id="popup2">
-            <img src="Diwali_images3/tick_image.png" alt="ticket image">
-            <h2>Thank You!</h2>
-            <p>Your details has been successfully submitted</p>
-            <button type="button" onclick="closePopup2()">OK</button>
-        </div>
-    </div>
-    <!-- 🛠️ ADDED: Self-contained scrollable details layout matrix for the cart panel -->
-    <div id="cart-checkout-form-template" style="display: none;">
-        <div id="cart-form-scroll-wrapper" style="padding: 15px; background-color: #1c2128; border-top: 1px solid #30363d; max-height: 280px; overflow-y: auto;">
-            <p style="color: #8b949e !important; text-align: center !important; margin: 0 0 12px 0 !important; font-size: 12px !important; font-family: sans-serif;">Enter delivery details to complete email checkout:</p>
-            <form name="my-form" autocomplete="off" style="margin: 0 !important; padding: 0 !important;">
-                <div style="margin-bottom: 10px !important;">
-                    <input type="text" id="name" placeholder="Full Name" required style="width: 100% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
-                </div>
-                <div style="margin-bottom: 10px !important;">
-                    <input type="email" id="email" placeholder="Email Address" required style="width: 100% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
-                </div>
-                <div style="display: flex !important; gap: 8px !important; margin-bottom: 10px !important;">
-                    <input type="tel" id="phone" placeholder="Phone Number" required style="width: 55% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
-                    <input type="text" id="pincode" placeholder="Pincode" required style="width: 45% !important; height: 36px !important; padding: 0 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; box-sizing: border-box !important;">
-                </div>
-                <div style="margin-bottom: 10px !important;">
-                    <textarea id="address" rows="2" placeholder="Complete Delivery Address" required style="width: 100% !important; padding: 8px 10px !important; background-color: #0d1117 !important; border: 1px solid #30363d !important; border-radius: 4px !important; color: #ffffff !important; font-size: 13px !important; outline: none !important; resize: none !important; box-sizing: border-box !important; font-family: inherit; line-height: 1.4 !important;"></textarea>
-                </div>
-                <button type="submit" id="hidden-submit-trigger" style="display: none;"></button>
-            </form>
-        </div>
-    </div>
-
-    <!-- NEXT YEAR'S DIWALI SALE OPT-IN MODAL -->
-    <div id="notifyModal" class="upi-modal">
-        <div class="upi-box">
-            <button class="upi-close" onclick="closeNotifyModal()">&times;</button>
-            <div class="notify-icon">🪔</div>
-            <h2>Don't Miss Next Diwali's Sale!</h2>
-            <p class="upi-note">Leave your WhatsApp number and we'll message you first when next year's Diwali offers go live.</p>
-            <div class="notify-fields">
-                <input id="notify-name" type="text" placeholder="Your name" autocomplete="name">
-                <input id="notify-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit WhatsApp number" autocomplete="tel">
-            </div>
-            <button class="notify-btn" onclick="subscribeForNextYear()">🔔 Notify Me Next Year</button>
-        </div>
-    </div>
-
-    <!-- UPI PAYMENT MODAL -->
-    <div id="upiModal" class="upi-modal">
-        <div class="upi-box">
-            <button class="upi-close" onclick="closeUpiModal()">&times;</button>
-            <h2>Pay via UPI</h2>
-            <div class="upi-amount" id="upiAmount">Rs.0</div>
-            <a id="upiPayLink" class="upi-pay-btn" href="#">Open UPI App (GPay / PhonePe / Paytm)</a>
-            <p class="upi-or">or scan this QR with any UPI app</p>
-            <div id="upiQr" class="upi-qr"></div>
-            <p class="upi-id">UPI ID: <b id="upiIdText"></b> <button class="upi-copy" onclick="copyUpiId()">Copy</button></p>
-            <p class="upi-note">After paying, attach a screenshot of the payment. We will receive it on WhatsApp together with your order details.</p>
-            <label class="upi-file" for="upiShot">
-                <span id="upiShotLabel">📸 Attach payment screenshot</span>
-                <input id="upiShot" type="file" accept="image/*" onchange="onUpiScreenshotChange(this)">
-            </label>
-            <img id="upiShotPreview" class="upi-shot-preview" alt="Payment screenshot preview" style="display:none;">
-            <button class="upi-confirm" onclick="confirmUpiPaymentOnWhatsApp()">Send order + screenshot on WhatsApp</button>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
-      <script src="app.js"></script>
-
-<a href="tel:+919867731440" class="floating-mobile-call-action" title="Call Us Directly">
-    <span class="call-icon">📞</span>
-    <span class="call-text">Call Now</span>
-</a>
-    <!-- Related Products Intercept Modal Frame -->
-<div id="productModal" class="product-modal-overlay">
-    <div class="product-modal-content">
-        <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
-        
-        <!-- Main Product Card Info Profile Area -->
-        <div id="modalMainDetails" class="modal-main-details">
-            <!-- Populated via Javascript -->
-        </div>
-
-        <!-- Dynamic Related Carousel Strip Area -->
-        <div class="related-section-title">Related Items You May Like</div>
-        <div id="relatedProductsList" class="related-products-list">
-            <!-- Populated via Javascript dynamically -->
-        </div>
-    </div>
+<div class="hero">
+  <div>
+    <h1>Paint something you’ll want to hang on the wall.</h1>
+    <p>Each kit is assembled by hand with pre-sketched canvas, mixed paints, brushes and a step-by-step guide. No experience needed.</p>
+    <a class="btn" href="#kits">Shop painting kits</a>
+  </div>
+  <div class="swatches" aria-hidden="true">
+    <span style="background:#1f6f78"></span><span style="background:#f2b134"></span><span style="background:#7a3b69"></span>
+    <span style="background:#e4572e"></span><span style="background:#76b041"></span><span style="background:#2b2a33"></span>
+  </div>
 </div>
 
+<section id="kits">
+  <h2>Our kits</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="thumb" style="background:linear-gradient(135deg,#f2b134,#e4572e)"></div>
+      <div class="body">
+        <h3>Sunset Beach</h3>
+        <p>8×10" canvas, 6 acrylic colors, 2 brushes, guide.</p>
+        <span class="price">$28</span>
+        <button class="btn" onclick="addToCart()">Add to cart</button>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb" style="background:linear-gradient(135deg,#1f6f78,#76b041)"></div>
+      <div class="body">
+        <h3>Forest Morning</h3>
+        <p>9×12" canvas, 7 acrylic colors, 3 brushes, guide.</p>
+        <span class="price">$34</span>
+        <button class="btn" onclick="addToCart()">Add to cart</button>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb" style="background:linear-gradient(135deg,#7a3b69,#2b2a33)"></div>
+      <div class="body">
+        <h3>Night Sky Watercolor</h3>
+        <p>Watercolor paper, 5 paint pans, brush, guide.</p>
+        <span class="price">$24</span>
+        <button class="btn" onclick="addToCart()">Add to cart</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <h2>Made by hand, in small batches</h2>
+  <p>Every kit is packed by me at my kitchen table. I test each painting myself so the instructions are clear and the colors work together. Perfect for gifts, date nights and quiet weekends.</p>
+</section>
+
+<section id="contact">
+  <h2>Questions or custom orders?</h2>
+  <form onsubmit="event.preventDefault(); alert('Thanks! We’ll reply soon.'); this.reset();">
+    <input type="text" placeholder="Your name" required>
+    <input type="email" placeholder="Email" required>
+    <textarea rows="4" placeholder="Your message" required></textarea>
+    <button class="btn" type="submit">Send message</button>
+  </form>
+</section>
+
+<footer>© 2026 Little Brush Co. All rights reserved.</footer>
+
+<div id="cart">Cart: <span id="count">0</span></div>
+
+<script>
+  let count = 0;
+  function addToCart() {
+    count++;
+    document.getElementById('count').textContent = count;
+  }
+</script>
 </body>
 </html>
